@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import {newYearOrder,restoreYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete,YEAR_ORDER} from '../js/year-order-data.js';
 import {renderYearOrder} from '../js/year-order-ui.js';
 import {renderFinalFragments} from '../js/final-fragments-ui.js';
-import {newFinalState,decideFinal,expireFinal,canRevealFinal,FINAL_INPUT} from '../js/story-flow.js';
+import {newFinalState,decideFinal,expireFinal,canRevealFinal,FINAL_INPUT,restoreFinal} from '../js/story-flow.js';
+
+import {finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from '../js/final-password-input.js';
 
 const times={orderAt:1000,passwordAt:61000,answerUntil:121000};
 const order=newYearOrder();
@@ -35,7 +37,7 @@ assert.equal(timedOut.correct,false);
 const html=renderYearOrder(newYearOrder());
 assert.equal((html.match(/data-year-card=/g)||[]).length,5);
 for(const hidden of [2,3,5])assert.equal(html.includes(`data-year-card="${hidden}"`),false);
-for(const count of [0,3,8]){
+for(const count of [0,3,5,8]){
  const fragments=renderFinalFragments(['れ','ぶ','り','ゅ','の','す','じ','お'].slice(0,count),{animate:true});
  assert.equal((fragments.match(/class="fragment-frame /g)||[]).length,8);
  assert.equal((fragments.match(/class="fragment-letter"/g)||[]).length,count);
@@ -67,4 +69,55 @@ try{
  }
  assert.ok(clock.innerHTML.includes('4:59'));
 }finally{Date.now=realNow;delete globalThis.document;delete globalThis.localStorage;}
-console.log('PASS: five-card ordering, undo, saved-game migration, deadlines, fragment counts, final results, and 5-minute clock boundary');
+
+const collected=['れ','ぶ','ゅ','の','じ'];
+const placed=newFinalState();
+assert.equal(placeFinalFragments(placed,[]),false);
+assert.equal(placeFinalFragments(placed,collected),true);
+assert.deepEqual(finalInputSlots(placed),['の','ぶ','れ','','','','じ','ゅ']);
+assert.equal(nextFinalPosition(placed),3);
+assert.equal(finalInputComplete(placed),false);
+assert.equal(decideFinal(placed,61000,times,order),false,'Eight positions containing holes cannot be submitted');
+assert.equal(placeFinalFragments(placed,collected),false,'Placement is idempotent');
+const restored=restoreFinal(JSON.stringify(placed));
+assert.equal(restored.fragmentsPlaced,true);
+assert.deepEqual(finalInputSlots(restored),finalInputSlots(placed),'Positioned letters survive a reload');
+assert.equal(enterFinalLetter(placed,'あ'),true);
+assert.equal(nextFinalPosition(placed),4);
+assert.deepEqual(editableFinalPositions(placed,collected),[3]);
+assert.equal(eraseFinalLetters(placed,collected),true);
+assert.deepEqual(finalInputSlots(placed),['の','ぶ','れ','','','','じ','ゅ'],'Backspace preserves collected letters and their positions');
+for(const letter of ['す','お','り'])enterFinalLetter(placed,letter);
+assert.equal(placed.draft,FINAL_INPUT);
+assert.equal(finalInputComplete(placed),true);
+assert.equal(eraseFinalLetters(placed,collected,{all:true}),true);
+assert.deepEqual(finalInputSlots(placed),['の','ぶ','れ','','','','じ','ゅ'],'Clear removes only letters entered by the player');
+for(const letter of ['す','お','り'])enterFinalLetter(placed,letter);
+assert.equal(decideFinal(placed,61000,times,order),true);
+assert.equal(placed.result,'success');
+assert.equal(eraseFinalLetters(placed,collected),false);
+assert.equal(enterFinalLetter(placed,'あ'),false);
+for(const count of [0,3,5,8]){
+ const sample=['れ','ぶ','り','ゅ','の','す','じ','お'].slice(0,count),draft=newFinalState();
+ placeFinalFragments(draft,sample);
+ assert.equal(finalInputSlots(draft).filter(Boolean).length,count);
+ const locked=new Set(foundFinalPositions(sample));
+ for(let index=nextFinalPosition(draft);index>=0;index=nextFinalPosition(draft))enterFinalLetter(draft,FINAL_INPUT[index]);
+ assert.equal(draft.draft,FINAL_INPUT);
+ eraseFinalLetters(draft,sample,{all:true});
+ assert.equal(finalInputSlots(draft).filter(Boolean).length,count);
+ for(const index of locked)assert.equal(finalInputSlots(draft)[index],FINAL_INPUT[index]);
+}
+assert.deepEqual(foundFinalPositions(['ブ','ブ','レ']),[1,2],'One found character fills one editable position, not a printed symbol');
+const earlier=restoreFinal(JSON.stringify({version:1,draft:'のぶれす'}));
+assert.equal(earlier.fragmentsPlaced,false);
+assert.equal(nextFinalPosition(earlier),4);
+assert.equal(enterFinalLetter(earlier,'お'),true);
+assert.equal(earlier.draft,'のぶれすお','Earlier sequential input still works');
+const partialInput=newFinalState();partialInput.draft='ああああ';
+placeFinalFragments(partialInput,collected);
+assert.equal(finalInputSlots(partialInput)[3],'あ','Placement preserves input in uncollected positions');
+assert.ok(renderFinalFragments(collected).includes('data-action="place-fragments"'));
+assert.ok(renderFinalFragments(collected,{placed:true}).includes('文字をあてはめました'));
+
+console.log('PASS: positioned letters, persistent gaps, protected collected letters, remaining input; five-card ordering, undo, saved-game migration, deadlines, fragment counts, final results, and 5-minute clock boundary');

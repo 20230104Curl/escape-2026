@@ -1,5 +1,5 @@
-import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-01';
-import {guardExploration} from './final-reveal.js?v=2026-10-16-web-01';
+import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-02';
+import {guardExploration} from './final-reveal.js?v=2026-10-16-web-02';
 export const ROOM_CLEAR_DELAY=3000;
 
 export function roomCompletion(roomKey,restore,warn){

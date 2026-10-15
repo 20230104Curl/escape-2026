@@ -1,5 +1,5 @@
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-01';
-import {YEAR_CHOICES,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-01';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-02';
+import {YEAR_CHOICES,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-02';
 function picture(number){
  const area=NEWS_AREAS.find(area=>area.number===number);
  const lines={1:['衆議院議員','総選挙'],4:['サッカーW杯','日本代表'],6:['千葉の','記録的な大雨'],7:['愛知・名古屋','アジア大会 開幕'],8:['ノーベル化学賞','受賞決定']};
