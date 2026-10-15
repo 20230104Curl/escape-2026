@@ -1,7 +1,7 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-14';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-14';
-import {ENDINGS} from './story-content.js?v=2026-10-15-web-14';
-import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-15-web-14';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-15';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-15';
+import {ENDINGS} from './story-content.js?v=2026-10-15-web-15';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-15-web-15';
 const scenes=[
  {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
  {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},
@@ -21,7 +21,7 @@ function render(){
  const index=currentFrame(),frame=ENDINGS[state.result][index],scene=scenes[index],key=`${state.result}/${index}/${state.bellPlayed}`;
  if(key===lastRender)return;lastRender=key;
  const ringing=animateBell&&index===0;animateBell=false;
- app.innerHTML=`<main class="shell ending-screen illustrated-ending"><figure class="ending-illustration ${ringing?'is-ringing':''}" role="img" aria-label="${scene.alt}"><img class="ending-backdrop" src="assets/images/${scene.image}.png" alt="" fetchpriority="high">${index===0?'<div class="ending-bell-waves" aria-hidden="true"><i></i><i></i></div>':''}</figure><header class="top"><div class="brand">2026年からの脱出</div><span class="midnight-clock">2027年1月1日 00:00</span></header><section class="story-stage ending-stage"><div class="ending-copy"><h1>${frame.title}</h1><p class="story-body">${frame.body}</p>${index<2||preview?'<div class="story-actions">'+(preview&&index>0?'<button class="secondary" data-back>戻る</button>':'')+(index<2?'<button class="primary" data-next>つぎへ</button>':'')+'</div>':''}${index===2?'<p class="ending-complete">ゲームは終了しました。先生の案内を待ってください。</p>':''}</div></section><div class="story-footer" aria-hidden="true"></div></main>`;
+ app.innerHTML=`<main class="shell ending-screen illustrated-ending"><figure class="ending-illustration ${ringing?'is-ringing':''}" role="img" aria-label="${scene.alt}"><img class="ending-backdrop" src="assets/images/${scene.image}.png" alt="" fetchpriority="high">${index===0?'<div class="ending-bell-waves" aria-hidden="true"><i></i><i></i></div>':''}</figure><header class="top"><div class="brand">2026年からの脱出</div><span class="midnight-clock">2027年1月1日 00:00</span></header><section class="story-stage ending-stage"><div class="ending-copy"><h1>${frame.title}</h1><p class="story-body">${frame.body}</p>${index<2||preview?'<div class="story-actions">'+(preview&&index>0?'<button class="secondary" data-back>戻る</button>':'')+(index<2?'<button class="primary" data-next>つぎへ</button>':'')+'</div>':''}${index===2?'<p class="ending-complete"><span>2026年からの脱出は終了です。</span><span>まだプレイしていない生徒のために、</span><strong>ヒントや答えは言わないこと！</strong></p>':''}</div></section><div class="story-footer" aria-hidden="true"></div></main>`;
 }
 async function showEnding(){
  if(!guard())return;

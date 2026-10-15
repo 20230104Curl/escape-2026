@@ -13,7 +13,9 @@
 .illustrated-ending .ending-stage .story-body{font-size:18px;line-height:1.95;color:#3d4852;overflow-wrap:break-word;text-wrap:pretty}
 .illustrated-ending .story-actions{gap:12px}
 .illustrated-ending .story-actions button{min-height:58px;font-size:17px}
-.illustrated-ending .ending-complete{font-size:14px;line-height:1.8}
+.illustrated-ending .ending-complete{margin-top:20px;padding:16px;border:3px solid #b33e36;border-radius:14px;background:#fff6e8;color:#8e2925;font-size:18px;line-height:1.7;font-weight:800;line-break:strict;overflow-wrap:break-word;text-wrap:pretty}
+.illustrated-ending .ending-complete span,.illustrated-ending .ending-complete strong{display:block}
+.illustrated-ending .ending-complete strong{font-size:21px;font-weight:900}
 .illustrated-ending .story-footer{flex:none;min-height:48px;gap:16px;color:#3d4b54;justify-content:flex-end}
 .illustrated-ending .story-footer button{padding:10px 14px;background:#fffcf2ed;border-radius:10px;font-size:12px;line-height:1.7}
 .illustrated-ending .story-footer button{min-height:48px}
@@ -39,4 +41,6 @@
  .illustrated-ending .midnight-clock{font-size:16px;padding:10px 12px}
  .illustrated-ending .story-actions button{font-size:15px;min-width:105px}
  .illustrated-ending .story-footer{gap:10px}
+ .illustrated-ending .ending-complete{margin-top:14px;padding:12px;font-size:16px}
+ .illustrated-ending .ending-complete strong{font-size:18px}
 }
