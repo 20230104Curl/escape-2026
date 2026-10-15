@@ -1,5 +1,5 @@
-import {gameStorage,gameSession,gameUrl,testPlay} from './play-mode.js?v=2026-10-15-web-9';
-import {teacherTapSequence,resetCurrentGame} from './teacher-mode-data.js?v=2026-10-15-web-9';
+import {gameStorage,gameSession,gameUrl,testPlay} from './play-mode.js?v=2026-10-15-web-10';
+import {teacherTapSequence,resetCurrentGame} from './teacher-mode-data.js?v=2026-10-15-web-10';
 
 export function installTeacherMode(){
  if(document.querySelector('#teacher-mode-dialog'))return;
@@ -11,7 +11,7 @@ export function installTeacherMode(){
  function menu(){
   if(dialog.open)return;
   const roomReset=app.querySelector('[data-action="reset"]');
-  dialog.innerHTML=`<h2 id="teacher-mode-title">教師モード</h2><p>${testPlay?'テスト用の記録だけを操作します。':'この端末のプレイ記録を操作します。'}</p><div class="teacher-actions">${roomReset?'<button class="secondary" data-teacher-room>このエリアを最初から</button>':''}<button class="secondary" data-teacher-all>全体を最初から</button></div><div class="dialog-actions"><button class="primary" data-close>ゲームに戻る</button></div>`;
+  dialog.innerHTML=`<h2 id="teacher-mode-title">教師モード</h2><p>${testPlay?'テスト用の記録だけを操作します。':'この端末のプレイ記録を操作します。'}</p><div class="teacher-actions"><a class="secondary" href="${gameUrl('start.html?preview=1')}">OPを見直す</a>${roomReset?'<button class="secondary" data-teacher-room>このエリアを最初から</button>':''}<button class="secondary" data-teacher-all>全体を最初から</button></div><div class="dialog-actions"><button class="primary" data-close>ゲームに戻る</button></div>`;
   dialog.showModal();dialog.querySelector('[data-close]').focus();
  }
  function sync(){for(const brand of app.querySelectorAll('.brand')){brand.classList.add('teacher-entry');brand.tabIndex=0;brand.setAttribute('role','button');}}

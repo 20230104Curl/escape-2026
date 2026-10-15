@@ -5,5 +5,5 @@ export function renderRoomReward({complete,missed=false,chest}){
 }
 
 export function renderSealedReward({title,chest,afterword=''}){
-  return `<section class="reward-screen"><p class="eyebrow">${title} クリア</p>${chest(true)}<h1>文字のかけらを保管した！</h1>${sealedFragment()}<p>かけらは、封印したまま保管した。<br>中の文字が読めるのは、<br>最後のナゾが始まってから。</p><p style="margin-top:14px">きみはかけらをしまい、<br>次の記憶へ目を向けた。</p><button class="primary" data-action="room">エリアに戻る</button><p class="smallprint">${afterword}</p></section>`;
+  return `<section class="reward-screen"><p class="eyebrow">${title} クリア</p>${chest(true)}<h1>文字のかけらを保管した！</h1>${sealedFragment()}<p>かけらは、封印したまま保管した。<br>中の文字が読めるのは、<br>最後のナゾが始まってから。</p><button class="primary" data-action="room">エリアに戻る</button></section>`;
 }

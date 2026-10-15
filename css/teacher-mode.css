@@ -3,5 +3,7 @@
 #teacher-mode-dialog h2{font-size:23px;line-height:1.5;margin:0 0 14px}
 #teacher-mode-dialog p{font-size:15px;line-height:1.9}
 .teacher-actions{display:grid;gap:12px;margin-top:20px}
-#teacher-mode-dialog button{min-height:56px;font-size:15px}
+#teacher-mode-dialog button,#teacher-mode-dialog .teacher-actions a{min-height:56px;font-size:15px}
 #teacher-mode-dialog .dialog-actions{gap:12px;flex-wrap:wrap}
+
+#teacher-mode-dialog .teacher-actions a{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;color:inherit}

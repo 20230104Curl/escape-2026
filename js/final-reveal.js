@@ -1,6 +1,6 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-9';
-import {loadSettings} from './play-settings.js?v=2026-10-15-web-9';
-import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-15-web-9';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-10';
+import {loadSettings} from './play-settings.js?v=2026-10-15-web-10';
+import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-15-web-10';
 let leaving=false;
 function go(path){if(leaving)return;leaving=true;location.replace(gameUrl(path));}
 

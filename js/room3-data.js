@@ -1,5 +1,5 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-9';
-import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-9';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-10';
+import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-10';
 
 export const ROOM = {
   number:3,storageKey:'escape2026.room3.v1',title:'ひかりのアトリエ',titleHTML:'ひかりの<br>アトリエ',
