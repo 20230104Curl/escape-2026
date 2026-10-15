@@ -1,6 +1,6 @@
-import {FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-7';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-7';
-import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-7';
+import {FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-8';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-8';
+import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-8';
 
 export function teacherTapSequence(maxGap=1500){
  let count=0,last=null;

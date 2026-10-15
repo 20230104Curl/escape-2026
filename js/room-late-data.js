@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-7';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-7';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-7';
-import {flowerMarks} from './flower-search-data.js?v=2026-10-15-web-7';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-8';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-8';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-8';
+import {flowerMarks} from './flower-search-data.js?v=2026-10-15-web-8';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -32,8 +32,8 @@ export const LATE_QUESTIONS={
       hints:["同じ色・同じ模様のアイスは、同じ１文字を表します。カップの言葉と、上から並ぶアイスを比べてみよう。","まず２つの例に共通するアイスを探し、その色がどちらの言葉でも同じ文字になるか確かめよう。真ん中のカップの「ー」も、アイス１個分です。わかった色から右のカップに当てはめよう。"],
       explanation:'同じアイスは同じ文字。ピンク＝ア、緑＝イ、黄色＝ス。上から読むと「アイス」、ひらがなで「あいす」！'},
     {id:'flower-search',title:'花の名前さがし',short:'花の名前がかくれた表',label:'文字を探すナゾ',answer:'ひらめき',
-      hints:["花の最初の文字を見つけたら、右・下・右下に続く文字を確かめよう。花の名前は、途中で曲がりません。","一番下の段には「たんぽぽ」が右向きに並んでいます。ほかの花は、下向きや右下向きも調べよう。６つとも見つかったか一覧で確かめ、使わなかった文字だけを、上の段から左→右に読もう。"],
-      explanation:'「ひまわり」「あじさい」は下向き、「たんぽぽ」は右向き。「さくら」「つばき」「すみれ」は右下向きにかくれています。６つの花の文字を消し、残った文字を上の段から左→右に読むと「ひ・ら・め・き」！'},
+      hints:["花の最初の文字を見つけたら、右・左・上・下に続く文字を確かめよう。逆向きもあります。花の名前は、途中で曲がりません。","一番上の段の「ひまわり」は、右から左へ並んでいます。ほかの花も、読む向きを変えて調べよう。６つとも見つかったか一覧で確かめ、使わなかった文字だけを、上の段から左→右に読もう。"],
+      explanation:'「ひまわり」「たんぽぽ」は左向き、「つばき」は上向き。「さくら」「すみれ」「あじさい」は右向きにかくれています。６つの花の文字を消し、残った文字を上の段から左→右に読むと「ひ・ら・め・き」！'},
     {id:'turning-flowers',title:'花びらの仲間はずれ',short:'回せる花の見本',label:'回転のナゾ',answer:'つぼみ',candidateAnswers:FLOWER_CANDIDATES,maxAttempts:1,
       hints:["花の向きだけが違っても、回すと同じになるものは仲間です。花びらの色を、ぐるりと時計回りに比べてみよう。","同じ色が２枚ある段は、その２枚が隣り合うか向かい合うか比べよう。全部違う色の段は、１色を上にそろえてから、時計回りの色の並びを比べます。裏返さず、回して重なるか確かめよう。"],
       explanation:'回しても重ならない花は、上から「つ」「ぼ」「み」。答えは「つぼみ」！'}
@@ -61,9 +61,9 @@ export const LATE_QUESTIONS={
       explanation:'表は五十音表。上は「か」から「い段」へ進むので「かいだん」。下は「そ」から「う段」へ進むので「そうだん」！'}
   ]
 };
-export const makeLateState=()=>({...emptyState(),contentRevision:2,answerInputRevision:3,attempts:[0,0,0],flowerSearchRevision:1,flowerMarks:[]});
+export const makeLateState=()=>({...emptyState(),contentRevision:2,answerInputRevision:3,attempts:[0,0,0],flowerSearchRevision:1,flowerLayoutRevision:2,flowerMarks:[]});
 export function restoreLateState(raw,number){
-  const state=withAttempts({...parseState(raw),contentRevision:2,answerInputRevision:3,flowerSearchRevision:1,flowerMarks:[]},raw,LATE_QUESTIONS[number]);
+  const state=withAttempts({...parseState(raw),contentRevision:2,answerInputRevision:3,flowerSearchRevision:1,flowerLayoutRevision:2,flowerMarks:[]},raw,LATE_QUESTIONS[number]);
   try{const saved=JSON.parse(raw);if(saved?.version===1)state.drafts=LATE_QUESTIONS[number].map((q,i)=>{
     let draft=typeof saved.drafts?.[i]==='string'?saved.drafts[i].slice(0,q.answer.length):'';
     const revision=Number.isInteger(saved.answerInputRevision)?saved.answerInputRevision:0;
@@ -74,6 +74,6 @@ export function restoreLateState(raw,number){
     return draft.slice(0,inputAnswer(q).length);
   });}catch{}
   if(number===8){let saved=null;try{saved=JSON.parse(raw);}catch{}if(saved?.contentRevision!==2){state.solved=state.solved.filter(i=>i!==2);state.drafts[2]='';state.hints[2]=0;state.claimed=false;}}
-  if(number===6){let saved=null;try{saved=JSON.parse(raw);}catch{}if(saved?.flowerSearchRevision===1){state.flowerMarks=flowerMarks(saved.flowerMarks);}else{state.solved=state.solved.filter(i=>i!==1);state.drafts[1]='';state.hints[1]=0;state.attempts[1]=0;state.claimed=false;}}
+  if(number===6){let saved=null;try{saved=JSON.parse(raw);}catch{}if(saved?.flowerSearchRevision===1){if(saved.flowerLayoutRevision===2)state.flowerMarks=flowerMarks(saved.flowerMarks);}else{state.solved=state.solved.filter(i=>i!==1);state.drafts[1]='';state.hints[1]=0;state.attempts[1]=0;state.claimed=false;}}
   return state;
 }

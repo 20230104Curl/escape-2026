@@ -1,13 +1,13 @@
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-7';
-import {readableCopy} from './readable-copy.js?v=2026-10-15-web-7';
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-7';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-7';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-7';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-7';
-import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-7';
-import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-7';
-import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-7';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-7';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-8';
+import {readableCopy} from './readable-copy.js?v=2026-10-15-web-8';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-8';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-8';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-8';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-8';
+import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-8';
+import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-8';
+import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-8';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-8';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);

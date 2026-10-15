@@ -1,6 +1,6 @@
-import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-15-web-7';
-import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-15-web-7';
-import {FLOWER_GRID,FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-7';
+import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-15-web-8';
+import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-15-web-8';
+import {FLOWER_GRID,FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-8';
 const svg=(body,label,viewBox='0 0 500 340')=>`<div class="late-diagram"><svg viewBox="${viewBox}" role="img" aria-label="${label}">${body}</svg></div>`;
 const text=(value,x,y,size=25,color='#4d4565',extra='')=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="middle" font-weight="700" ${extra}>${value}</text>`;
 const marker=(id,color)=>`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="${color}"/></marker></defs>`;
@@ -26,7 +26,7 @@ const iceAlt={pink:'ピンク',mint:'水色のつぶ入り',green:'緑',yellow:'
 export function iceCream(){return `<p class="puzzle-instruction">同じアイスは、同じ1文字。<br>右のカップに入る言葉は？</p><div class="ice-cream-row">${ICE_STACKS.map((stack,i)=>`<div class="ice-tower">${stack.map((color,j)=>`<span class="ice-piece" role="img" aria-label="${iceAlt[color]}のアイス" style="background-position:${iceIndex[color]%3*50}% ${Math.floor(iceIndex[color]/3)*100}%;z-index:${10-j}"></span>`).join('')}<div class="ice-piece ice-cup" style="background-position:100% 100%"><strong>${['アツイ','スイーツ','？'][i]}</strong></div></div>`).join('')}</div>`;}
 export function flowerSearch(state={}){
  const marks=flowerMarks(state.flowerMarks);
- return `<p class="puzzle-instruction">６つの花の名前を消すと、残る言葉は？</p><div class="flower-search"><div class="flower-search-grid" role="group" aria-label="５行５列の文字表。タップで文字に印を付ける">${FLOWER_GRID.flat().map((letter,i)=>`<button type="button" class="flower-search-cell${marks.includes(i)?' marked':''}" data-flower-cell="${i}" aria-pressed="${marks.includes(i)}" aria-label="${Math.floor(i/5)+1}行${i%5+1}列、${letter}">${letter}</button>`).join('')}</div><div class="flower-search-guide"><h3>探す花</h3><ul>${FLOWER_WORDS.map(word=>`<li>${word}</li>`).join('')}</ul><p>よこ <b>→</b>・たて <b>↓</b><br>ななめ <b>↘</b></p><p>まっすぐに探そう。<br>花どうしは重なりません。</p></div></div><p class="flower-search-note">タップで消す／戻す。<br>残りを、上の段から左→右に読もう。</p>`;
+ return `<p class="puzzle-instruction">６つの花の名前を消すと、残る言葉は？</p><div class="flower-search"><div class="flower-search-grid" role="group" aria-label="５行５列の文字表。タップで文字に印を付ける">${FLOWER_GRID.flat().map((letter,i)=>`<button type="button" class="flower-search-cell${marks.includes(i)?' marked':''}" data-flower-cell="${i}" aria-pressed="${marks.includes(i)}" aria-label="${Math.floor(i/5)+1}行${i%5+1}列、${letter}">${letter}</button>`).join('')}</div><div class="flower-search-guide"><h3>探す花</h3><ul>${FLOWER_WORDS.map(word=>`<li>${word}</li>`).join('')}</ul><p>よこ <b>← →</b><br>たて <b>↑ ↓</b></p><p>まっすぐに探そう。<br>逆向きもあります。<br>花どうしは重なりません。</p></div></div><p class="flower-search-note">タップで消す／戻す。<br>残りを、上の段から左→右に読もう。</p>`;
 }
 const petalColors={rose:'#ed9c9b',blue:'#83b2d0',green:'#9dc49a',gold:'#f0cd75'};
 export function flowers(){
