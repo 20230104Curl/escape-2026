@@ -1,5 +1,5 @@
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-15-web-25';
-import {FIXED_YEAR_SLOTS,YEAR_CHOICES,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-25';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-15-web-26';
+import {FIXED_YEAR_SLOTS,YEAR_CHOICES,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-26';
 function picture(number,showMonth=false){
  const area=NEWS_AREAS.find(area=>area.number===number);
  const lines={1:['衆議院議員','総選挙'],2:['りくりゅう','金メダル'],3:['イランへの','攻撃'],4:['サッカーW杯','日本代表'],5:['熊本の','大地震'],6:['千葉の','記録的な大雨'],7:['愛知・名古屋','アジア大会','開幕'],8:['ノーベル','化学賞','受賞決定']};

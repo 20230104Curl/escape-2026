@@ -1,14 +1,14 @@
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-25';
-import {readableCopy} from './readable-copy.js?v=2026-10-15-web-25';
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-25';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-25';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-25';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-25';
-import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-25';
-import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-25';
-import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-25';
-import {newsDateBadge} from './news-dates.js?v=2026-10-15-web-25';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-25';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-26';
+import {readableCopy} from './readable-copy.js?v=2026-10-15-web-26';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-26';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-26';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-26';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-26';
+import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-26';
+import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-26';
+import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-26';
+import {newsDateBadge} from './news-dates.js?v=2026-10-15-web-26';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-26';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);
