@@ -1,7 +1,8 @@
-import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-10';
-import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-10';
-import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-10';
-import {installTeacherMode} from './teacher-mode.js?v=2026-10-15-web-10';
+import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-11';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-11';
+import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-11';
+import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-11';
+import {installTeacherMode} from './teacher-mode.js?v=2026-10-15-web-11';
 
 export function installTestTools(){
  installTeacherMode();
@@ -22,7 +23,7 @@ export function installTestTools(){
   try{
    if(action==='confirm-reset'){clearTestRecords();location.replace(gameUrl('start.html'));return;}
    if(!loadSettings(gameStorage))saveSettings(gameStorage,4,1);
-   gameStorage.removeItem(FINAL_KEY);gameSession.removeItem('escape2026.transfer.seen');
+   gameStorage.removeItem(FINAL_KEY);gameStorage.removeItem(YEAR_ORDER_KEY);gameSession.removeItem('escape2026.transfer.seen');
    if(action==='final')gameStorage.setItem(TEST_FINAL_KEY,String(Date.now()));else gameStorage.removeItem(TEST_FINAL_KEY);
    location.replace(gameUrl(action==='final'?'final-clues.html':'rooms.html'));
   }catch{document.querySelector('#storage-warning').hidden=false;dialog.close();}

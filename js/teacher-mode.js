@@ -1,5 +1,5 @@
-import {gameStorage,gameSession,gameUrl,testPlay} from './play-mode.js?v=2026-10-15-web-10';
-import {teacherTapSequence,resetCurrentGame} from './teacher-mode-data.js?v=2026-10-15-web-10';
+import {gameStorage,gameSession,gameUrl,testPlay} from './play-mode.js?v=2026-10-15-web-11';
+import {teacherTapSequence,resetCurrentGame} from './teacher-mode-data.js?v=2026-10-15-web-11';
 
 export function installTeacherMode(){
  if(document.querySelector('#teacher-mode-dialog'))return;

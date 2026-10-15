@@ -1,4 +1,4 @@
-import {KANJI_PARTS,KANJI_EXAMPLE,KANJI_QUERY,HIDDEN_COLUMNS,TIMES_POINTS} from './puzzle-renewal-data.js?v=2026-10-15-web-10';
+import {KANJI_PARTS,KANJI_EXAMPLE,KANJI_QUERY,HIDDEN_COLUMNS,TIMES_POINTS} from './puzzle-renewal-data.js?v=2026-10-15-web-11';
 
 function sprite(sheet,index,alt){return `<span class="puzzle-sprite ${sheet}" role="img" aria-label="${alt}" style="background-position:${(index%3)*50}% ${Math.floor(index/3)*100}%"></span>`;}
 function numbered(n,x,y){return `<g><circle cx="${x}" cy="${y}" r="17" fill="#fffef6" stroke="#987a58" stroke-width="2"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="19" font-weight="bold" fill="#4d3d52">${n||''}</text></g>`;}

@@ -1,6 +1,7 @@
-import * as config from './game-flow-config.js?v=2026-10-15-web-10';
-import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-15-web-10';
-export const OPENING_SECONDS=300,EXPLORATION_SECONDS=1500,FINAL_ANSWER_SECONDS=60,ENDING_SECONDS=60;
+import * as config from './game-flow-config.js?v=2026-10-15-web-11';
+import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-15-web-11';
+import {loadYearOrder} from './year-order-data.js?v=2026-10-15-web-11';
+export const OPENING_SECONDS=300,EXPLORATION_SECONDS=1500,YEAR_ORDER_SECONDS=60,FINAL_ANSWER_SECONDS=60,ENDING_SECONDS=60;
 export const FINAL_KEY='escape2026.finale.v1';
 export const EXPLORATION_KEY='escape2026.exploration.v1';
 export const FINAL_INPUT='のぶれすおりじゅ';
@@ -10,12 +11,13 @@ export function classTimes(start=config.GAME_START_AT,final=config.FINAL_REVEAL_
   // An explicitly supplied schedule is kept for the teacher's fixed-time option.
   // Normal play uses the first saved press of the exploration start button.
   if(arguments.length===0){
-    if(testPlay){const session=loadExploration(gameStorage);return {openingAt:NaN,explorationAt:session?.startedAt??NaN,finalAt:testFinalAt(),answerUntil:Infinity,endAt:Infinity};}
+    if(testPlay){const session=loadExploration(gameStorage),finalAt=testFinalAt();return {openingAt:NaN,explorationAt:session?.startedAt??NaN,finalAt,passwordAt:loadYearOrder(gameStorage).submitted?finalAt:Infinity,answerUntil:Infinity,endAt:Infinity};}
     try{const session=loadExploration(gameStorage);if(session)return explorationTimes(session.startedAt);}catch{}
   }
   const openingAt=timestamp(start),explorationAt=openingAt+OPENING_SECONDS*1000;
   const explicit=timestamp(final),finalAt=Number.isFinite(explicit)?explicit:explorationAt+EXPLORATION_SECONDS*1000;
-  return {openingAt,explorationAt,finalAt,answerUntil:finalAt+FINAL_ANSWER_SECONDS*1000,endAt:finalAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
+  const passwordAt=finalAt+YEAR_ORDER_SECONDS*1000;
+  return {openingAt,explorationAt,finalAt,passwordAt,answerUntil:passwordAt+FINAL_ANSWER_SECONDS*1000,endAt:passwordAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
 }
 export function restoreExploration(raw){
   let saved;try{saved=JSON.parse(raw);}catch{return null;}
@@ -31,8 +33,10 @@ export function startExploration(storage,now=Date.now()){
 }
 export function explorationTimes(startedAt){
   const explorationAt=timestamp(startedAt),finalAt=explorationAt+EXPLORATION_SECONDS*1000;
-  return {openingAt:NaN,explorationAt,finalAt,answerUntil:finalAt+FINAL_ANSWER_SECONDS*1000,endAt:finalAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
+  const passwordAt=finalAt+YEAR_ORDER_SECONDS*1000;
+  return {openingAt:NaN,explorationAt,finalAt,passwordAt,answerUntil:passwordAt+FINAL_ANSWER_SECONDS*1000,endAt:passwordAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
 }
+export const isPasswordOpen=(now=Date.now(),times=classTimes())=>Number.isFinite(times.passwordAt??times.finalAt)&&now>=(times.passwordAt??times.finalAt);
 export const toKatakana=value=>value.replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
 export const newFinalState=()=>({version:1,draft:'',submitted:false,result:null,reason:null,decidedAt:null,revealAt:null,bellPlayed:false});
 export function restoreFinal(raw){
@@ -45,9 +49,9 @@ export function restoreFinal(raw){
   return state;
 }
 export function loadFinal(storage){try{return restoreFinal(storage.getItem(FINAL_KEY));}catch{return newFinalState();}}
-export function decideFinal(state,now,times=classTimes()){
-  if(state.submitted||!Number.isFinite(times.finalAt)||now<times.finalAt||now>=times.answerUntil||state.draft.length!==8)return false;
-  Object.assign(state,{submitted:true,result:state.draft===FINAL_INPUT?'success':'rescued',reason:'answer',decidedAt:now,revealAt:Number.isFinite(times.answerUntil)?times.answerUntil:now});return true;
+export function decideFinal(state,now,times=classTimes(),order=loadYearOrder(gameStorage)){
+  if(state.submitted||!isPasswordOpen(now,times)||now>=times.answerUntil||state.draft.length!==8)return false;
+  Object.assign(state,{submitted:true,result:state.draft===FINAL_INPUT&&order.submitted&&order.correct===true?'success':'rescued',reason:'answer',decidedAt:now,revealAt:Number.isFinite(times.answerUntil)?times.answerUntil:now});return true;
 }
 export function expireFinal(state,now,times=classTimes()){
   if(state.submitted||!Number.isFinite(times.answerUntil)||now<times.answerUntil)return false;

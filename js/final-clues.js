@@ -1,51 +1,73 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-10';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-10';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-10';
-import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-10';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-10';
-import {answerKeys} from './room1-data.js?v=2026-10-15-web-10';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,clockText} from './story-flow.js?v=2026-10-15-web-10';
-import {EMERGENCY} from './story-content.js?v=2026-10-15-web-10';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-11';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-11';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-11';
+import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-11';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-11';
+import {answerKeys} from './room1-data.js?v=2026-10-15-web-11';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,clockText,isPasswordOpen} from './story-flow.js?v=2026-10-15-web-11';
+import {EMERGENCY} from './story-content.js?v=2026-10-15-web-11';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-11';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-15-web-11';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
-let state=loadFinal(gameStorage),wasOpen=null,wasSubmitted=null,keys=[],navigating=false;
+let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
+const inOrder=()=>isFinalOpen()&&!isPasswordOpen()&&!state.submitted;
+function saveOrder(){try{gameStorage.setItem(YEAR_ORDER_KEY,JSON.stringify(order));return true;}catch{warn();return false;}}
 function go(path){if(navigating)return;navigating=true;location.replace(gameUrl(path));}
 function warn(){document.querySelector('#storage-warning').hidden=false;}
 function save(){try{gameStorage.setItem(FINAL_KEY,JSON.stringify(state));return true;}catch{warn();return false;}}
 function refreshKeys(){keys=answerKeys(FINAL_INPUT,state.draft.length);}
 function render(){
- const open=isFinalOpen();wasOpen=open;wasSubmitted=state.submitted;let content;
+ const open=isFinalOpen(),ordering=inOrder();wasOpen=open;wasSubmitted=state.submitted;wasOrder=ordering;let content;
  if(state.submitted){
   content=`${sealedFragment()}<h1>解答を受け付けました</h1><p>結果は、カウントダウンが終わると<br>発表されます。</p>`;
+ }else if(ordering){
+  content=renderYearOrder(order);
  }else if(open){
   const rooms=readRoomProgress(gameStorage,warn),letters=finalFragments(rooms);let index=0;
   const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':position===state.draft.length?'current':''}">${fixed??toKatakana(state.draft[position]||'')}</span>`;}).join('');
   content=`<div class="final-question"><h1>2027年への扉を開く言葉は？</h1><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">「・」「ブ」「ー」は入力しなくてOK。</p><div class="final-fragments" aria-label="獲得した文字のかけら">${letters.map(letter=>`<span class="final-fragment">${letter}</span>`).join('')}</div><p class="final-count">集めたかけら ${letters.length} / 8</p>${letters.length?'':'<p class="final-note">かけらはありません。推理して挑戦できます。</p>'}</div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${k}">${k}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!state.draft?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!state.draft?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${state.draft.length!==8?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
  }else content=`${sealedFragment()}<h1>まだ封印は開いていない</h1><p>文字のかけらが読めるのは、最後のナゾが始まってから。<br>今は、2026年のできごとを巡ろう。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
- app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header><section class="final-clues ${state.submitted?'is-waiting':open?'is-open':'is-locked'}">${content}</section></main>`;
+ app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open?'is-open':'is-locked'}">${content}</section>`}</main>`;
  updateClock();
 }
 function updateClock(){
  if(!isFinalOpen())return;
- const clock=document.querySelector('#final-clock'),seconds=remaining(classTimes().answerUntil);
- clock.innerHTML=testPlay?'最後の挑戦 時間制限なし':`<span>最後の挑戦 あと </span><strong>${clockText(seconds)}</strong>`;
+ const clock=document.querySelector('#final-clock'),times=classTimes(),ordering=inOrder(),seconds=remaining(ordering?times.passwordAt:times.answerUntil),label=ordering?'できごとの並べ替え':'最後の挑戦';
+ clock.innerHTML=testPlay?`${label} 時間制限なし`:`<span>${label} あと </span><strong>${seconds}<small>秒</small></strong>`;
  clock.classList.toggle('is-urgent',!testPlay&&seconds<=10);
 }
 function tick(){
  if(navigating)return true;
- state=loadFinal(gameStorage);
+ state=loadFinal(gameStorage);order=loadYearOrder(gameStorage);
+ if(expireYearOrder(order,Date.now(),classTimes()))saveOrder();
  if(expireFinal(state,Date.now()))save();
  if(canRevealFinal(state)){go('ending.html');return true;}
- if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted){if(state.submitted)dialog.close();refreshKeys();render();}
+ if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted||wasOrder!==inOrder()){if(dialog.open)dialog.close();refreshKeys();render();}
  updateClock();
  return state.submitted;
 }
 function transfer(){
- if(!isFinalOpen()||gameSession.getItem('escape2026.transfer.seen'))return;
- dialog.innerHTML=`<h2 id="dialog-title">${EMERGENCY.title}</h2><p class="emergency-copy">${EMERGENCY.body}</p><p><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter>最後の挑戦へ</button>`;dialog.classList.add('emergency-dialog');dialog.showModal();
+ if(!inOrder()||gameSession.getItem('escape2026.transfer.seen'))return;
+ gameSession.setItem('escape2026.transfer.seen','1');
+ dialog.innerHTML=`<h2 id="dialog-title">${EMERGENCY.title}</h2><p class="emergency-copy">${EMERGENCY.body}</p><p><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter>できごとの並べ替えへ</button>`;dialog.classList.add('emergency-dialog');dialog.showModal();
  dialog.querySelector('[data-enter]').onclick=()=>{gameSession.setItem('escape2026.transfer.seen','1');dialog.close();dialog.classList.remove('emergency-dialog');};
 }
 app.addEventListener('click',event=>{
  const b=event.target.closest('button');if(!b||b.disabled||tick()||!isFinalOpen())return;
+ if(inOrder()){
+  if(order.submitted)return;
+  if(b.dataset.yearCard!==undefined){if(placeYearCard(order,Number(b.dataset.yearCard))&&saveOrder())render();return;}
+  if(b.dataset.yearRemove!==undefined){if(removeYearCard(order,Number(b.dataset.yearRemove))&&saveOrder())render();return;}
+  if(b.hasAttribute('data-year-submit')&&yearOrderComplete(order)){
+   const slots=[...order.slots];
+   dialog.innerHTML='<h2 id="dialog-title">この順番で決定しますか？</h2><p>解答チャンスは１回だけです。<br>決定すると、順番は変更できません。</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>この順番で決定</button></div>';
+   dialog.querySelector('[data-close]').onclick=()=>dialog.close();
+   dialog.querySelector('[data-confirm]').onclick=async()=>{
+    const commit=()=>{const fresh=loadYearOrder(gameStorage);if(!fresh.submitted){fresh.slots=slots;expireYearOrder(fresh,Date.now(),classTimes());if(!fresh.submitted)decideYearOrder(fresh,Date.now(),classTimes());}order=fresh;if(saveOrder()){dialog.close();tick();render();}};
+    if(navigator.locks)await navigator.locks.request(gameStorage.scopeKey(YEAR_ORDER_KEY),commit);else commit();
+   };dialog.showModal();
+  }return;
+ }
  if(b.dataset.key!==undefined){if(state.draft.length<8){state.draft+=b.dataset.key;save();refreshKeys();render();}return;}
  if(b.dataset.action==='backspace'||b.dataset.action==='clear'){state.draft=b.dataset.action==='clear'?'':state.draft.slice(0,-1);save();refreshKeys();render();return;}
  if(b.dataset.action==='submit'&&state.draft.length===8){

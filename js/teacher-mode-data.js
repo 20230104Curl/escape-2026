@@ -1,6 +1,7 @@
-import {FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-10';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-10';
-import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-10';
+import {FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-11';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-11';
+import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-11';
+import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-11';
 
 export function teacherTapSequence(maxGap=1500){
  let count=0,last=null;
@@ -12,6 +13,6 @@ export function teacherTapSequence(maxGap=1500){
 }
 export function resetCurrentGame(storage,session){
  for(let n=1;n<=8;n++)storage.removeItem(`escape2026.room${n}.v1`);
- for(const key of [FINAL_KEY,EXPLORATION_KEY,SETTINGS_KEY,HINTS_KEY,TEST_FINAL_KEY])storage.removeItem(key);
+ for(const key of [FINAL_KEY,EXPLORATION_KEY,SETTINGS_KEY,HINTS_KEY,TEST_FINAL_KEY,YEAR_ORDER_KEY])storage.removeItem(key);
  session.removeItem('escape2026.transfer.seen');
 }
