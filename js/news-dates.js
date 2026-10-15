@@ -1,5 +1,5 @@
 // Dates identify the news shown in each illustration, not the area or puzzle order.
-export const HUB_ORDER=[4,1,8,5,2,7,3,6];
+export const HUB_ORDER=[1,2,3,4,5,6,7,8];
 export const NEWS_DATES={
  1:{month:'2月',dateCaption:'総選挙',timelineTitle:'衆議院議員総選挙',date:'2026-02-08',dateSource:'https://www.kantei.go.jp/jp/tyokan/104/20260127danwa.html'},
  2:{month:'2月',dateCaption:'金メダル',timelineTitle:'りくりゅう 金メダル',date:'2026-02-16',dateSource:'https://joc.or.jp/news/20260217038149.html'},
