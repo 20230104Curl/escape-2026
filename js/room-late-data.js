@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-26';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-26';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-26';
-import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-26';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-27';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-27';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-27';
+import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-27';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -57,7 +57,7 @@ export const LATE_QUESTIONS={
       hints:["絵の玉を、漢字の「玉」に置きかえてみよう。まわりの線と組み合わせると、どんな漢字になるかな？","左の線は、漢字の「宀（うかんむり）」に似ています。玉と合わせてできる漢字を、下の「た」から始まる読み方で考えよう。右も囲みと玉から漢字を作り、同じ色の丸には同じ１文字を入れます。"],
       explanation:'玉を漢字にすると、屋根の下は「宝＝たから」、四角の中は「国＝くに」。色の丸を読むと「か・ら・く・り」！'},
     {id:'kana-maze',title:'矢印が示すことば',short:'階段と空白の表',label:'表の見方のナゾ',answer:'そうだん',
-      hints:["この表は五十音表です。右上のマスを「あ」として、\nひらがなを１文字ずつ入れてみよう。","これは、右上の「あ」から始まる五十音表です。階段の絵をひらがなで読むと、最初の１文字と、矢印が通る横の段の呼び名に分けられます。下の矢印でも、点の文字と段の呼び名を調べよう。"],
+      hints:["この表は五十音表です。右上のマスを「あ」として、\nひらがなを１文字ずつ入れてみよう。","上の矢印は「か」からはじまり、「イ段」を通るので、\n「かいだん」ですね。\n同じように、下の矢印も読んでみよう。"],
       explanation:'表は五十音表。上は「か」から「い段」へ進むので「かいだん」。下は「そ」から「う段」へ進むので「そうだん」！'}
   ]
 };
