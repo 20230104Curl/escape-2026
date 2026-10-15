@@ -1,0 +1,47 @@
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay,TEST_FINAL_KEY} from './play-mode.js';
+import {installTestTools} from './test-tools.js';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js';
+import {ENDINGS} from './story-content.js';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY,EXPLORATION_KEY} from './story-flow.js';
+const scenes=[
+ {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
+ {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},
+ {image:'ed-03-new-year',alt:'あたたかく輝く門を、子どもたちと仲間が一緒にくぐり、新しい年へ進む。'}
+];
+for(const scene of scenes.slice(1)){const image=new Image();image.src=`assets/images/${scene.image}.png`;}
+const previewResult=new URLSearchParams(location.search).get('preview'),preview=['success','rescued'].includes(previewResult);
+const app=document.querySelector('#room-app');let state=preview?{submitted:true,result:previewResult,decidedAt:Date.now(),bellPlayed:true}:loadFinal(gameStorage),manual=0,animateBell=preview,lastRender='';
+if(!preview&&expireFinal(state,Date.now()))save();
+function ready(){return preview||canRevealFinal(state);}
+function guard(){if(ready())return true;location.replace(gameUrl(state.submitted?'final-clues.html':'rooms.html'));return false;}
+guard();
+function save(){try{gameStorage.setItem(FINAL_KEY,JSON.stringify(state));}catch{document.querySelector('#storage-warning').hidden=false;}}
+function currentFrame(){return preview||testPlay?manual:Math.min(2,Math.max(manual,Math.floor((Date.now()-finalRevealAt(state))/20000)));}
+function render(){
+ if(!ready())return;
+ const index=currentFrame(),frame=ENDINGS[state.result][index],scene=scenes[index],key=`${state.result}/${index}/${state.bellPlayed}`;
+ if(key===lastRender)return;lastRender=key;
+ const ringing=animateBell&&index===0;animateBell=false;
+ app.innerHTML=`<main class="shell ending-screen illustrated-ending"><figure class="ending-illustration ${ringing?'is-ringing':''}" role="img" aria-label="${scene.alt}"><img class="ending-backdrop" src="assets/images/${scene.image}.png" alt="" fetchpriority="high">${index===0?'<div class="ending-bell-waves" aria-hidden="true"><i></i><i></i></div>':''}</figure><header class="top"><div class="brand">2026年からの脱出</div>${preview?'<span class="ending-preview-label">ED確認中</span>':''}<span class="midnight-clock">2027年1月1日 00:00</span></header><section class="story-stage ending-stage"><div class="ending-copy"><h1>${frame.title}</h1><p class="story-body">${frame.body}</p>${index<2||preview?'<div class="story-actions">'+(preview&&index>0?'<button class="secondary" data-back>戻る</button>':'')+(index<2?'<button class="primary" data-next>つぎへ</button>':'')+'</div>':''}${index===2?'<p class="ending-complete">ゲームは終了しました。先生の案内を待ってください。</p>':''}</div></section>${preview?'<div class="story-footer" aria-hidden="true"></div>':'<footer class="story-footer"><button data-reset>先生用：強制リセット</button></footer>'}</main>`;
+}
+async function showEnding(){
+ if(!guard())return;
+ if(preview){render();return;}
+ const show=()=>{
+  state=loadFinal(gameStorage);if(!guard())return;
+  // This saved field marks the first visual bell and preserves existing records.
+  animateBell=!state.bellPlayed;if(animateBell){state.bellPlayed=true;save();}render();
+ };
+ if(navigator.locks)await navigator.locks.request(gameStorage.scopeKey(FINAL_KEY+'.bell'),show);else show();
+}
+app.addEventListener('click',e=>{
+ if(e.target.closest('[data-next]')){manual=Math.min(2,currentFrame()+1);render();}
+ if(preview&&e.target.closest('[data-back]')){manual=Math.max(0,manual-1);animateBell=manual===0;render();}
+ if(!preview&&e.target.closest('[data-reset]')){
+  const dialog=document.querySelector('#room-dialog');dialog.innerHTML='<h2 id="dialog-title">先生用：全体を最初からにしますか？</h2><p>8エリアの正解・入力・ヒントと、最終解答・終了記録を消します。</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>強制リセット</button></div>';dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{for(let n=1;n<=8;n++)gameStorage.removeItem(`escape2026.room${n}.v1`);gameStorage.removeItem(FINAL_KEY);gameStorage.removeItem(EXPLORATION_KEY);gameStorage.removeItem(SETTINGS_KEY);gameStorage.removeItem(HINTS_KEY);gameSession.removeItem('escape2026.transfer.seen');if(testPlay)gameStorage.removeItem(TEST_FINAL_KEY);location.replace(gameUrl('start.html'));};dialog.showModal();
+ }
+});
+onPlayStorage(()=>{if(preview)return;state=loadFinal(gameStorage);if(guard())render();});
+showEnding();setInterval(render,1000);
+
+installTestTools();

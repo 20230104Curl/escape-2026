@@ -1,0 +1,35 @@
+.bell-scene{width:100%;max-width:410px;margin:0 auto;color:#92682d;text-align:center}
+.bell-scene svg{display:block;width:100%;height:auto;overflow:visible}
+.bell-scene figcaption{font-size:23px;font-weight:900;letter-spacing:.06em;line-height:1.5}
+.bell-scene figcaption span{display:block;margin-top:5px;font-size:13px;font-weight:700;color:#688675;letter-spacing:.03em}
+.bell-ripple{opacity:.55;transform-origin:180px 178px}
+.bell-swing{transform-origin:180px 107px}
+.bell-striker{transform-origin:300px 112px}
+@media(prefers-reduced-motion:no-preference){
+ .is-ringing .bell-swing{animation:bell-sway 2.8s ease-out 2}
+ .is-ringing .bell-striker{animation:bell-strike 2.8s ease-out 2}
+ .is-ringing .bell-ripple{animation:bell-light-wave 2.8s ease-out 2}
+ .is-ringing .bell-ripple-late{animation-delay:.35s}
+ @keyframes bell-sway{0%,100%{transform:rotate(0)}15%{transform:rotate(-5deg)}38%{transform:rotate(4deg)}62%{transform:rotate(-2deg)}82%{transform:rotate(1deg)}}
+ @keyframes bell-strike{0%,100%{transform:translateX(0)}15%{transform:translateX(-19px)}38%{transform:translateX(5px)}65%{transform:translateX(0)}}
+ @keyframes bell-light-wave{0%{opacity:.8;transform:scale(.8)}85%{opacity:0;transform:scale(1.32)}100%{opacity:.55;transform:scale(1)}}
+}
+.ending-screen .ending-stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(220px,1fr);gap:28px;text-align:left;background:radial-gradient(ellipse at 90% 35%,#fff0bf,#f3faf3 75%)}
+.ending-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.ending-copy .story-actions{justify-content:flex-start}
+.ending-copy .story-actions button{min-height:58px}
+.ending-screen .story-footer{flex:none;min-height:48px}
+.ending-screen .story-footer button{min-height:48px;padding:8px 14px}
+.ending-screen .ending-stage .story-body{font-size:17px;line-height:1.85}
+.ending-screen .ending-stage h1{font-size:28px;line-height:1.5}
+@media(max-width:1000px){
+ .ending-screen .ending-stage{gap:18px;padding:20px}
+ .ending-screen .ending-stage h1{font-size:24px}
+ .ending-screen .ending-stage .story-body{font-size:16px;line-height:1.8}
+ .ending-copy{gap:14px}
+ .bell-scene figcaption{font-size:20px}
+}
+.end-bell .bell-scene{max-width:210px}
+.end-bell .bell-scene figcaption{font-size:17px}
+.end-bell .bell-scene figcaption span{display:none}
+@media(max-height:650px){.end-bell .bell-scene{max-width:145px}.end-bell .bell-scene figcaption{font-size:14px}}

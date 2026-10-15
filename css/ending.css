@@ -1,0 +1,44 @@
+/* Painted ending pages use the same full-screen picture and paper card as the OP. */
+.illustrated-ending{position:relative;isolation:isolate;max-width:none;padding:20px 32px;gap:16px;background:#cee4e7;overflow:hidden}
+.ending-illustration{position:absolute;z-index:-2;inset:0;margin:0;width:100%;height:100%;pointer-events:none}
+.ending-backdrop{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.illustrated-ending:after{content:'';position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,#eef7f51a,transparent 65%);pointer-events:none}
+.illustrated-ending .top{height:44px;border:0;padding:0}
+.illustrated-ending .brand,.illustrated-ending .midnight-clock,.ending-preview-label{background:#fffcf2ed;border:1px solid #fffaf0b3;border-radius:12px;box-shadow:0 3px 15px #32485816;padding:10px 16px}
+.illustrated-ending .brand{color:#384f59;font-size:17px}
+.illustrated-ending .midnight-clock{color:#557565;font-size:19px}
+.ending-preview-label{margin-left:auto;font-size:12px;color:#866132;padding:8px 12px}
+.illustrated-ending .ending-stage{display:flex;border:0;border-radius:0;padding:0;background:none;align-items:flex-start;justify-content:center;text-align:left;gap:0}
+.illustrated-ending .ending-copy{width:min(52%,640px);padding:28px 32px;gap:18px;background:linear-gradient(135deg,#fffdf6f7,#fffaf0eb);border:1px solid #fffdf1;border-radius:24px;box-shadow:0 12px 40px #29435426}
+.illustrated-ending .ending-stage h1{font-size:clamp(26px,2.5vw,34px);line-height:1.45;color:#364c55}
+.illustrated-ending .ending-stage .story-body{font-size:18px;line-height:1.95;color:#3d4852;overflow-wrap:break-word;text-wrap:pretty}
+.illustrated-ending .story-actions{gap:12px}
+.illustrated-ending .story-actions button{min-height:58px;font-size:17px}
+.illustrated-ending .ending-complete{font-size:14px;line-height:1.8}
+.illustrated-ending .story-footer{flex:none;min-height:48px;gap:16px;color:#3d4b54;justify-content:flex-end}
+.illustrated-ending .story-footer button{padding:10px 14px;background:#fffcf2ed;border-radius:10px;font-size:12px;line-height:1.7}
+.illustrated-ending .story-footer button{min-height:48px}
+.ending-bell-waves{position:absolute;left:75%;top:44%;width:min(28vw,380px);aspect-ratio:1;transform:translate(-50%,-50%)}
+.ending-bell-waves i{position:absolute;inset:10%;border:3px solid #ffe19a99;border-radius:50%;box-shadow:0 0 18px #ffe6ab55}
+.ending-bell-waves i:nth-child(2){inset:0;border-width:2px}
+@media(prefers-reduced-motion:no-preference){
+ .is-ringing .ending-bell-waves i{animation:ending-bell-wave 2.8s ease-out 2}
+ .is-ringing .ending-bell-waves i:nth-child(2){animation-delay:.35s}
+ @keyframes ending-bell-wave{from{opacity:.9;transform:scale(.6)}to{opacity:0;transform:scale(1.35)}}
+}
+@media(max-width:1100px),(max-height:700px){
+ .illustrated-ending{padding:16px 24px;gap:12px}
+ .illustrated-ending .ending-copy{width:53%;padding:22px 24px;gap:14px}
+ .illustrated-ending .ending-stage h1{font-size:27px}
+ .illustrated-ending .ending-stage .story-body{font-size:17px;line-height:1.8}
+}
+@media(max-width:900px){
+ .illustrated-ending{padding:14px 18px;gap:10px}
+ .illustrated-ending .ending-copy{width:55%;padding:20px;gap:12px;border-radius:20px}
+ .illustrated-ending .ending-stage h1{font-size:24px}
+ .illustrated-ending .ending-stage .story-body{font-size:16px;line-height:1.8}
+ .illustrated-ending .midnight-clock{font-size:16px;padding:10px 12px}
+ .illustrated-ending .story-actions button{font-size:15px;min-width:105px}
+ .illustrated-ending .story-footer{gap:10px}
+ .ending-preview-label{font-size:11px;padding:7px 10px}
+}

@@ -1,0 +1,7 @@
+.top>.test-mode-button{flex:none;min-width:92px;min-height:44px;padding:6px 14px;border:2px solid #8d6b31;border-radius:11px;background:#fff2cf;color:#74541f;font-size:13px;font-weight:800;white-space:nowrap}
+#test-tools-dialog{width:min(570px,calc(100vw - 40px));max-height:calc(100dvh - 40px);padding:22px}
+#test-tools-dialog h2{font-size:22px;margin:0 0 10px}
+#test-tools-dialog p{font-size:15px;line-height:1.7;margin:0 0 16px}
+.test-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.test-actions button,.test-actions a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:56px;padding:9px 12px;border:1px solid #d1bfdf;border-radius:10px;background:#f8f1fd;color:#554575;text-decoration:none;font-size:14px}
+#test-tools-dialog>.primary{min-height:48px;width:100%}
