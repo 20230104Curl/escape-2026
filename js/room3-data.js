@@ -1,5 +1,5 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-21';
-import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-21';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-22';
+import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-22';
 
 export const ROOM = {
   number:3,storageKey:'escape2026.room3.v1',title:'ひかりのアトリエ',titleHTML:'ひかりの<br>アトリエ',
@@ -19,7 +19,7 @@ export const QUESTIONS = [
     hints:["絵の名前を左からつなげて、反対からも読んでみよう。「とまと・まと」は、右から読むとどうなるかな？","２つの例は、右から読んでも同じ並びです。「？」は最後にあるので、\nまず全体の最初の文字と、「？」の最後の文字が\n同じになるように考えよう。"],
     explanation:'左からも右からも同じになる言葉。「みず・ねこ・ねずみ」をつなぐと「みずねこねずみ」。逆からも同じなので、答えは「ねずみ」！'},
   {id:'times-map',title:'マスと絵のひみつ',short:'マスに結ばれた絵',label:'位置と音のナゾ',answer:'さんご',
-    hints:["マスはたて９段、よこ９列。かけ算の表を思い浮かべて、絵の名前と比べてみよう。","例の「しし」は４×４、「くし」は９×４の読み方です。？につながる点も、上から何段目・左から何列目か数えて、同じように読んでみよう。"],
+    hints:["マスはたて９段、よこ９列。かけ算の表を思い浮かべて、絵の名前と比べてみよう。","例の「しし」は４×４、「くし」は９×４の読み方です。「？」がさしているマスは、\n上から何段目、左から何列目か数えて、\n九九のように読んでみよう。"],
     explanation:'絵の名前が、九九のかけ声になっている。「しし」は4×4、「くし」は9×4。？の点は3段目・5列目なので、3×5＝「さんご」！'}
 ];
 export const WINDOW_EXAMPLES = [{rows:1,cols:1,value:1},{rows:2,cols:1,value:3},{rows:2,cols:2,value:9}];
