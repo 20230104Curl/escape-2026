@@ -1,16 +1,18 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-27';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-27';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-27';
-import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-27';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-27';
-import {answerKeys} from './room1-data.js?v=2026-10-15-web-27';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-15-web-27';
-import {EMERGENCY} from './story-content.js?v=2026-10-15-web-27';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-27';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-15-web-27';
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-15-web-27';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-01';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-01';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-01';
+import {sealedFragment} from './room-reward-ui.js?v=2026-10-16-web-01';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-01';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-01';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-01';
+import {EMERGENCY} from './story-content.js?v=2026-10-16-web-01';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-01';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-01';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-01';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-01';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
+let fragmentsRevealed=false;
 const awaitingStart=()=>isFinalOpen()&&!Number.isFinite(classTimes().orderAt)&&!state.submitted;
 const inOrder=()=>isFinalOpen()&&!awaitingStart()&&!isPasswordOpen()&&!state.submitted;
 // Prepare the illustrations while the warning is being read, before the clock starts.
@@ -31,7 +33,8 @@ function render(){
  }else if(open){
   const rooms=readRoomProgress(gameStorage,warn),letters=finalFragments(rooms);let index=0;
   const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':position===state.draft.length?'current':''}">${fixed??toKatakana(state.draft[position]||'')}</span>`;}).join('');
-  content=`<div class="final-question"><h1>2027年への扉を開く言葉は？</h1><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">「・」「ブ」「ー」は入力しなくてOK。</p><div class="final-fragments" aria-label="獲得した文字のかけら">${letters.map(letter=>`<span class="final-fragment">${letter}</span>`).join('')}</div><p class="final-count">集めたかけら ${letters.length} / 8</p>${letters.length?'':'<p class="final-note">かけらはありません。推理して挑戦できます。</p>'}</div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${k}">${k}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!state.draft?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!state.draft?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${state.draft.length!==8?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
+  content=`<div class="final-question">${renderFinalFragments(letters,{animate:!fragmentsRevealed&&!state.draft})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">「・」「ブ」「ー」は入力しなくてOK。</p></div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!state.draft?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!state.draft?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${state.draft.length!==8?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
+  fragmentsRevealed=true;
  }else content=`${sealedFragment()}<h1>まだ封印は開いていない</h1><p>文字のかけらが読めるのは、最後のナゾが始まってから。<br>今は、2026年のできごとを巡ろう。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
  app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
  updateClock();
@@ -70,7 +73,8 @@ app.addEventListener('click',event=>{
  if(inOrder()){
   if(order.submitted)return;
   if(b.dataset.yearCard!==undefined){if(placeYearCard(order,Number(b.dataset.yearCard))&&saveOrder())render();return;}
-  if(b.dataset.yearRemove!==undefined){if(removeYearCard(order,Number(b.dataset.yearRemove))&&saveOrder())render();return;}
+  if(b.hasAttribute('data-year-undo')){const last=order.slots.findLastIndex(Number.isInteger);if(removeYearCard(order,last)&&saveOrder())render();return;}
+  if(b.hasAttribute('data-year-clear')){order.slots.fill(null);if(saveOrder())render();return;}
   if(b.hasAttribute('data-year-submit')&&yearOrderComplete(order)){
    const slots=[...order.slots];
    dialog.innerHTML='<h2 id="dialog-title">この順番で決定しますか？</h2><p>解答チャンスは１回だけです。<br>決定すると、順番は変更できません。</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>この順番で決定</button></div>';

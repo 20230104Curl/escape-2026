@@ -1,10 +1,10 @@
-import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-15-web-27';
-import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-15-web-27';
-import {FLOWER_GRID,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-27';
+import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-16-web-01';
+import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-16-web-01';
+import {FLOWER_GRID,flowerMarks} from './flower-search-data.js?v=2026-10-16-web-01';
 const svg=(body,label,viewBox='0 0 500 340')=>`<div class="late-diagram"><svg viewBox="${viewBox}" role="img" aria-label="${label}">${body}</svg></div>`;
 const text=(value,x,y,size=25,color='#4d4565',extra='')=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="middle" font-weight="700" ${extra}>${value}</text>`;
 const marker=(id,color)=>`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="${color}"/></marker></defs>`;
-function number(n,x,y,dakuten=false){return `<circle cx="${x}" cy="${y}" r="15" fill="#fffdf5" stroke="#aa8c62" stroke-width="2"/>${text(n,x,y+6,19)}${dakuten?text('゛',x+20,y-9,17):''}`;}
+function number(n,x,y,dakuten=false){return `<circle cx="${x}" cy="${y}" r="15" fill="#fffdf5" stroke="#aa8c62" stroke-width="2"/>${text(n,x,y+6,19)}${dakuten?`<path class="compass-dakuten" d="M${x+11} ${y-19}l3 4m3-5 3 4" fill="none" stroke="#4d4565" stroke-width="2.5" stroke-linecap="round"/>`:''}`;}
 function icon(index,x,y,size=62){return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="${index%3*100} ${Math.floor(index/3)*100} 100 100" class="painted-svg-icon"><image href="assets/images/rooms-late-icons-v2.png" width="300" height="200"/></svg>`;}
 export function compass(){
  return `<p class="puzzle-instruction">赤い針が示すのは北。丸に文字を当てはめると？</p>`+svg(`<circle cx="148" cy="170" r="85" fill="#e7eee5" stroke="#c8ad78" stroke-width="5"/><circle cx="148" cy="170" r="69" fill="#fffaf0" stroke="#d4c39d"/><path d="M148 95 129 176 148 166 167 176Z" fill="#d67c70"/><path d="M148 245 129 176 148 166 167 176Z" fill="#b9c9c9"/><circle cx="148" cy="170" r="6" fill="#af8a57"/>${number('',128,40)}${number(4,166,40)}${number(5,252,170)}${number(1,287,170,true)}${number(2,322,170)}${number('',110,305)}${number(3,148,305)}${number('',186,305)}${number('',20,170)}${number(2,55,170)}<rect x="346" y="82" width="151" height="180" rx="16" fill="#f2e9d9"/>${text('①②゛',421,127,28)}${text('＝ 舵',421,166,29)}${text('かじ',448,185,13)}<path d="M361 202h121" stroke="#ceb78e" stroke-dasharray="5 5"/>${text('ふ③④⑤゛',421,239,25)}`,'北から時計回りに丸の組がある方位磁針。右に文字の暗号と舵の例');
