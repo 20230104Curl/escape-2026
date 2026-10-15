@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-24';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-24';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-24';
-import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-24';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-25';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-25';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-25';
+import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-25';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -51,7 +51,7 @@ export const LATE_QUESTIONS={
   ],
   8:[
     {id:'weekday',title:'曜日の標本',short:'色のついた7つの列',label:'身近な並びのナゾ',answer:'ずけい',inputAnswer:'すけい',answerSymbols:['③','④','①'],fixedMarks:{0:'゛'},inputTitle:'番号に入る文字を入力',inputNote:'「゛」は入力しなくてOK',
-      hints:["赤い列から始まり、青い列で終わる７つの並び。カレンダーにある、曜日の読み方を思い出そう。","「日・月・火・水・木・金・土」を、マスの数に合う読み方で入れよう。まず「せ①②①」が意味の通る文になるか確かめ、同じ番号を下の行にも使おう。濁点は丸の外にあるので、入力する文字には付けません。"],
+      hints:["赤い列から始まり、青い列で終わる７つの並び。カレンダーにある、曜日の読み方を思い出そう。","「日・月・火・水・木・金・土」を、マスの数に合う読み方で入れよう。まず「せ①②①」が意味の通る文になるか確かめ、同じ番号を下の行にも使おう。"],
       explanation:'③＝す、④＝け、①＝い。入力するのは「す・け・い」。③に書いてある濁点を付けると「ず」になり、文は「せいかいは ずけい」と読めます。'},
     {id:'jade-rebus',title:'玉の展示台',short:'玉を囲む形',label:'絵と漢字のナゾ',answer:'からくり',fixedLetters:{3:'り'},inputNote:'「り」は入力しなくてOK',
       hints:["絵の玉を、漢字の「玉」に置きかえてみよう。まわりの線と組み合わせると、どんな漢字になるかな？","左の線は、漢字の「宀（うかんむり）」に似ています。玉と合わせてできる漢字を、下の「た」から始まる読み方で考えよう。右も囲みと玉から漢字を作り、同じ色の丸には同じ１文字を入れます。"],
