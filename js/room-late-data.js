@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-23';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-23';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-23';
-import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-23';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-24';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-24';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-24';
+import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-24';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -18,7 +18,7 @@ export const LATE_ROOMS=[
 export const LATE_QUESTIONS={
   5:[
     {id:'compass',title:'方角が示すことば',short:'文字の方位磁針',label:'方角と音のナゾ',answer:'ふなたび',inputAnswer:'なたひ',fixedLetters:{0:'ふ'},answerSymbols:['','③','④','⑤'],fixedMarks:{3:'゛'},inputTitle:'番号に入る文字を入力',inputNote:'「ふ」「゛」は入力しなくてOK',
-      hints:["赤い針は、北を指しています。北・東・南・西を、ひらがなで書いて丸に当てはめてみよう。","丸の数は、その方角をひらがなで読んだ文字数です。「舵（かじ）」の例で番号の読み方を確かめ、最後の式にも当てはめよう。丸の外の濁点は、文字を拾ってから付けます。"],
+      hints:["赤い針は、北を指しています。北・東・南・西を、ひらがなで書いて丸に当てはめてみよう。","丸の数は、その方角をひらがなで読んだ文字数です。「舵（かじ）」の例で番号の読み方を確かめ、最後の式にも当てはめよう。"],
       explanation:'③＝な、④＝た、⑤＝ひ。入力するのは「な・た・ひ」。書いてある「ふ」と濁点を合わせると、「ふ③④⑤゛」は「ふなたび」と読めます。'},
     {id:'mirror-clock',title:'鏡の向こうの時刻',short:'鏡に映った時計',label:'反転のナゾ',answer:'0820',inputTitle:'時刻を4けたで入力',
       hints:["鏡では、文字盤の数字も針も左右が逆に映ります。紙の時計を裏から見ているつもりで、左右を入れ替えてみよう。","鏡の中の「12」と「6」を結ぶ線を折り目にして、針を反対側へ移すつもりで考えよう。長い針が示す分を先に調べ、短い針がどの数字を過ぎたかも確かめます。"],
