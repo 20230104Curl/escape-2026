@@ -1,14 +1,14 @@
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-01';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-01';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-01';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-01';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-01';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-01';
-import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-16-web-01';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-01';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-01';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-01';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-01';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-02';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-02';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-02';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-02';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-02';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-02';
+import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-16-web-02';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-02';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-02';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-02';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-02';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);

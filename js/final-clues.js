@@ -1,15 +1,16 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-01';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-01';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-01';
-import {sealedFragment} from './room-reward-ui.js?v=2026-10-16-web-01';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-01';
-import {answerKeys} from './room1-data.js?v=2026-10-16-web-01';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-01';
-import {EMERGENCY} from './story-content.js?v=2026-10-16-web-01';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-01';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-01';
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-01';
-import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-01';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-02';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-02';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-02';
+import {sealedFragment} from './room-reward-ui.js?v=2026-10-16-web-02';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-02';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-02';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-02';
+import {EMERGENCY} from './story-content.js?v=2026-10-16-web-02';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-02';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-02';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-02';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-02';
+import {finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-02';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
 let fragmentsRevealed=false;
@@ -21,7 +22,7 @@ function saveOrder(){try{gameStorage.setItem(YEAR_ORDER_KEY,JSON.stringify(order
 function go(path){if(navigating)return;navigating=true;location.replace(gameUrl(path));}
 function warn(){document.querySelector('#storage-warning').hidden=false;}
 function save(){try{gameStorage.setItem(FINAL_KEY,JSON.stringify(state));return true;}catch{warn();return false;}}
-function refreshKeys(){keys=answerKeys(FINAL_INPUT,state.draft.length);}
+function refreshKeys(){keys=nextFinalPosition(state)<0?[]:answerKeys(FINAL_INPUT,nextFinalPosition(state));}
 function render(){
  const open=isFinalOpen(),ordering=inOrder();wasOpen=open;wasSubmitted=state.submitted;wasOrder=ordering;let content;
  if(state.submitted){
@@ -31,9 +32,9 @@ function render(){
  }else if(ordering){
   content=renderYearOrder(order);
  }else if(open){
-  const rooms=readRoomProgress(gameStorage,warn),letters=finalFragments(rooms);let index=0;
-  const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':position===state.draft.length?'current':''}">${fixed??toKatakana(state.draft[position]||'')}</span>`;}).join('');
-  content=`<div class="final-question">${renderFinalFragments(letters,{animate:!fragmentsRevealed&&!state.draft})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">「・」「ブ」「ー」は入力しなくてOK。</p></div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!state.draft?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!state.draft?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${state.draft.length!==8?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
+  const rooms=readRoomProgress(gameStorage,warn),letters=finalFragments(rooms),slots=finalInputSlots(state),provided=state.fragmentsPlaced?foundFinalPositions(letters):[],editable=editableFinalPositions(state,letters);let index=0;
+  const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':provided.includes(position)?'is-collected':position===nextFinalPosition(state)?'current':''}">${fixed??toKatakana(slots[position]||'')}</span>`;}).join('');
+  content=`<div class="final-question">${renderFinalFragments(letters,{animate:!fragmentsRevealed&&!state.draft,placed:state.fragmentsPlaced})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">あてはめた文字と「・」「ブ」「ー」は入力しなくてOK。</p></div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!editable.length?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!editable.length?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${!finalInputComplete(state)?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
   fragmentsRevealed=true;
  }else content=`${sealedFragment()}<h1>まだ封印は開いていない</h1><p>文字のかけらが読めるのは、最後のナゾが始まってから。<br>今は、2026年のできごとを巡ろう。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
  app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
@@ -85,9 +86,10 @@ app.addEventListener('click',event=>{
    };dialog.showModal();
   }return;
  }
- if(b.dataset.key!==undefined){if(state.draft.length<8){state.draft+=b.dataset.key;save();refreshKeys();render();}return;}
- if(b.dataset.action==='backspace'||b.dataset.action==='clear'){state.draft=b.dataset.action==='clear'?'':state.draft.slice(0,-1);save();refreshKeys();render();return;}
- if(b.dataset.action==='submit'&&state.draft.length===8){
+ if(b.dataset.action==='place-fragments'){if(placeFinalFragments(state,finalFragments(readRoomProgress(gameStorage,warn)))){save();refreshKeys();render();}return;}
+ if(b.dataset.key!==undefined){if(enterFinalLetter(state,b.dataset.key)){save();refreshKeys();render();}return;}
+ if(b.dataset.action==='backspace'||b.dataset.action==='clear'){if(eraseFinalLetters(state,finalFragments(readRoomProgress(gameStorage,warn)),{all:b.dataset.action==='clear'})){save();refreshKeys();render();}return;}
+ if(b.dataset.action==='submit'&&finalInputComplete(state)){
   const answer=state.draft;
   dialog.innerHTML=`<h2 id="dialog-title">解答チャンスは1回だけです</h2><p>「${toKatakana(answer.slice(0,4))}・${toKatakana(answer.slice(4,5))}ブ${toKatakana(answer.slice(5,6))}ー${toKatakana(answer.slice(6))}」で決定しますか？<br>決定すると、答えは変更できません。<br>「戻る」なら、まだ解答チャンスを使いません。</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>この答えで決定</button></div>`;
   dialog.querySelector('[data-close]').onclick=()=>dialog.close();
