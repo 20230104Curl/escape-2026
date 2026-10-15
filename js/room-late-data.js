@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-8';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-8';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-8';
-import {flowerMarks} from './flower-search-data.js?v=2026-10-15-web-8';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-9';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-9';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-9';
+import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-9';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -32,7 +32,7 @@ export const LATE_QUESTIONS={
       hints:["同じ色・同じ模様のアイスは、同じ１文字を表します。カップの言葉と、上から並ぶアイスを比べてみよう。","まず２つの例に共通するアイスを探し、その色がどちらの言葉でも同じ文字になるか確かめよう。真ん中のカップの「ー」も、アイス１個分です。わかった色から右のカップに当てはめよう。"],
       explanation:'同じアイスは同じ文字。ピンク＝ア、緑＝イ、黄色＝ス。上から読むと「アイス」、ひらがなで「あいす」！'},
     {id:'flower-search',title:'花の名前さがし',short:'花の名前がかくれた表',label:'文字を探すナゾ',answer:'ひらめき',
-      hints:["花の最初の文字を見つけたら、右・左・上・下に続く文字を確かめよう。逆向きもあります。花の名前は、途中で曲がりません。","一番上の段の「ひまわり」は、右から左へ並んでいます。ほかの花も、読む向きを変えて調べよう。６つとも見つかったか一覧で確かめ、使わなかった文字だけを、上の段から左→右に読もう。"],
+      hints:[`探す花は、次の６種類です。\n${FLOWER_WORDS.slice(0,3).join('・')}\n${FLOWER_WORDS.slice(3).join('・')}\n上下左右に、まっすぐ探そう。逆向きもあります。`,"一番上の段の「ひまわり」は、右から左へ並んでいます。ほかの花も、読む向きを変えて調べよう。６つとも見つかったか一覧で確かめ、使わなかった文字だけを、上の段から左→右に読もう。"],
       explanation:'「ひまわり」「たんぽぽ」は左向き、「つばき」は上向き。「さくら」「すみれ」「あじさい」は右向きにかくれています。６つの花の文字を消し、残った文字を上の段から左→右に読むと「ひ・ら・め・き」！'},
     {id:'turning-flowers',title:'花びらの仲間はずれ',short:'回せる花の見本',label:'回転のナゾ',answer:'つぼみ',candidateAnswers:FLOWER_CANDIDATES,maxAttempts:1,
       hints:["花の向きだけが違っても、回すと同じになるものは仲間です。花びらの色を、ぐるりと時計回りに比べてみよう。","同じ色が２枚ある段は、その２枚が隣り合うか向かい合うか比べよう。全部違う色の段は、１色を上にそろえてから、時計回りの色の並びを比べます。裏返さず、回して重なるか確かめよう。"],
