@@ -1,8 +1,8 @@
-import {gameStorage,onPlayStorage} from './play-mode.js';
-import {installTestTools} from './test-tools.js';
-import {hintFooter} from './hint-controls.js';
-import {readRoomProgress} from './room-catalog.js';
-import {watchFinalReveal} from './final-reveal.js';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-4';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-4';
+import {hintFooter} from './hint-controls.js?v=2026-10-15-web-4';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-4';
+import {watchFinalReveal} from './final-reveal.js?v=2026-10-15-web-4';
 function render(){
   const rooms=readRoomProgress(gameStorage,()=>document.querySelector('#storage-warning').hidden=false);
   const complete=rooms.filter(room=>room.complete).length,solved=rooms.reduce((sum,room)=>sum+room.state.solved.length,0);

@@ -1,9 +1,9 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js';
-import {installTestTools} from './test-tools.js';
-import {setupScreen} from './setup-screen.js';
-import {loadSettings,saveSettings} from './play-settings.js';
-import {OPENING} from './story-content.js';
-import {classTimes,loadFinal,canRevealFinal,startExploration,EXPLORATION_KEY} from './story-flow.js';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-4';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-4';
+import {setupScreen} from './setup-screen.js?v=2026-10-15-web-4';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-4';
+import {OPENING} from './story-content.js?v=2026-10-15-web-4';
+import {classTimes,loadFinal,canRevealFinal,startExploration,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-4';
 const scenes=[
  {image:'op-01-bell',alt:'雪の積もる大晦日の境内。あたたかな灯りに照らされた除夜の鐘。'},
  {image:'op-02-time',alt:'鐘のまわりで青と金の光が渦を巻き、雪の粒まで止まった世界。'},

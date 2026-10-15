@@ -1,11 +1,11 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js';
-import {installTestTools} from './test-tools.js';
-import {readRoomProgress} from './room-catalog.js';
-import {sealedFragment} from './room-reward-ui.js';
-import {isFinalOpen,finalFragments} from './final-reveal.js';
-import {answerKeys} from './room1-data.js';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,clockText} from './story-flow.js';
-import {EMERGENCY} from './story-content.js';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-4';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-4';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-4';
+import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-4';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-4';
+import {answerKeys} from './room1-data.js?v=2026-10-15-web-4';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,clockText} from './story-flow.js?v=2026-10-15-web-4';
+import {EMERGENCY} from './story-content.js?v=2026-10-15-web-4';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),wasOpen=null,wasSubmitted=null,keys=[],navigating=false;
 function go(path){if(navigating)return;navigating=true;location.replace(gameUrl(path));}
