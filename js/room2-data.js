@@ -1,6 +1,6 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-17';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-17';
-import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-17';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-18';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-18';
+import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-18';
 
 export const ROOM = {
   number:2,storageKey:'escape2026.room2.v1',title:'ふしぎな図書室',titleHTML:'ふしぎな<br>図書室',
@@ -17,7 +17,7 @@ export const QUESTIONS = [
     hints:["絵を名前に置きかえて、順に読もう。絵と文字をひと続きの文にすると、何かをする指示になるかもしれません。","下の段は、「わ」に「変える」と読めます。上の段も、言葉を区切ってみよう。何の文字を、どの文字に変える指示なのかな？"],
     explanation:'絵をつなぐと「ありのりを、わにかえると？」。「あり」の「り」を「わ」に変えると「あわ」！'},
   {id:'kanji-sides',title:'もうひとつの文字',short:'色の付いた漢字',label:'漢字の形のナゾ',answer:'めいろ',
-    hints:["色は漢字を、矢印は左右のどちらかを指しています。取り出した形を、カタカナとして読めないかな？","例の「光」は「ヒ・カ・リ」と読めます。どの漢字のどちら側を使うと「ヒ」になるか確かめ、？の矢印にも同じルールを使おう。"],
+    hints:["色は漢字を、矢印は左右のどちらかを指しています。取り出した形を、カタカナとして読めないかな？","例の「光」は「ヒ・カ・リ」と読めます。どの漢字のどちら側を使うと「ヒ」になるかたしかめよう。下の段の最初は緑の「←」なので、緑の漢字の左側を使うと「メ」になります。"],
     explanation:'漢字の左右が、カタカナに見える。「刈」の左＝メ、「化」の左＝イ、「加」の右＝ロ。メ・イ・ロは「めいろ」！'},
   {id:'covered-kana',title:'帯の下のことば',short:'かくれた文字列',label:'並び方のナゾ',answer:'ほうそく',
     hints:["見えている文字は、五十音の順に続いています。帯の上と下にある文字の間には、何が入るかな？","いちばん右の列は、２段目に「き」があります。五十音表で「き」の次から順に数え、帯がある３段目に入る文字を考えよう。残りの列も同じように調べられます。"],
