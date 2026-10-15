@@ -1,16 +1,20 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-12';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-12';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-12';
-import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-12';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-12';
-import {answerKeys} from './room1-data.js?v=2026-10-15-web-12';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,clockText,isPasswordOpen} from './story-flow.js?v=2026-10-15-web-12';
-import {EMERGENCY} from './story-content.js?v=2026-10-15-web-12';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-12';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-15-web-12';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-13';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-13';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-15-web-13';
+import {sealedFragment} from './room-reward-ui.js?v=2026-10-15-web-13';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-15-web-13';
+import {answerKeys} from './room1-data.js?v=2026-10-15-web-13';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-15-web-13';
+import {EMERGENCY} from './story-content.js?v=2026-10-15-web-13';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-15-web-13';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-15-web-13';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-15-web-13';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
-const inOrder=()=>isFinalOpen()&&!isPasswordOpen()&&!state.submitted;
+const awaitingStart=()=>isFinalOpen()&&!Number.isFinite(classTimes().orderAt)&&!state.submitted;
+const inOrder=()=>isFinalOpen()&&!awaitingStart()&&!isPasswordOpen()&&!state.submitted;
+// Prepare the illustrations while the warning is being read, before the clock starts.
+const illustrationsReady=Promise.all(NEWS_AREAS.map(area=>new Promise(resolve=>{const image=new Image();image.onload=image.onerror=resolve;image.src=`assets/images/${area.image}.png`;if(image.complete)resolve();})));
 function saveOrder(){try{gameStorage.setItem(YEAR_ORDER_KEY,JSON.stringify(order));return true;}catch{warn();return false;}}
 function go(path){if(navigating)return;navigating=true;location.replace(gameUrl(path));}
 function warn(){document.querySelector('#storage-warning').hidden=false;}
@@ -20,6 +24,8 @@ function render(){
  const open=isFinalOpen(),ordering=inOrder();wasOpen=open;wasSubmitted=state.submitted;wasOrder=ordering;let content;
  if(state.submitted){
   content=`${sealedFragment()}<h1>解答を受け付けました</h1><p>結果は、カウントダウンが終わると<br>発表されます。</p>`;
+ }else if(awaitingStart()){
+  content=sealedFragment();
  }else if(ordering){
   content=renderYearOrder(order);
  }else if(open){
@@ -27,11 +33,12 @@ function render(){
   const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':position===state.draft.length?'current':''}">${fixed??toKatakana(state.draft[position]||'')}</span>`;}).join('');
   content=`<div class="final-question"><h1>2027年への扉を開く言葉は？</h1><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">「・」「ブ」「ー」は入力しなくてOK。</p><div class="final-fragments" aria-label="獲得した文字のかけら">${letters.map(letter=>`<span class="final-fragment">${letter}</span>`).join('')}</div><p class="final-count">集めたかけら ${letters.length} / 8</p>${letters.length?'':'<p class="final-note">かけらはありません。推理して挑戦できます。</p>'}</div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${k}">${k}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!state.draft?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!state.draft?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${state.draft.length!==8?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
  }else content=`${sealedFragment()}<h1>まだ封印は開いていない</h1><p>文字のかけらが読めるのは、最後のナゾが始まってから。<br>今は、2026年のできごとを巡ろう。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
- app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open?'is-open':'is-locked'}">${content}</section>`}</main>`;
+ app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
  updateClock();
 }
 function updateClock(){
  if(!isFinalOpen())return;
+ if(awaitingStart()){const clock=document.querySelector('#final-clock');clock.textContent='最後の挑戦';clock.classList.remove('is-urgent');return;}
  const clock=document.querySelector('#final-clock'),times=classTimes(),ordering=inOrder(),seconds=remaining(ordering?times.passwordAt:times.answerUntil),label=ordering?'できごとの並べ替え':'最後の挑戦';
  clock.innerHTML=testPlay?`${label} 時間制限なし`:`<span>${label} あと </span><strong>${seconds}<small>秒</small></strong>`;
  clock.classList.toggle('is-urgent',!testPlay&&seconds<=10);
@@ -42,16 +49,22 @@ function tick(){
  if(expireYearOrder(order,Date.now(),classTimes()))saveOrder();
  if(expireFinal(state,Date.now()))save();
  if(canRevealFinal(state)){go('ending.html');return true;}
- if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted||wasOrder!==inOrder()){if(dialog.open)dialog.close();refreshKeys();render();}
+ if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted||wasOrder!==inOrder()){if(dialog.open){dialog.close();dialog.classList.remove('emergency-dialog');}refreshKeys();render();}
  updateClock();
  return state.submitted;
 }
 function transfer(){
- if(!inOrder()||gameSession.getItem('escape2026.transfer.seen'))return;
- gameSession.setItem('escape2026.transfer.seen','1');
- dialog.innerHTML=`<h2 id="dialog-title">${EMERGENCY.title}</h2><p class="emergency-copy">${EMERGENCY.body}</p><p><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter>できごとの並べ替えへ</button>`;dialog.classList.add('emergency-dialog');dialog.showModal();
- dialog.querySelector('[data-enter]').onclick=()=>{gameSession.setItem('escape2026.transfer.seen','1');dialog.close();dialog.classList.remove('emergency-dialog');};
+ if(!awaitingStart()||dialog.open)return;
+ dialog.innerHTML=`<h2 id="dialog-title">${EMERGENCY.title}</h2><p class="emergency-copy">${EMERGENCY.body}</p><p><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter disabled>準備しています…</button>`;dialog.classList.add('emergency-dialog');dialog.showModal();
+ const enter=dialog.querySelector('[data-enter]');illustrationsReady.then(()=>{if(enter.isConnected){enter.disabled=false;enter.textContent='できごとの並べ替えへ';}});
+ enter.onclick=async()=>{
+  if(enter.disabled)return;enter.disabled=true;
+  const begin=()=>startFinalStage(gameStorage,classTimes().finalAt);
+  try{if(navigator.locks)await navigator.locks.request(gameStorage.scopeKey(FINAL_STAGE_START_KEY),begin);else begin();dialog.close();dialog.classList.remove('emergency-dialog');tick();render();}
+  catch{warn();enter.disabled=false;}
+ };
 }
+dialog.addEventListener('cancel',event=>{if(awaitingStart())event.preventDefault();});
 app.addEventListener('click',event=>{
  const b=event.target.closest('button');if(!b||b.disabled||tick()||!isFinalOpen())return;
  if(inOrder()){
@@ -82,7 +95,7 @@ app.addEventListener('click',event=>{
 });
 onPlayStorage(()=>{if(!tick()){refreshKeys();render();}});
 refreshKeys();render();if(!tick())transfer();
-setInterval(()=>{const before=wasOpen;if(!tick()&&!before&&wasOpen)transfer();},500);
+setInterval(()=>{if(!tick()&&awaitingStart())transfer();},500);
 window.addEventListener('pageshow',tick);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
 
 installTestTools();

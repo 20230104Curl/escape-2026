@@ -1,9 +1,10 @@
-import * as config from './game-flow-config.js?v=2026-10-15-web-12';
-import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-15-web-12';
-import {loadYearOrder} from './year-order-data.js?v=2026-10-15-web-12';
+import * as config from './game-flow-config.js?v=2026-10-15-web-13';
+import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-15-web-13';
+import {loadYearOrder,YEAR_CHOICES} from './year-order-data.js?v=2026-10-15-web-13';
 export const OPENING_SECONDS=300,EXPLORATION_SECONDS=1500,YEAR_ORDER_SECONDS=60,FINAL_ANSWER_SECONDS=60,ENDING_SECONDS=60;
 export const FINAL_KEY='escape2026.finale.v1';
 export const EXPLORATION_KEY='escape2026.exploration.v1';
+export const FINAL_STAGE_START_KEY='escape2026.finalStageStart.v1';
 export const FINAL_INPUT='のぶれすおりじゅ';
 export const FINAL_FIXED={4:'・',6:'ブ',8:'ー'};
 export function timestamp(value){const time=typeof value==='number'?value:typeof value==='string'&&value.trim()?Date.parse(value):NaN;return Number.isFinite(time)&&time>0?time:NaN;}
@@ -11,13 +12,33 @@ export function classTimes(start=config.GAME_START_AT,final=config.FINAL_REVEAL_
   // An explicitly supplied schedule is kept for the teacher's fixed-time option.
   // Normal play uses the first saved press of the exploration start button.
   if(arguments.length===0){
-    if(testPlay){const session=loadExploration(gameStorage),finalAt=testFinalAt();return {openingAt:NaN,explorationAt:session?.startedAt??NaN,finalAt,passwordAt:loadYearOrder(gameStorage).submitted?finalAt:Infinity,answerUntil:Infinity,endAt:Infinity};}
-    try{const session=loadExploration(gameStorage);if(session)return explorationTimes(session.startedAt);}catch{}
+    const order=loadYearOrder(gameStorage),savedFinal=loadFinal(gameStorage);
+    const legacy=order.submitted||YEAR_CHOICES.some(number=>order.slots.includes(number))||savedFinal.submitted||Boolean(savedFinal.draft);
+    if(testPlay){const session=loadExploration(gameStorage),finalAt=testFinalAt(),stage=loadFinalStageStart(gameStorage,finalAt),orderAt=stage?.startedAt??(legacy?finalAt:NaN);return {openingAt:NaN,explorationAt:session?.startedAt??NaN,finalAt,orderAt,passwordAt:order.submitted?orderAt:Infinity,answerUntil:Infinity,endAt:Infinity};}
+    const session=loadExploration(gameStorage),base=session?explorationTimes(session.startedAt):classTimes(start,final);
+    return finalStageTimes(base,loadFinalStageStart(gameStorage,base.finalAt),legacy);
   }
   const openingAt=timestamp(start),explorationAt=openingAt+OPENING_SECONDS*1000;
   const explicit=timestamp(final),finalAt=Number.isFinite(explicit)?explicit:explorationAt+EXPLORATION_SECONDS*1000;
   const passwordAt=finalAt+YEAR_ORDER_SECONDS*1000;
   return {openingAt,explorationAt,finalAt,passwordAt,answerUntil:passwordAt+FINAL_ANSWER_SECONDS*1000,endAt:passwordAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
+}
+export function restoreFinalStageStart(raw,finalAt){
+  let saved;try{saved=JSON.parse(raw);}catch{return null;}
+  return saved?.version===1&&Number.isFinite(finalAt)&&finalAt>0&&saved.finalAt===finalAt&&Number.isFinite(saved.startedAt)&&saved.startedAt>=finalAt?{version:1,finalAt,startedAt:saved.startedAt}:null;
+}
+export function loadFinalStageStart(storage,finalAt){try{return restoreFinalStageStart(storage.getItem(FINAL_STAGE_START_KEY),finalAt);}catch{return null;}}
+export function startFinalStage(storage,finalAt,now=Date.now()){
+  const existing=loadFinalStageStart(storage,finalAt);if(existing)return existing;
+  if(!Number.isFinite(finalAt)||finalAt<=0||!Number.isFinite(now)||now<finalAt)throw new Error('Final stage is not open');
+  const state={version:1,finalAt,startedAt:now};storage.setItem(FINAL_STAGE_START_KEY,JSON.stringify(state));
+  const saved=loadFinalStageStart(storage,finalAt);if(!saved||saved.startedAt!==now)throw new Error('Final stage start was not saved');return saved;
+}
+export function finalStageTimes(base,stage=null,legacy=false){
+  const orderAt=stage?.finalAt===base.finalAt&&Number.isFinite(stage.startedAt)&&stage.startedAt>=base.finalAt?stage.startedAt:legacy?base.finalAt:NaN;
+  if(!Number.isFinite(orderAt))return {...base,orderAt:NaN,passwordAt:Infinity,answerUntil:Infinity,endAt:Infinity};
+  const passwordAt=orderAt+YEAR_ORDER_SECONDS*1000;
+  return {...base,orderAt,passwordAt,answerUntil:passwordAt+FINAL_ANSWER_SECONDS*1000,endAt:passwordAt+(FINAL_ANSWER_SECONDS+ENDING_SECONDS)*1000};
 }
 export function restoreExploration(raw){
   let saved;try{saved=JSON.parse(raw);}catch{return null;}

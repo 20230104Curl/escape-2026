@@ -24,7 +24,8 @@ export function removeYearCard(state,slot){
  if(state.submitted||FIXED_YEAR_SLOTS[slot]!==undefined||!state.slots[slot])return false;state.slots[slot]=null;return true;
 }
 export function decideYearOrder(state,now,times){
- if(state.submitted||!yearOrderComplete(state)||!Number.isFinite(times.finalAt)||now<times.finalAt||now>=times.passwordAt)return false;
+ const orderAt=times.orderAt??times.finalAt;
+ if(state.submitted||!yearOrderComplete(state)||!Number.isFinite(orderAt)||now<orderAt||now>=times.passwordAt)return false;
  Object.assign(state,{submitted:true,correct:yearOrderCorrect(state),reason:'answer',decidedAt:now});return true;
 }
 export function expireYearOrder(state,now,times){
