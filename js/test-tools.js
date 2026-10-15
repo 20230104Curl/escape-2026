@@ -1,8 +1,8 @@
-import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-20';
-import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-20';
-import {FINAL_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-15-web-20';
-import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-20';
-import {installTeacherMode} from './teacher-mode.js?v=2026-10-15-web-20';
+import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-21';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-21';
+import {FINAL_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-15-web-21';
+import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-21';
+import {installTeacherMode} from './teacher-mode.js?v=2026-10-15-web-21';
 
 export function installTestTools(){
  installTeacherMode();

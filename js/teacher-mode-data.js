@@ -1,7 +1,7 @@
-import {FINAL_KEY,EXPLORATION_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-15-web-20';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-20';
-import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-20';
-import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-20';
+import {FINAL_KEY,EXPLORATION_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-15-web-21';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-21';
+import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-21';
+import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-15-web-21';
 
 export function teacherTapSequence(maxGap=1500){
  let count=0,last=null;
