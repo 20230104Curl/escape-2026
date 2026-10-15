@@ -1,5 +1,5 @@
-import {mountRoom} from './room-game.js?v=2026-10-15-web-27';
-import {ROOM,QUESTIONS,THREADS,WEAVE_ORDER,BALANCES,BOXES,makeEmptyState,restoreState} from './room4-data.js?v=2026-10-15-web-27';
+import {mountRoom} from './room-game.js?v=2026-10-16-web-01';
+import {ROOM,QUESTIONS,THREADS,WEAVE_ORDER,BALANCES,BOXES,makeEmptyState,restoreState} from './room4-data.js?v=2026-10-16-web-01';
 
 function loom(){return `<p class="puzzle-instruction">2本の糸から、ひとつの言葉ができる。<br>織り目にかくれた言葉は？</p><div class="loom-machine"><div class="thread-bank">${THREADS.map(t=>`<div class="thread-row ${t.color}"><small>${t.label}</small><div>${[...t.word].map(letter=>`<span>${letter}</span>`).join('')}</div></div>`).join('')}</div><div class="loom-label">↓ できあがりの織り目 ↓</div><div class="woven-cloth" aria-label="左から赤、青、赤、青の織り目">${WEAVE_ORDER.map(color=>`<span class="woven-cell ${color}">？</span>`).join('')}</div></div>`;}
 function weight(token,x){return typeof token==='number'?`<g><rect x="${x-19}" y="19" width="38" height="34" rx="5" fill="#e5c67b" stroke="#957242" stroke-width="2"/><path d="M${x-7} 19v-5h14v5" fill="none" stroke="#957242" stroke-width="3"/><text x="${x}" y="43" text-anchor="middle" font-size="22" font-weight="bold" fill="#4d3d30">${token}</text></g>`:`<text x="${x}" y="49" text-anchor="middle" font-size="36" fill="#5b4b81">${token}</text>`;}
