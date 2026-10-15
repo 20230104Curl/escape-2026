@@ -1,8 +1,10 @@
-import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-6';
-import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-6';
-import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-6';
+import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-7';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-7';
+import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-7';
+import {installTeacherMode} from './teacher-mode.js?v=2026-10-15-web-7';
 
 export function installTestTools(){
+ installTeacherMode();
  if(!testPlay)return;
  const css=document.createElement('link');css.rel='stylesheet';css.href='css/test-play.css';document.head.append(css);
  const dialog=document.createElement('dialog');dialog.id='test-tools-dialog';dialog.setAttribute('aria-labelledby','test-tools-title');document.body.append(dialog);

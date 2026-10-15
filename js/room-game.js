@@ -1,13 +1,13 @@
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-6';
-import {readableCopy} from './readable-copy.js?v=2026-10-15-web-6';
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-6';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-6';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-6';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-6';
-import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-6';
-import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-6';
-import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-6';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-6';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-7';
+import {readableCopy} from './readable-copy.js?v=2026-10-15-web-7';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-7';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-7';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-7';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-7';
+import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-7';
+import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-7';
+import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-7';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-7';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);
@@ -26,7 +26,7 @@ function save(){try{const raw=JSON.stringify(state);gameStorage.setItem(ROOM_KEY
 function failed(index){return !state.solved.includes(index)&&QUESTIONS[index].maxAttempts&&(state.attempts?.[index]||0)>=QUESTIONS[index].maxAttempts;}
 function chest(open=false){return `<svg class="chest" viewBox="0 0 160 120" aria-hidden="true"><ellipse cx="80" cy="107" rx="66" ry="8" fill="#6e507e" opacity=".12"/><path d="M24 54 Q24 23 53 23 H108 Q136 23 136 54V61H24Z" fill="${open?'#f8d37c':'#c58c59'}" stroke="#79533d" stroke-width="4" ${open?'transform="translate(0,-13)"':''}/><rect x="24" y="56" width="112" height="46" rx="7" fill="#b8764e" stroke="#79533d" stroke-width="4"/><path d="M44 28v73M116 28v73" stroke="#efcb77" stroke-width="10"/><path d="M25 62h110" stroke="#79533d" stroke-width="4"/><rect x="68" y="53" width="25" height="30" rx="7" fill="#f4cf76" stroke="#9a713b" stroke-width="3"/><circle cx="80" cy="65" r="4" fill="#75543a"/><path d="M80 67v8" stroke="#75543a" stroke-width="3"/>${open?'<path d="m14 20 5 10 11 2-9 7 1 11-8-6-10 4 3-11-6-9 10 1ZM138 8l3 7 8 1-6 5 1 8-6-4-7 3 2-8-5-6 8 1Z" fill="#f6bf5c"/>':''}</svg>`;}
 function header(){return `<header class="top"><div class="brand">2026年からの脱出<small>新しい年への扉を、きみの手で。</small></div><div class="top-right"><span class="badge">${room.title}</span><div class="progress" aria-label="3問中${state.solved.length}問クリア">${QUESTIONS.map((_,i)=>`<span class="dot ${state.solved.includes(i)?'done':''}"></span>`).join('')}</div></div></header>`;}
-function footer(){return `<footer class="room-footer"><span>${hintFooter()}</span><a class="hub-link" href="rooms.html">できごと一覧</a><button class="text-button" data-action="reset">先生用：最初から</button></footer>`;}
+function footer(){return `<footer class="room-footer"><span>${hintFooter()}</span><a class="hub-link" href="rooms.html">できごと一覧</a><button class="text-button" data-action="reset" hidden>このエリアを最初から</button></footer>`;}
 function welcome(){return `<section class="welcome"><div class="hero"><img src="${room.image}" alt="${room.imageAlt}"><div class="hero-caption">${room.caption}</div></div><div class="welcome-copy"><p class="eyebrow">2026年の記憶</p><h1>${room.headingHTML||room.newsName||room.titleHTML||room.title}</h1><p>${room.intro}</p><p style="margin-top:14px">${room.details}</p><button class="primary" data-action="start">ナゾに挑む →</button></div></section>`;}
 function roomView(){const all=state.solved.length===3,missed=QUESTIONS.some((_,i)=>failed(i));return `<section><div class="title-row"><div><h1>${room.title}</h1><p class="subtitle">${room.overviewIntro||room.intro}</p></div><span class="badge">${state.solved.length} / 3 問クリア</span></div><div class="room-map"><div class="hero"><img src="${room.image}" alt="${room.imageAlt}"><div class="hero-caption">${all?'この記憶のナゾが解けた。かけらを封印して保管した。':room.caption}</div></div>${renderRoomReward({complete:all,missed,chest})}</div><div class="task-grid">${QUESTIONS.map((q,i)=>`<button class="task ${state.solved.includes(i)?'solved':failed(i)?'failed':''}" data-question="${i}"><span class="number">${state.solved.includes(i)?'✓':failed(i)?'×':String(i+1).padStart(2,'0')}</span><span><small>${q.label}</small><strong>${q.short}</strong><span class="task-state">${state.solved.includes(i)?'正解！ 解説を見る':failed(i)?'解答済み・解説を見る':'調べる →'}</span></span></button>`).join('')}</div></section>`;}
 function visual(){return renderVisual(current,state);}

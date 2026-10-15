@@ -1,0 +1,17 @@
+import {FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-7';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-7';
+import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-7';
+
+export function teacherTapSequence(maxGap=1500){
+ let count=0,last=null;
+ return {reset(){count=0;last=null;},tap(now){
+  if(!Number.isFinite(now)){this.reset();return false;}
+  count=last!==null&&now>=last&&now-last<=maxGap?count+1:1;last=now;
+  if(count<5)return false;this.reset();return true;
+ }};
+}
+export function resetCurrentGame(storage,session){
+ for(let n=1;n<=8;n++)storage.removeItem(`escape2026.room${n}.v1`);
+ for(const key of [FINAL_KEY,EXPLORATION_KEY,SETTINGS_KEY,HINTS_KEY,TEST_FINAL_KEY])storage.removeItem(key);
+ session.removeItem('escape2026.transfer.seen');
+}

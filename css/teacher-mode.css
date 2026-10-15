@@ -1,0 +1,7 @@
+.teacher-entry{touch-action:manipulation;user-select:none;cursor:default}
+#teacher-mode-dialog{width:min(580px,calc(100vw - 40px));max-height:calc(100dvh - 40px);padding:24px}
+#teacher-mode-dialog h2{font-size:23px;line-height:1.5;margin:0 0 14px}
+#teacher-mode-dialog p{font-size:15px;line-height:1.9}
+.teacher-actions{display:grid;gap:12px;margin-top:20px}
+#teacher-mode-dialog button{min-height:56px;font-size:15px}
+#teacher-mode-dialog .dialog-actions{gap:12px;flex-wrap:wrap}

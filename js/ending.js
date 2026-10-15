@@ -1,8 +1,7 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay,TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-6';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-6';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-6';
-import {ENDINGS} from './story-content.js?v=2026-10-15-web-6';
-import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-6';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-15-web-7';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-7';
+import {ENDINGS} from './story-content.js?v=2026-10-15-web-7';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-15-web-7';
 const scenes=[
  {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
  {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},
@@ -22,7 +21,7 @@ function render(){
  const index=currentFrame(),frame=ENDINGS[state.result][index],scene=scenes[index],key=`${state.result}/${index}/${state.bellPlayed}`;
  if(key===lastRender)return;lastRender=key;
  const ringing=animateBell&&index===0;animateBell=false;
- app.innerHTML=`<main class="shell ending-screen illustrated-ending"><figure class="ending-illustration ${ringing?'is-ringing':''}" role="img" aria-label="${scene.alt}"><img class="ending-backdrop" src="assets/images/${scene.image}.png" alt="" fetchpriority="high">${index===0?'<div class="ending-bell-waves" aria-hidden="true"><i></i><i></i></div>':''}</figure><header class="top"><div class="brand">2026年からの脱出</div><span class="midnight-clock">2027年1月1日 00:00</span></header><section class="story-stage ending-stage"><div class="ending-copy"><h1>${frame.title}</h1><p class="story-body">${frame.body}</p>${index<2||preview?'<div class="story-actions">'+(preview&&index>0?'<button class="secondary" data-back>戻る</button>':'')+(index<2?'<button class="primary" data-next>つぎへ</button>':'')+'</div>':''}${index===2?'<p class="ending-complete">ゲームは終了しました。先生の案内を待ってください。</p>':''}</div></section>${preview?'<div class="story-footer" aria-hidden="true"></div>':'<footer class="story-footer"><button data-reset>先生用：強制リセット</button></footer>'}</main>`;
+ app.innerHTML=`<main class="shell ending-screen illustrated-ending"><figure class="ending-illustration ${ringing?'is-ringing':''}" role="img" aria-label="${scene.alt}"><img class="ending-backdrop" src="assets/images/${scene.image}.png" alt="" fetchpriority="high">${index===0?'<div class="ending-bell-waves" aria-hidden="true"><i></i><i></i></div>':''}</figure><header class="top"><div class="brand">2026年からの脱出</div><span class="midnight-clock">2027年1月1日 00:00</span></header><section class="story-stage ending-stage"><div class="ending-copy"><h1>${frame.title}</h1><p class="story-body">${frame.body}</p>${index<2||preview?'<div class="story-actions">'+(preview&&index>0?'<button class="secondary" data-back>戻る</button>':'')+(index<2?'<button class="primary" data-next>つぎへ</button>':'')+'</div>':''}${index===2?'<p class="ending-complete">ゲームは終了しました。先生の案内を待ってください。</p>':''}</div></section><div class="story-footer" aria-hidden="true"></div></main>`;
 }
 async function showEnding(){
  if(!guard())return;
@@ -37,9 +36,6 @@ async function showEnding(){
 app.addEventListener('click',e=>{
  if(e.target.closest('[data-next]')){manual=Math.min(2,currentFrame()+1);render();}
  if(preview&&e.target.closest('[data-back]')){manual=Math.max(0,manual-1);animateBell=manual===0;render();}
- if(!preview&&e.target.closest('[data-reset]')){
-  const dialog=document.querySelector('#room-dialog');dialog.innerHTML='<h2 id="dialog-title">先生用：全体を最初からにしますか？</h2><p>8エリアの正解・入力・ヒントと、最終解答・終了記録を消します。</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>強制リセット</button></div>';dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{for(let n=1;n<=8;n++)gameStorage.removeItem(`escape2026.room${n}.v1`);gameStorage.removeItem(FINAL_KEY);gameStorage.removeItem(EXPLORATION_KEY);gameStorage.removeItem(SETTINGS_KEY);gameStorage.removeItem(HINTS_KEY);gameSession.removeItem('escape2026.transfer.seen');if(testPlay)gameStorage.removeItem(TEST_FINAL_KEY);location.replace(gameUrl('start.html'));};dialog.showModal();
- }
 });
 onPlayStorage(()=>{if(preview)return;state=loadFinal(gameStorage);if(guard())render();});
 showEnding();setInterval(render,1000);
