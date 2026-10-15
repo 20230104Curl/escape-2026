@@ -1,15 +1,15 @@
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-18';
-import {readableCopy} from './readable-copy.js?v=2026-10-15-web-18';
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-18';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-18';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-18';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-18';
-import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-18';
-import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-18';
-import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-18';
-import {newsDateBadge} from './news-dates.js?v=2026-10-15-web-18';
-import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-15-web-18';
-import {ROOM_KEY,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-18';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-15-web-19';
+import {readableCopy} from './readable-copy.js?v=2026-10-15-web-19';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-15-web-19';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-19';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-15-web-19';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-15-web-19';
+import {renderRoomReward,renderSealedReward} from './room-reward-ui.js?v=2026-10-15-web-19';
+import {watchFinalReveal,guardExploration} from './final-reveal.js?v=2026-10-15-web-19';
+import {withNewsTheme} from './news-areas.js?v=2026-10-15-web-19';
+import {newsDateBadge} from './news-dates.js?v=2026-10-15-web-19';
+import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-15-web-19';
+import {ROOM_KEY,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-15-web-19';
 
 const area=withNewsTheme({number:1});
 document.title=`${area.title}｜2026年からの脱出`;

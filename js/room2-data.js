@@ -1,6 +1,6 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-18';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-18';
-import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-18';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-19';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-19';
+import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-19';
 
 export const ROOM = {
   number:2,storageKey:'escape2026.room2.v1',title:'ふしぎな図書室',titleHTML:'ふしぎな<br>図書室',
@@ -20,7 +20,7 @@ export const QUESTIONS = [
     hints:["色は漢字を、矢印は左右のどちらかを指しています。取り出した形を、カタカナとして読めないかな？","例の「光」は「ヒ・カ・リ」と読めます。どの漢字のどちら側を使うと「ヒ」になるかたしかめよう。下の段の最初は緑の「←」なので、緑の漢字の左側を使うと「メ」になります。"],
     explanation:'漢字の左右が、カタカナに見える。「刈」の左＝メ、「化」の左＝イ、「加」の右＝ロ。メ・イ・ロは「めいろ」！'},
   {id:'covered-kana',title:'帯の下のことば',short:'かくれた文字列',label:'並び方のナゾ',answer:'ほうそく',
-    hints:["見えている文字は、五十音の順に続いています。帯の上と下にある文字の間には、何が入るかな？","いちばん右の列は、２段目に「き」があります。五十音表で「き」の次から順に数え、帯がある３段目に入る文字を考えよう。残りの列も同じように調べられます。"],
+    hints:["見えている文字は、五十音の順に続いています。帯の上と下にある文字の間には、何が入るかな？","いちばん左の列は、「へ」と「ま」の間にある文字なので、「ほ」になります。残りの列も同じように調べよう！"],
     explanation:'左から「ふ・へ・ほ・ま・み」「あ・い・う・え・お」「す・せ・そ・た・ち」「か・き・く・け・こ」。帯の下の文字は「ほ・う・そ・く」！'}
 ];
 export const KANA_ROWS = [
