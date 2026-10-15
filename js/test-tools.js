@@ -1,6 +1,6 @@
-import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-5';
-import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-5';
-import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-5';
+import {testPlay,gameStorage,gameSession,gameUrl,TEST_FINAL_KEY,clearTestRecords} from './play-mode.js?v=2026-10-15-web-6';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-15-web-6';
+import {FINAL_KEY} from './story-flow.js?v=2026-10-15-web-6';
 
 export function installTestTools(){
  if(!testPlay)return;

@@ -1,4 +1,4 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-5';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-6';
 export const ROOM_KEY = 'escape2026.room1.v1';
 export const QUESTIONS = [
   { id: 'memo', title: 'たぬきが残したメモ', short: '机の上のメモ', label: '文字のナゾ', answer: 'とびら',

@@ -1,8 +1,8 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay,TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-5';
-import {installTestTools} from './test-tools.js?v=2026-10-15-web-5';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-5';
-import {ENDINGS} from './story-content.js?v=2026-10-15-web-5';
-import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-5';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay,TEST_FINAL_KEY} from './play-mode.js?v=2026-10-15-web-6';
+import {installTestTools} from './test-tools.js?v=2026-10-15-web-6';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-15-web-6';
+import {ENDINGS} from './story-content.js?v=2026-10-15-web-6';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY,EXPLORATION_KEY} from './story-flow.js?v=2026-10-15-web-6';
 const scenes=[
  {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
  {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},
