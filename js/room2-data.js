@@ -1,6 +1,6 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-16';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-16';
-import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-16';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-15-web-17';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-17';
+import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-15-web-17';
 
 export const ROOM = {
   number:2,storageKey:'escape2026.room2.v1',title:'ふしぎな図書室',titleHTML:'ふしぎな<br>図書室',
@@ -14,7 +14,7 @@ export const ROOM = {
 };
 export const QUESTIONS = [
   {id:'picture-sentence',title:'絵が話す問題',short:'絵の指示文',label:'絵を読むナゾ',answer:'あわ',
-    hints:["絵を名前に置きかえて、順に読もう。絵と文字をひと続きの文にすると、何かをする指示になるかもしれません。","下の段は、「わ」に「変える」と読めます。上の段も、言葉と助詞に区切ってみよう。何の文字を、どの文字に変える指示なのかな？"],
+    hints:["絵を名前に置きかえて、順に読もう。絵と文字をひと続きの文にすると、何かをする指示になるかもしれません。","下の段は、「わ」に「変える」と読めます。上の段も、言葉を区切ってみよう。何の文字を、どの文字に変える指示なのかな？"],
     explanation:'絵をつなぐと「ありのりを、わにかえると？」。「あり」の「り」を「わ」に変えると「あわ」！'},
   {id:'kanji-sides',title:'もうひとつの文字',short:'色の付いた漢字',label:'漢字の形のナゾ',answer:'めいろ',
     hints:["色は漢字を、矢印は左右のどちらかを指しています。取り出した形を、カタカナとして読めないかな？","例の「光」は「ヒ・カ・リ」と読めます。どの漢字のどちら側を使うと「ヒ」になるか確かめ、？の矢印にも同じルールを使おう。"],
