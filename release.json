@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-15-web-2",
+  "version": "2026-10-15-web-3",
   "entry": "start.html",
   "files": {
     "assets/images/ed-01-bell.png": "a32190e4f5fc6679c5353d4fb6a2c38fccb49c35c95adbc0bc5307f50a86e172",
@@ -67,7 +67,7 @@
     "js/room-reward-ui.js": "4de5503f58bd3e9f46f0a9b1037d8ff17aa8e87de169babbd2a3e137f727f400",
     "js/room1-data.js": "cc563db67193841dbdf2bc745bde973a0421e243f441abaaa1df82546b8f5baf",
     "js/room1.js": "29252ab64f200a69ac57c01e384a73a27df183d71741d2ac539bbc0ef46261a1",
-    "js/room2-data.js": "9652d873703af6c311bb5d7d8a6591855e742dcefd642da8102daa3cd15dcb9e",
+    "js/room2-data.js": "aa87b9ff27a445e6c9462fa2f9bba8ed227ab8570fe07417bdc853908992848a",
     "js/room2.js": "a1cd15b1d6d45dc530cfda6b7b6c70d4ddb82a9d036262a00f91331c5881955d",
     "js/room3-data.js": "d22db045fee9c6c89b2d28d47ed00f81edb2c242829ae3b2aa742b077c08413f",
     "js/room3.js": "e053801a7f585e7074fe2ba7a1791f391ec05a9bc5f49491681c7e6f41b40c08",
