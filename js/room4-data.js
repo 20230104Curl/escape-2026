@@ -1,4 +1,4 @@
-import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-4';
+import {emptyState,parseState} from './room1-data.js?v=2026-10-15-web-5';
 
 export const ROOM = {
   number:4,storageKey:'escape2026.room4.v1',title:'からくり工房',titleHTML:'からくり<br>工房',

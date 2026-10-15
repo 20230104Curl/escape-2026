@@ -1,6 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-4';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-4';
-import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-4';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-15-web-5';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-15-web-5';
+import {withAttempts} from './answer-attempts.js?v=2026-10-15-web-5';
+import {flowerMarks} from './flower-search-data.js?v=2026-10-15-web-5';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({
@@ -10,7 +11,7 @@ const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=
 });
 export const LATE_ROOMS=[
   room(5,'風の航海室','風の<br>航海室','room5-voyage','方位磁針、鏡の時計、折りたたんだ地図のある明るい航海室','止まった風の向こうに、新しい年への道がある。','鐘の音を探す旅は、まだ続く。<br>きみは、風が眠る航海室の扉を開けた。<br>船出を待つ道具が、静かに並んでいる。','方位磁針、鏡に映る時計、<br>折り返された地図。進む道を見つけよう。','の'),
-  room(6,'おやつの温室','おやつの<br>温室','room6-greenhouse','アイスクリーム、花、植木鉢の配管が並ぶ日差しの明るい温室','育つものにも、おいしいものにも、ひみつがある。','時計の町を進むと、<br>日だまりの温室にたどり着いた。<br>作りかけのおやつと花が、きみを待っている。','色の違うアイス、水やりの配管、<br>花の見本。温室の3つのひみつを探そう。','す'),
+  room(6,'おやつの温室','おやつの<br>温室','room6-greenhouse','アイスクリームや花が並ぶ日差しの明るい温室','育つものにも、おいしいものにも、ひみつがある。','時計の町を進むと、<br>日だまりの温室にたどり着いた。<br>作りかけのおやつと花が、きみを待っている。','色の違うアイス、花の名前の文字表、<br>花の見本。温室の3つのひみつを探そう。','す'),
   room(7,'星の観測室','星の<br>観測室','room7-observatory','望遠鏡、太陽と地球の模型、紙の箱がある明るい観測室','空を見上げると、遠い光が道を教えてくれる。','最後の鐘の手がかりを追って、<br>きみは星を観測する部屋に入った。<br>止まった夜空にも、光の道すじが残っている。','星空を横切る線、模型の軌道、<br>広げた紙の箱。見方を変えて考えよう。','じ'),
   room(8,'明日への展示室','明日への<br>展示室','room8-exhibition','曜日の標本、玉の展示台、古い手紙が並ぶ明るい展示室','思い出をしまうだけでなく、明日へ持っていくために。','2026年の記録が残された展示室。<br>この先には、最後の鐘へ続く道がある。<br>きみは、まだ解けていない展示を見つめた。','曜日の標本、不思議な玉、<br>時代の手紙。明日へつながる言葉を探そう。','お')
 ];
@@ -30,9 +31,9 @@ export const LATE_QUESTIONS={
     {id:'ice-scoops',title:'おやつの積みかさね',short:'3つのアイス',label:'色とことばのナゾ',answer:'あいす',
       hints:["同じ色・同じ模様のアイスは、同じ１文字を表します。カップの言葉と、上から並ぶアイスを比べてみよう。","まず２つの例に共通するアイスを探し、その色がどちらの言葉でも同じ文字になるか確かめよう。真ん中のカップの「ー」も、アイス１個分です。わかった色から右のカップに当てはめよう。"],
       explanation:'同じアイスは同じ文字。ピンク＝ア、緑＝イ、黄色＝ス。上から読むと「アイス」、ひらがなで「あいす」！'},
-    {id:'watering',title:'水やりの配管',short:'4つの水の栓',label:'つながりのナゾ',answer:'1011',answerSymbols:['①','②','③','④'],inputTitle:'流す＝1、流さない＝0',maxAttempts:1,
-      hints:["必要な水が多い鉢から考えてみよう。つながる栓がいくつあるか、交差に気をつけて線をたどろう。","左の鉢に向かう線は２本だけです。必要な水２つを満たすには、２本とも流す必要があります。その２つの栓を開いたとき、ほかの鉢に届く水も数えてから、残りの栓を考えよう。"],
-      explanation:'①と③で左の鉢に2つ。①で真ん中に1つ。②を閉じ、④で右に1つ。①②③④を「流す1・流さない0」で表すと「1011」！'},
+    {id:'flower-search',title:'花の名前さがし',short:'花の名前がかくれた表',label:'文字を探すナゾ',answer:'ひらめき',
+      hints:["花の最初の文字を見つけたら、右・下・右下に続く文字を確かめよう。花の名前は、途中で曲がりません。","一番下の段には「たんぽぽ」が右向きに並んでいます。ほかの花は、下向きや右下向きも調べよう。６つとも見つかったか一覧で確かめ、使わなかった文字だけを、上の段から左→右に読もう。"],
+      explanation:'「ひまわり」「あじさい」は下向き、「たんぽぽ」は右向き。「さくら」「つばき」「すみれ」は右下向きにかくれています。６つの花の文字を消し、残った文字を上の段から左→右に読むと「ひ・ら・め・き」！'},
     {id:'turning-flowers',title:'花びらの仲間はずれ',short:'回せる花の見本',label:'回転のナゾ',answer:'つぼみ',candidateAnswers:FLOWER_CANDIDATES,maxAttempts:1,
       hints:["花の向きだけが違っても、回すと同じになるものは仲間です。花びらの色を、ぐるりと時計回りに比べてみよう。","同じ色が２枚ある段は、その２枚が隣り合うか向かい合うか比べよう。全部違う色の段は、１色を上にそろえてから、時計回りの色の並びを比べます。裏返さず、回して重なるか確かめよう。"],
       explanation:'回しても重ならない花は、上から「つ」「ぼ」「み」。答えは「つぼみ」！'}
@@ -60,9 +61,9 @@ export const LATE_QUESTIONS={
       explanation:'表は五十音表。上は「か」から「い段」へ進むので「かいだん」。下は「そ」から「う段」へ進むので「そうだん」！'}
   ]
 };
-export const makeLateState=()=>({...emptyState(),contentRevision:2,answerInputRevision:3,attempts:[0,0,0]});
+export const makeLateState=()=>({...emptyState(),contentRevision:2,answerInputRevision:3,attempts:[0,0,0],flowerSearchRevision:1,flowerMarks:[]});
 export function restoreLateState(raw,number){
-  const state=withAttempts({...parseState(raw),contentRevision:2,answerInputRevision:3},raw,LATE_QUESTIONS[number]);
+  const state=withAttempts({...parseState(raw),contentRevision:2,answerInputRevision:3,flowerSearchRevision:1,flowerMarks:[]},raw,LATE_QUESTIONS[number]);
   try{const saved=JSON.parse(raw);if(saved?.version===1)state.drafts=LATE_QUESTIONS[number].map((q,i)=>{
     let draft=typeof saved.drafts?.[i]==='string'?saved.drafts[i].slice(0,q.answer.length):'';
     const revision=Number.isInteger(saved.answerInputRevision)?saved.answerInputRevision:0;
@@ -73,5 +74,6 @@ export function restoreLateState(raw,number){
     return draft.slice(0,inputAnswer(q).length);
   });}catch{}
   if(number===8){let saved=null;try{saved=JSON.parse(raw);}catch{}if(saved?.contentRevision!==2){state.solved=state.solved.filter(i=>i!==2);state.drafts[2]='';state.hints[2]=0;state.claimed=false;}}
+  if(number===6){let saved=null;try{saved=JSON.parse(raw);}catch{}if(saved?.flowerSearchRevision===1){state.flowerMarks=flowerMarks(saved.flowerMarks);}else{state.solved=state.solved.filter(i=>i!==1);state.drafts[1]='';state.hints[1]=0;state.attempts[1]=0;state.claimed=false;}}
   return state;
 }

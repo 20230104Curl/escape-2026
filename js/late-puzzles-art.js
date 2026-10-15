@@ -1,5 +1,6 @@
-import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,PIPE_CONNECTIONS,WATER_NEEDS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-15-web-4';
-import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-15-web-4';
+import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-15-web-5';
+import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-15-web-5';
+import {FLOWER_GRID,FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-15-web-5';
 const svg=(body,label,viewBox='0 0 500 340')=>`<div class="late-diagram"><svg viewBox="${viewBox}" role="img" aria-label="${label}">${body}</svg></div>`;
 const text=(value,x,y,size=25,color='#4d4565',extra='')=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="middle" font-weight="700" ${extra}>${value}</text>`;
 const marker=(id,color)=>`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="${color}"/></marker></defs>`;
@@ -23,10 +24,9 @@ export function foldedMap(){
 const iceIndex={pink:0,mint:1,green:2,yellow:3,brown:4};
 const iceAlt={pink:'ピンク',mint:'水色のつぶ入り',green:'緑',yellow:'黄色',brown:'茶色'};
 export function iceCream(){return `<p class="puzzle-instruction">同じアイスは、同じ1文字。<br>右のカップに入る言葉は？</p><div class="ice-cream-row">${ICE_STACKS.map((stack,i)=>`<div class="ice-tower">${stack.map((color,j)=>`<span class="ice-piece" role="img" aria-label="${iceAlt[color]}のアイス" style="background-position:${iceIndex[color]%3*50}% ${Math.floor(iceIndex[color]/3)*100}%;z-index:${10-j}"></span>`).join('')}<div class="ice-piece ice-cup" style="background-position:100% 100%"><strong>${['アツイ','スイーツ','？'][i]}</strong></div></div>`).join('')}</div>`;}
-export function watering(){
- const xs=[55,185,315,445],pots=[105,250,395],colors=['#b580a1','#689ab1','#c69957','#72a283'];
- const pipes=PIPE_CONNECTIONS.map((targets,i)=>targets.map(p=>`<path d="M${xs[i]} 65V95L${pots[p]} 224" stroke="#fffaf0" stroke-width="10"/><path d="M${xs[i]} 65V95L${pots[p]} 224" stroke="${colors[i]}" stroke-width="4"/>`).join('')).join('');
- return `<p class="puzzle-instruction">栓を開くと、つながる鉢に水が<b>1つずつ</b>届く。<br>必要な数ぴったりにするには？</p>`+svg(`<g fill="none" stroke-linejoin="round">${pipes}</g>${xs.map((x,i)=>`<circle cx="${x}" cy="52" r="23" fill="${colors[i]}" stroke="#fff" stroke-width="3"/>${text('①②③④'[i],x,60,23,'#fff')}`).join('')}${pots.map((x,i)=>`<circle cx="${x}" cy="224" r="6" fill="#82b8d1"/><path d="M${x} 260v-27m0 13q-34-27-26-8 8 15 26 8m0 0q35-27 27-8-8 15-27 8" fill="#86ad7c" stroke="#699763" stroke-width="2"/><path d="M${x-34} 260h68l-10 34h-48Z" fill="#d69e79" stroke="#ad7b57" stroke-width="2"/>${text(`必要な水：${WATER_NEEDS[i]}`,x,320,20)}`).join('')}`,'4つの栓と3つの植木鉢。線が交差するところはつながっていない')+`<p class="late-note">交差した線はつながりません。①②③④の順に、開く＝1、閉じる＝0。</p>`;
+export function flowerSearch(state={}){
+ const marks=flowerMarks(state.flowerMarks);
+ return `<p class="puzzle-instruction">６つの花の名前を消すと、残る言葉は？</p><div class="flower-search"><div class="flower-search-grid" role="group" aria-label="５行５列の文字表。タップで文字に印を付ける">${FLOWER_GRID.flat().map((letter,i)=>`<button type="button" class="flower-search-cell${marks.includes(i)?' marked':''}" data-flower-cell="${i}" aria-pressed="${marks.includes(i)}" aria-label="${Math.floor(i/5)+1}行${i%5+1}列、${letter}">${letter}</button>`).join('')}</div><div class="flower-search-guide"><h3>探す花</h3><ul>${FLOWER_WORDS.map(word=>`<li>${word}</li>`).join('')}</ul><p>よこ <b>→</b>・たて <b>↓</b><br>ななめ <b>↘</b></p><p>まっすぐに探そう。<br>花どうしは重なりません。</p></div></div><p class="flower-search-note">タップで消す／戻す。<br>残りを、上の段から左→右に読もう。</p>`;
 }
 const petalColors={rose:'#ed9c9b',blue:'#83b2d0',green:'#9dc49a',gold:'#f0cd75'};
 export function flowers(){
@@ -51,4 +51,4 @@ export function weekdays(){return `<p class="puzzle-instruction">7つの列に�
 function colorCircle(color,x,y){const colors={red:['#f4ceca','#cf7b79'],blue:['#d2e3f4','#739cc2'],green:['#d1e7c4','#8aac73']};return `<circle cx="${x}" cy="${y}" r="19" fill="${colors[color][0]}" stroke="${colors[color][1]}" stroke-width="3"/>`;}
 export function jadeRebus(){return `<p class="puzzle-instruction">玉とまわりの形が、言葉になる。<br>色の丸を当てはめると？</p>`+svg(`<path d="M130 22v23M61 80V48h138v32" fill="none" stroke="#5d6372" stroke-width="5"/>${icon(5,80,73,100)}<rect x="315" y="42" width="130" height="140" fill="none" stroke="#5d6372" stroke-width="5"/>${icon(5,330,67,100)}${text('た',85,221,30)}${colorCircle('red',130,211)}${colorCircle('blue',177,211)}${colorCircle('green',351,211)}${text('に',399,221,30)}${text('答えは',109,294,20)}${colorCircle('red',192,284)}${colorCircle('blue',239,284)}${colorCircle('green',286,284)}${text('り',331,295,31)}`,'屋根の下の玉と四角の中の玉。文字の一部が赤、青、緑の丸になっている','0 0 500 325');}
 export function eraLetter(){return `<p class="puzzle-instruction">展示室の古い手紙に、こんな問いが残っていた。</p><div class="era-letter">${ERA_WORDS.map(era=>`<p><strong>${era.name}</strong>の<span>${era.part}</span>、</p>`).join('')}<div>どんな時代だったのでしょう？</div></div>`;}
-export const LATE_VISUALS={5:[compass,mirrorClock,foldedMap],6:[iceCream,watering,flowers],7:[skyTrails,wordOrbit,cubeNet],8:[weekdays,jadeRebus,kanaMaze]};
+export const LATE_VISUALS={5:[compass,mirrorClock,foldedMap],6:[iceCream,flowerSearch,flowers],7:[skyTrails,wordOrbit,cubeNet],8:[weekdays,jadeRebus,kanaMaze]};
