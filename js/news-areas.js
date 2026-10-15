@@ -1,6 +1,6 @@
 // News scenery is independent of the existing riddles, answers and saved records.
-import {readableCopy} from './readable-copy.js?v=2026-10-15-web-13';
-import {NEWS_DATES} from './news-dates.js?v=2026-10-15-web-13';
+import {readableCopy} from './readable-copy.js?v=2026-10-15-web-14';
+import {NEWS_DATES} from './news-dates.js?v=2026-10-15-web-14';
 const welcomeBreaks={1:['行われ、'],2:['スケートの'],3:['平和について、'],4:['相手に、'],5:['助け合いながら、'],6:['豪雨が発生し、'],7:['eスポーツの','ぷよぷよでも'],8:['研究者、','さんの']};
 export const NEWS_AREAS=[
   {number:1,title:'総選挙と高市政権',newsName:'衆議院議員総選挙・高市政権',brief:'選挙で、日本のこれからを考えた。',description:'2月に衆議院議員総選挙が行われ、高市早苗さんが再び首相に指名されました。',image:'news1-election-v2',imageAlt:'高市早苗首相のオリジナル似顔絵と国会議事堂、投票箱',source:'https://www.kantei.go.jp/jp/105/actions/202602/18shimei.html'},

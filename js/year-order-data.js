@@ -1,7 +1,7 @@
 export const YEAR_ORDER_KEY='escape2026.yearOrder.v1';
 export const YEAR_ORDER=[1,2,3,4,5,6,7,8];
-export const FIXED_YEAR_SLOTS={0:1,1:2,4:5};
-export const YEAR_CHOICES=[7,3,8,4,6];
+export const FIXED_YEAR_SLOTS={1:2,2:3,4:5};
+export const YEAR_CHOICES=[7,1,8,4,6];
 export const newYearOrder=()=>({version:1,slots:YEAR_ORDER.map((_,i)=>FIXED_YEAR_SLOTS[i]??null),submitted:false,correct:null,reason:null,decidedAt:null});
 export const yearOrderComplete=state=>state.slots.every(Number.isInteger);
 export const yearOrderCorrect=state=>state.slots.every((value,i)=>value===YEAR_ORDER[i]);
