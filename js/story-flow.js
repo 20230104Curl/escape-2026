@@ -1,12 +1,14 @@
-import * as config from './game-flow-config.js?v=2026-10-16-web-02';
-import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-16-web-02';
-import {loadYearOrder,YEAR_CHOICES} from './year-order-data.js?v=2026-10-16-web-02';
+import * as config from './game-flow-config.js?v=2026-10-16-web-03';
+import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-16-web-03';
+import {loadYearOrder,YEAR_CHOICES} from './year-order-data.js?v=2026-10-16-web-03';
 export const OPENING_SECONDS=300,EXPLORATION_SECONDS=1500,YEAR_ORDER_SECONDS=60,FINAL_ANSWER_SECONDS=60,ENDING_SECONDS=60;
 export const FINAL_KEY='escape2026.finale.v1';
 export const EXPLORATION_KEY='escape2026.exploration.v1';
 export const FINAL_STAGE_START_KEY='escape2026.finalStageStart.v1';
-export const FINAL_INPUT='のぶれすおりじゅ';
-export const FINAL_FIXED={4:'・',6:'ブ',8:'ー'};
+export const FINAL_INPUT='のぶれすおぶりじゅ';
+export const FINAL_FIXED={4:'・',8:'ー'};
+// This second ブ is entered by the player, even when all eight fragments were found.
+export const FINAL_MANUAL_POSITION=5;
 export function timestamp(value){const time=typeof value==='number'?value:typeof value==='string'&&value.trim()?Date.parse(value):NaN;return Number.isFinite(time)&&time>0?time:NaN;}
 export function classTimes(start=config.GAME_START_AT,final=config.FINAL_REVEAL_AT){
   // An explicitly supplied schedule is kept for the teacher's fixed-time option.
@@ -59,11 +61,15 @@ export function explorationTimes(startedAt){
 }
 export const isPasswordOpen=(now=Date.now(),times=classTimes())=>Number.isFinite(times.passwordAt??times.finalAt)&&now>=(times.passwordAt??times.finalAt);
 export const toKatakana=value=>value.replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
-export const newFinalState=()=>({version:1,draft:'',fragmentsPlaced:false,submitted:false,result:null,reason:null,decidedAt:null,revealAt:null,bellPlayed:false});
+export function formatFinalAnswer(input){let position=0;return Array.from({length:FINAL_INPUT.length+Object.keys(FINAL_FIXED).length},(_,index)=>FINAL_FIXED[index]??toKatakana(input[position++]||'')).join('');}
+export const newFinalState=()=>({version:1,inputRevision:2,draft:'',fragmentsPlaced:false,submitted:false,result:null,reason:null,decidedAt:null,revealAt:null,bellPlayed:false});
 export function restoreFinal(raw){
   let saved;try{saved=JSON.parse(raw);}catch{return newFinalState();}
   if(saved?.version!==1)return newFinalState();
-  const state=newFinalState();state.draft=typeof saved.draft==='string'?saved.draft.slice(0,8):'';state.fragmentsPlaced=saved.fragmentsPlaced===true;
+  const state=newFinalState(),draft=typeof saved.draft==='string'?saved.draft:'';
+  // Keep earlier letters in their positions while opening the formerly printed ブ.
+  state.draft=saved.inputRevision===2?draft.slice(0,FINAL_INPUT.length):draft.length>FINAL_MANUAL_POSITION?draft.slice(0,FINAL_MANUAL_POSITION)+' '+draft.slice(FINAL_MANUAL_POSITION,8):draft;
+  state.fragmentsPlaced=saved.fragmentsPlaced===true;
   if(saved.submitted===true&&['success','rescued'].includes(saved.result)&&Number.isFinite(saved.decidedAt)&&saved.decidedAt>0){
     Object.assign(state,{submitted:true,result:saved.result,reason:saved.reason==='timeout'?'timeout':'answer',decidedAt:saved.decidedAt,revealAt:Number.isFinite(saved.revealAt)&&saved.revealAt>=saved.decidedAt?saved.revealAt:null,bellPlayed:saved.bellPlayed===true});
   }
@@ -71,7 +77,7 @@ export function restoreFinal(raw){
 }
 export function loadFinal(storage){try{return restoreFinal(storage.getItem(FINAL_KEY));}catch{return newFinalState();}}
 export function decideFinal(state,now,times=classTimes(),order=loadYearOrder(gameStorage)){
-  if(state.submitted||!isPasswordOpen(now,times)||now>=times.answerUntil||(state.draft.length!==8||/\s/.test(state.draft)))return false;
+  if(state.submitted||!isPasswordOpen(now,times)||now>=times.answerUntil||(state.draft.length!==FINAL_INPUT.length||/\s/.test(state.draft)))return false;
   Object.assign(state,{submitted:true,result:state.draft===FINAL_INPUT&&order.submitted&&order.correct===true?'success':'rescued',reason:'answer',decidedAt:now,revealAt:Number.isFinite(times.answerUntil)?times.answerUntil:now});return true;
 }
 export function expireFinal(state,now,times=classTimes()){

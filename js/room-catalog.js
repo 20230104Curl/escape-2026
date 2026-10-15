@@ -1,9 +1,9 @@
-import {ROOM_KEY,QUESTIONS as questions1,restoreRoom1State} from './room1-data.js?v=2026-10-16-web-02';
-import {ROOM as room2,QUESTIONS as questions2,restoreState as restore2} from './room2-data.js?v=2026-10-16-web-02';
-import {ROOM as room3,QUESTIONS as questions3,restoreState as restore3} from './room3-data.js?v=2026-10-16-web-02';
-import {ROOM as room4,QUESTIONS as questions4,restoreState as restore4} from './room4-data.js?v=2026-10-16-web-02';
-import {LATE_ROOMS,LATE_QUESTIONS,restoreLateState} from './room-late-data.js?v=2026-10-16-web-02';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-02';
+import {ROOM_KEY,QUESTIONS as questions1,restoreRoom1State} from './room1-data.js?v=2026-10-16-web-03';
+import {ROOM as room2,QUESTIONS as questions2,restoreState as restore2} from './room2-data.js?v=2026-10-16-web-03';
+import {ROOM as room3,QUESTIONS as questions3,restoreState as restore3} from './room3-data.js?v=2026-10-16-web-03';
+import {ROOM as room4,QUESTIONS as questions4,restoreState as restore4} from './room4-data.js?v=2026-10-16-web-03';
+import {LATE_ROOMS,LATE_QUESTIONS,restoreLateState} from './room-late-data.js?v=2026-10-16-web-03';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-03';
 
 export const ROOM_CATALOG=[
   {room:{number:1,title:'忘れられた準備室',image:'assets/images/room1-preparation.png',storageKey:ROOM_KEY,reward:'れ'},questions:questions1,restore:restoreRoom1State},
