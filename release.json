@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-16-web-09",
+  "version": "2026-10-16-web-10",
   "entry": "start.html",
   "files": {
     "assets/audio/emergency-alarm.wav": "883b3aae6be4c5a415a96cac7ed91d4239fdb72185087b7fa7214acf1c06e225",
@@ -29,6 +29,7 @@
     "assets/svg/mark.svg": "0178d60375ef421071b0d0ed87cdf805b0d40d5fbf0bfe5c435c14f5e38a463a",
     "css/bell-visual.css": "0c8d956d6566be53187f42cafdddeec23a8ebf1956b10f1570bc74635c27f6d8",
     "css/ending.css": "28002223ddc6d3d6efcb0b053b4e98d5cea17e31574d42ea8700eac0e64a88c7",
+    "css/entry-password.css": "f908297c5b7e1236011a94b3467b78caebbb138b5099225ab50224775c1d6927",
     "css/final-clues.css": "e47ad1e6b2b8ed542d599440ad478e9e209b870fb9ea37d7a05e04e7368b53c5",
     "css/news-story.css": "f54449fbc2431d141ba9d0b875bae13ad920ae7774f38d1cf7374e60cc8d4911",
     "css/opening.css": "11db46b5d49987c672d3740e877ed08b785052bfb5be9413c640004c9514063e",
@@ -51,6 +52,7 @@
     "js/emergency-alarm.js": "15dc095e0affbda0b43077dd3912f8f3efe7a92176b65bb054cd9c3a47e71173",
     "js/ending-bell.js": "3e4bf5471568dd21faebe577433e0b46cc6e8dcb767b2ad31198a0be9ff0c65d",
     "js/ending.js": "7f65fae2a008910d0d98d6c31fd682a31c7e66ec9df8a432c240dde79592c33d",
+    "js/entry-password.js": "3ad46a277c179db3e7a84f06a8dde44bab1c53cf5aa7ba9e8fe873f2f99b0b88",
     "js/final-clues.js": "5d6db1af6cb6f216ddf73da452eda88155efdb00577f812cfa1d7a5fd67d4aa4",
     "js/final-fragments-ui.js": "3a1d70603f3fd5ea62daae7e02eb3ed4b41455e03e79d6c85f91dd66a4b29157",
     "js/final-password-input.js": "0d655231a726de82757b327525dbac6b7f213c5721af30969525ec2c3ceb43ca",
@@ -62,7 +64,7 @@
     "js/late-puzzles-data.js": "dbfa7e51a09ce03839d0c8da6dac066f11fd661c0acc189602eaaac58663b7e2",
     "js/news-areas.js": "45e421df0e6a03debfdad440744581259ec03e636bad12b07759ee068b3756e5",
     "js/news-dates.js": "92d1506636d2e02e8ee71c646d6ca727e9b303fb97ba204aceafed4e35bd2d6a",
-    "js/opening.js": "55ec08831c65ed26ad2aeda77389d185d996a9fad7bb3ef1109b1182b6f63b79",
+    "js/opening.js": "11903f411363cd7fadde61260048756390ac6f74ae70b5215fd4e7fc112e8e4a",
     "js/play-mode.js": "d96ea93d6baed1cecfe17a8c16ced0944989c0ba4b9494a465839498612a159f",
     "js/play-settings.js": "ea0fb9c02b4b8a2d98615261c6bb5ec3312db7f7e23e18f740f460a402b96c37",
     "js/puzzle-renewal-art.js": "788637b8e0d6df30c6cf70214495dda072acff97dd28b49cad6c9543af254fab",
@@ -103,6 +105,6 @@
     "room8.html": "01055fa14037abd3b1fa0ed952ffc061b0349d44ecc7a46bf721541ee7a70811",
     "rooms.html": "a36df34dd04aa87be85d67473d0822428e24b757e83d6505ae553b5bab677639",
     "scripts/serve.js": "83fa4a5c5454b53304417427a4296ee75e45de4f0c1a893ea3c763e0eb43189b",
-    "start.html": "3e4c3135600c25588c2a66a8913c0a1901107369f69af77785be086986a106ec"
+    "start.html": "f21efd66f047289a9e9a70f02ff042c893793961da22a608e62895c182d86e84"
   }
 }
