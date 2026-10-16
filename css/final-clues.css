@@ -22,3 +22,15 @@
 @media(max-width:1000px),(max-height:650px){.final-clues.is-open{--final-letter-size:30px;--final-cell-width:40px;--final-cell-height:56px;--final-cell-gap:3px}}
 
 .final-clues .hub-fragments{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}.final-clues .hub-fragment{display:grid;place-items:center;width:32px;height:40px;border:2px solid #c5a45b;border-radius:7px;background:#fff1bc;font-size:25px;font-weight:800}.final-clues .hub-fragment.is-missing{background:#f5f1e8;border-style:dashed;color:#a19178}.final-clues .hub-fragments>span:first-child{margin-right:8px;font-size:15px}
+
+/* Place found letters first, then enable manual input. */
+.final-input-fields{border:0;padding:0;margin:0;min-width:0;width:100%;display:flex;flex-direction:column;gap:12px}
+.final-clues.is-open .final-input-guide{margin:0;color:#66518e;font-size:14px;line-height:1.6;font-weight:800}
+.final-controls.is-awaiting-placement .final-input-guide{color:#a52f2a}
+.final-controls.is-awaiting-placement .final-keypad button:disabled{background:#eee9f0;border-color:#d7cfde;color:#a49ba9;box-shadow:none;opacity:1}
+.final-input-fields:disabled .final-keypad button{cursor:default}
+.place-fragments.is-priority{background:#c13b36;border-color:#a72c28;box-shadow:0 3px 0 #8d2724}
+.place-fragments.is-priority:hover:not(:disabled){background:#b62f2b}
+@media(prefers-reduced-motion:no-preference){.place-fragments.is-priority{animation:place-fragments-pulse 1.8s ease-in-out infinite}}
+@keyframes place-fragments-pulse{0%,100%{background:#bd3732;box-shadow:0 3px 0 #8d2724,0 0 0 0 #dc534633;transform:scale(1)}50%{background:#ce4038;box-shadow:0 3px 0 #8d2724,0 0 0 7px #dc534626;transform:scale(1.025)}}
+@media(max-width:1000px),(max-height:650px){.final-input-fields{gap:8px}.final-clues.is-open .final-input-guide{font-size:12px;line-height:1.5}}
