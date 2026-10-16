@@ -5,6 +5,7 @@ import {resetCurrentGame} from '../js/teacher-mode-data.js';
 import {createPlayStorage} from '../js/play-mode.js';
 import {renderYearOrder} from '../js/year-order-ui.js';
 import {newYearOrder,placeYearCard} from '../js/year-order-data.js';
+import {renderEndingActions,renderGameClosed,createGameExit} from '../js/ending-exit.js';
 const records=new Map(),base={getItem:key=>records.get(key)||null,setItem:(key,value)=>records.set(key,value),removeItem:key=>records.delete(key)};
 const normal=createPlayStorage(base),test=createPlayStorage(base,true);
 const rooms=Array.from({length:8},()=>({state:{started:false,solved:[]}}));
@@ -36,4 +37,15 @@ const order=newYearOrder();assert.ok(renderYearOrder(order).includes('まず、�
 placeYearCard(order,1);assert.ok(renderYearOrder(order).includes('次に起きたできごとをクリック！'));
 for(const n of [4,6,7,8])placeYearCard(order,n);assert.ok(renderYearOrder(order).includes('5つのできごとを選びました'));
 assert.equal(FAILURE_NOTICE_MS,5000);
+for(const preview of [false,true]){
+ const finalActions=renderEndingActions(2,preview);assert.ok(finalActions.includes('data-finish>終わる'));assert.ok(!finalActions.includes('data-back'));assert.ok(!finalActions.includes('data-next'));
+ assert.ok(!renderEndingActions(0,preview).includes('data-finish'));assert.ok(!renderEndingActions(1,preview).includes('data-finish'));
+}
+assert.ok(renderEndingActions(1,true).includes('data-back'),'Only the intermediate preview page retains back navigation');
+const exitCalls=[];const exit=createGameExit({stop:()=>exitCalls.push('stop'),clearScreen:()=>exitCalls.push('clear'),closeWindow:()=>exitCalls.push('close')});
+assert.equal(exit.finished,false);exit.finish();exit.finish();assert.equal(exit.finished,true);assert.deepEqual(exitCalls,['stop','clear','close'],'Stop and clear the game before requesting close, exactly once');
+let blockedFallback=false;const blockedExit=createGameExit({stop(){},clearScreen(){blockedFallback=true;},closeWindow(){throw Error('Browser refuses to close');}});
+assert.doesNotThrow(()=>blockedExit.finish());assert.equal(blockedExit.finished,true);assert.equal(blockedFallback,true,'A rejected close request still ends the game');
+assert.ok(renderGameClosed().includes('このタブを閉じてください。'));assert.ok(!renderGameClosed().includes('<button'));
+console.log('PASS: final exit button in normal and preview endings, stopped media/rendering before close, single execution and browser-blocked fallback');
 console.log('PASS: first-area guidance lifecycle and existing-game migration, test isolation, reset, chronological click prompts, five-second failure notice, reloads and success bypass');
