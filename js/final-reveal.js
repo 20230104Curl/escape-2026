@@ -1,7 +1,7 @@
-import {preloadEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-14';
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-14';
-import {loadSettings} from './play-settings.js?v=2026-10-16-web-14';
-import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-14';
+import {preloadEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-15';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-15';
+import {loadSettings} from './play-settings.js?v=2026-10-16-web-15';
+import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-15';
 let leaving=false;
 function go(path){if(leaving)return;leaving=true;location.replace(gameUrl(path));}
 

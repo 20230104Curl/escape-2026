@@ -1,4 +1,4 @@
-import {answerKeys} from './room1-data.js?v=2026-10-16-web-14';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-15';
 
 const PASSWORD='だっしゅつ';
 export const ENTRY_PASSWORD_LENGTH=PASSWORD.length;

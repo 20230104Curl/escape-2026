@@ -1,9 +1,9 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-14';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-14';
-import {ENDINGS} from './story-content.js?v=2026-10-16-web-14';
-import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-16-web-14';
-import {createEndingBell} from './ending-bell.js?v=2026-10-16-web-14';
-import {beginFailureNotice,failureNoticeRemaining,renderFailureNotice,FAILURE_NOTICE_MS} from './ending-notice.js?v=2026-10-16-web-14';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-15';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-15';
+import {ENDINGS} from './story-content.js?v=2026-10-16-web-15';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-16-web-15';
+import {createEndingBell} from './ending-bell.js?v=2026-10-16-web-15';
+import {beginFailureNotice,failureNoticeRemaining,renderFailureNotice,FAILURE_NOTICE_MS} from './ending-notice.js?v=2026-10-16-web-15';
 const scenes=[
  {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
  {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},

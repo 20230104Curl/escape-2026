@@ -1,7 +1,7 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-14';
-import {letterTile} from './room-reward-ui.js?v=2026-10-16-web-14';
-import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-14';
-import {guardExploration} from './final-reveal.js?v=2026-10-16-web-14';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-15';
+import {letterTile} from './room-reward-ui.js?v=2026-10-16-web-15';
+import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-15';
+import {guardExploration} from './final-reveal.js?v=2026-10-16-web-15';
 export function roomCompletion(roomKey,restore,warn){
  let leaving=false;
  function returnNow(){
