@@ -4,7 +4,7 @@ import {renderYearOrder} from '../js/year-order-ui.js';
 import {renderFinalFragments} from '../js/final-fragments-ui.js';
 import {newFinalState,decideFinal,expireFinal,canRevealFinal,FINAL_INPUT,FINAL_FIXED,FINAL_MANUAL_POSITION,formatFinalAnswer,restoreFinal} from '../js/story-flow.js';
 
-import {finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from '../js/final-password-input.js';
+import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from '../js/final-password-input.js';
 
 const times={orderAt:1000,passwordAt:61000,answerUntil:121000};
 const order=newYearOrder();
@@ -160,4 +160,18 @@ assert.ok(stillMissingBu.includes('残り1文字'));
 assert.ok(!stillMissingBu.includes('すべての文字が入りました'));
 assert.ok(renderFinalFragments(collectedAll,{placed:true,remaining:0}).includes('すべての文字が入りました'));
 
-console.log('PASS: mandatory second ブ, nine-letter answer, migration, displayed confirmation; positioned letters, persistent gaps, protected collected letters, remaining input; five-card ordering, undo, saved-game migration, deadlines, fragment counts, final results, and 5-minute clock boundary');
+
+// Found fragments must be placed before the manual-input phase opens.
+for(const count of [0,3,6,8]){
+ const letters=['れ','ぶ','り','ゅ','の','す','じ','お'].slice(0,count),pending=newFinalState();
+ assert.equal(needsFinalPlacement(pending,letters),count>0);
+ if(count){assert.equal(placeFinalFragments(pending,letters),true);assert.equal(needsFinalPlacement(pending,letters),false);assert.equal(needsFinalPlacement(restoreFinal(JSON.stringify(pending)),letters),false,'Reload keeps manual input enabled after placement');}
+}
+const earlierTyped=newFinalState();earlierTyped.draft='のぶ';
+assert.equal(needsFinalPlacement(earlierTyped,['れ','ぶ']),true,'Earlier typed drafts still place found letters first');
+const earlierFinished={...earlierTyped,submitted:true};assert.equal(needsFinalPlacement(earlierFinished,['れ']),false);
+const placementPrompt=renderFinalFragments(['れ','ぶ']);assert.ok(placementPrompt.includes('is-priority'));assert.ok(placementPrompt.includes('まず、赤い'));
+assert.ok(!renderFinalFragments(['れ'],{placed:true}).includes('is-priority'));
+assert.ok(!renderFinalFragments([]).includes('is-priority'));
+
+console.log('PASS: placement-first input gating, zero-letter access, reload after placement; mandatory second ブ, nine-letter answer, migration, displayed confirmation; positioned letters, persistent gaps, protected collected letters, remaining input; five-card ordering, undo, saved-game migration, deadlines, fragment counts, final results, and 5-minute clock boundary');

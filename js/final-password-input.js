@@ -1,5 +1,6 @@
-import {FINAL_INPUT,FINAL_MANUAL_POSITION} from './story-flow.js?v=2026-10-16-web-05';
+import {FINAL_INPUT,FINAL_MANUAL_POSITION} from './story-flow.js?v=2026-10-16-web-06';
 
+export const needsFinalPlacement=(state,letters)=>!state.submitted&&letters.length>0&&!state.fragmentsPlaced;
 export const finalInputSlots=state=>Array.from({length:FINAL_INPUT.length},(_,index)=>state.draft[index]&&state.draft[index]!==' '?state.draft[index]:'');
 export const nextFinalPosition=state=>finalInputSlots(state).findIndex(letter=>!letter);
 export const finalInputComplete=state=>state.draft.length===FINAL_INPUT.length&&!/\s/.test(state.draft);
