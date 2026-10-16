@@ -25,8 +25,8 @@ joya-bell.mp3 は配布音源の冒頭0.095秒の無音を削除して再エン�
 https://creativecommons.org/licenses/by/4.0/
 利用条件: https://otologic.jp/free/license.html
 提供元: ユーザーが指定した音声ファイル（2026-10-16）
-加工内容: 先頭2秒を使用し、末尾0.04秒をフェードアウト。22050 Hz・モノラル・16 bit PCM WAVへ変換。
+加工内容: 原音全体を使用し、不足する末尾を無音で補い3秒に調整。最終0.04秒にフェードアウトを設定。22050 Hz・モノラル・16 bit PCM WAVへ変換。
 再生時は従来どおり音量55%。次の画面へ進むと停止します。
 変換元: scripts/generate-emergency-alarm.mjs（FFmpeg使用、指定された元ファイルのパスを引数に渡して実行）
 原音 SHA-256: 0e68ca82a318fdc4d16d36b59b4550656a64bf82fb3655741930a025df3b1f3c
-加工後 SHA-256: 3462e39e59a0afbf688e3e1a02deb9b12876da3ae9451357ff0038f717c7e3cb
+加工後 SHA-256: 4a631bcf08e2bdc13600c869f286a30894cb7805e5d13626ea9f05250e0ea0e3

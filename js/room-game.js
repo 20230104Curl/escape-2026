@@ -1,15 +1,15 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-11';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-11';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-11';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-11';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-11';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-11';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-11';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-11';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-11';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-11';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-11';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-11';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-12';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-12';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-12';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-12';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-12';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-12';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-12';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-12';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-12';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-12';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-12';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-12';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);
