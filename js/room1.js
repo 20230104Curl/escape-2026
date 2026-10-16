@@ -1,16 +1,17 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-13';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-13';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-13';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-13';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-13';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-13';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-13';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-13';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-13';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-13';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-13';
-import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-13';
-import {ROOM_KEY,ROOM_REWARD,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-13';
+import {renderFirstRoomGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-14';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-14';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-14';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-14';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-14';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-14';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-14';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-14';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-14';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-14';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-14';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-14';
+import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-14';
+import {ROOM_KEY,ROOM_REWARD,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-14';
 
 const area=withNewsTheme({number:1,reward:ROOM_REWARD});
 document.title=`${area.title}｜2026年からの脱出`;
@@ -48,7 +49,7 @@ function answerPanel(){
 function success(){const q=QUESTIONS[current];return `<div class="success"><div class="seal" aria-hidden="true">✓</div><h2>正解！</h2><div class="correct-answer">${q.answer}</div><p>${readableCopy(q.explanation)}</p>${roomClearNotice(area.reward,state.solved.length===3)}<button class="primary" data-action="${state.solved.length===3?'hub':'room'}">${state.solved.length===3?'できごと一覧に戻る':'エリアに戻って、次のナゾへ →'}</button></div>`;}
 function puzzle(){return `<div class="title-row"><div><p class="eyebrow">ナゾ ${String(current+1).padStart(2,'0')} / 03</p><h1>${QUESTIONS[current].title}</h1></div><button class="secondary" data-action="room">このエリアの3問に戻る</button></div>${state.solved.includes(current)?success():`<div class="puzzle-layout"><div class="puzzle-content"><section class="puzzle-board" aria-label="問題">${visual()}</section>${hintPanel()}</div>${answerPanel()}</div>`}`;}
 function reward(){return renderCollectedReward({title:area.title,chest,letter:area.reward,afterword:"下の「できごと一覧」から、行きたい部屋を選ぼう。"});}
-function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${view==='welcome'?welcome():view==='room'?room():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
+function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${renderFirstRoomGuide(gameStorage,1,view)}${view==='welcome'?welcome():view==='room'?room():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
 function navigate(next){view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
 function confirmAction(title,message,label,action){lastFocus=document.activeElement;dialog.innerHTML=`<h2 id="dialog-title">${title}</h2><p>${message}</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>${label}</button></div>`;dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();if(!guardExploration())action();};dialog.showModal();}
 dialog.addEventListener('close',()=>{if(lastFocus?.isConnected)lastFocus.focus();});
@@ -56,12 +57,12 @@ function refreshKeys(){const q=QUESTIONS[current];keys=answerKeys(inputAnswer(q)
 app.addEventListener('click',event=>{
   if(guardExploration())return;const b=event.target.closest('button');if(!b||b.disabled)return;
   if(b.dataset.hint!==undefined){const target=current;requestHint({room:1,question:target,index:Number(b.dataset.hint),dialog,confirmAction,commit:level=>{state=parseState(gameStorage.getItem(ROOM_KEY));state.hints[target]=Math.max(state.hints[target],level);save();},show:index=>showHint(index,target),render,warn,guard:guardExploration});return;}
-  if(b.dataset.question!==undefined){current=Number(b.dataset.question);refreshKeys();navigate('puzzle');return;}
+  if(b.dataset.question!==undefined){advanceFirstGuide(gameStorage,1,'done');current=Number(b.dataset.question);refreshKeys();navigate('puzzle');return;}
   if(b.dataset.key!==undefined&&view==='puzzle'&&!state.solved.includes(current)){if(state.drafts[current].length>=inputAnswer(QUESTIONS[current]).length)return;state.drafts[current]+=b.dataset.key;feedback='';refreshKeys();save();render();return;}
   if(b.dataset.card!==undefined){const i=Number(b.dataset.card);if(CARDS[i]&&!Object.values(FIXED_CARDS).includes(i)&&!state.order.includes(i)){state.order.splice(-1,0,i);save();render();}return;}
   if(b.dataset.slot!==undefined){const slot=Number(b.dataset.slot);if(FIXED_CARDS[slot]===undefined&&cardAtSlot(state.order,slot)!==undefined){state.order.splice(slot,1);save();render();}return;}
   switch(b.dataset.action){
-    case 'start':state.started=true;save();navigate('room');break;
+    case 'start':advanceFirstGuide(gameStorage,1,'question');state.started=true;save();navigate('room');break;
     case 'room':navigate('room');break;
     case 'backspace':state.drafts[current]=state.drafts[current].slice(0,-1);feedback='';refreshKeys();save();render();break;
     case 'clear':state.drafts[current]='';feedback='';refreshKeys();save();render();break;

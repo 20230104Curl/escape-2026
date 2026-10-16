@@ -59,7 +59,7 @@ assert.equal(emptyFinal.result,'rescued');
 const {refreshExplorationClock}=await import('../js/final-reveal.js');
 const records=new Map(),classes=new Set();let clock=null;
 globalThis.localStorage={getItem:key=>records.get(key)||null};
-globalThis.document={querySelector:selector=>selector==='.brand'?{append:element=>{clock=element;}}:clock,createElement:()=>({setAttribute(){},classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name);}}})};
+globalThis.document={querySelector:selector=>selector==='.top'?{append:element=>{clock=element;}}:clock,createElement:()=>({setAttribute(){},classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name);}}})};
 const realNow=Date.now;Date.now=()=>2000000000000;
 try{
  for(const seconds of [301,300,299]){
@@ -118,7 +118,7 @@ const partialInput=newFinalState();partialInput.draft='ああああ';
 placeFinalFragments(partialInput,collected);
 assert.equal(finalInputSlots(partialInput)[3],'あ','Placement preserves input in uncollected positions');
 assert.ok(renderFinalFragments(collected).includes('data-action="place-fragments"'));
-assert.ok(renderFinalFragments(collected,{placed:true}).includes('文字をあてはめました'));
+assert.ok(renderFinalFragments(collected,{placed:true}).includes('文字を入れました'));
 
 
 assert.deepEqual(FINAL_FIXED,{4:'・',8:'ー'},'Only the separator and long vowel mark are printed');
@@ -170,7 +170,7 @@ for(const count of [0,3,6,8]){
 const earlierTyped=newFinalState();earlierTyped.draft='のぶ';
 assert.equal(needsFinalPlacement(earlierTyped,['れ','ぶ']),true,'Earlier typed drafts still place found letters first');
 const earlierFinished={...earlierTyped,submitted:true};assert.equal(needsFinalPlacement(earlierFinished,['れ']),false);
-const placementPrompt=renderFinalFragments(['れ','ぶ']);assert.ok(placementPrompt.includes('is-priority'));assert.ok(placementPrompt.includes('まず、赤い'));
+const placementPrompt=renderFinalFragments(['れ','ぶ']);assert.ok(placementPrompt.includes('is-priority'));assert.ok(placementPrompt.includes('ここを押そう'));assert.ok(placementPrompt.includes('aria-label="文字を入れる"'));assert.ok(placementPrompt.includes('place-arrow'));
 assert.ok(!renderFinalFragments(['れ'],{placed:true}).includes('is-priority'));
 assert.ok(!renderFinalFragments([]).includes('is-priority'));
 

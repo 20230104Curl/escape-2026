@@ -1,7 +1,7 @@
-import {preloadEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-13';
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-13';
-import {loadSettings} from './play-settings.js?v=2026-10-16-web-13';
-import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-13';
+import {preloadEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-14';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-14';
+import {loadSettings} from './play-settings.js?v=2026-10-16-web-14';
+import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-14';
 let leaving=false;
 function go(path){if(leaving)return;leaving=true;location.replace(gameUrl(path));}
 
@@ -18,11 +18,12 @@ export function finalFragments(rooms){
 export function refreshExplorationClock(){
     const times=classTimes();if(!testPlay&&!Number.isFinite(times.finalAt))return;
     let clock=document.querySelector('.exploration-clock');
-    if(!clock){clock=document.createElement('span');clock.className='exploration-clock';clock.setAttribute('role','timer');document.querySelector('.brand')?.append(clock);}
+    if(!clock){clock=document.createElement('span');clock.className='exploration-clock';clock.setAttribute('role','timer');document.querySelector('.top')?.append(clock);}
     const seconds=remaining(times.finalAt),urgent=!testPlay&&seconds<=300;
     if(!testPlay&&seconds<=10)preloadEmergencyAlarm();
     clock.classList.toggle('is-urgent',urgent);
-    clock.innerHTML=testPlay?'探索 時間制限なし':urgent?`<span>残り時間</span><strong>${clockText(seconds)}</strong>`:`探索 あと ${clockText(seconds)}`;
+    clock.classList.toggle('is-unlimited',testPlay);
+    clock.innerHTML=testPlay?'<span>探索</span><strong>時間制限なし</strong>':`<span>残り時間</span><strong>${clockText(seconds)}</strong>`;
 }
 export function watchFinalReveal(){
   const check=()=>{if(!guardExploration())refreshExplorationClock();};

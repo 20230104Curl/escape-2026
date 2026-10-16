@@ -1,15 +1,16 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-13';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-13';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-13';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-13';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-13';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-13';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-13';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-13';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-13';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-13';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-13';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-13';
+import {renderFirstRoomGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-14';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-14';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-14';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-14';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-14';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-14';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-14';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-14';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-14';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-14';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-14';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-14';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-14';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);
@@ -41,7 +42,7 @@ function success(){const q=QUESTIONS[current];return `<div class="success"><div 
 function failure(){const q=QUESTIONS[current];return `<div class="success failure"><div class="seal" aria-hidden="true">×</div><h2>今回は不正解</h2><p>このナゾの解答チャンスは${q.maxAttempts}回です。<br>このエリアの文字は獲得できません。</p><div class="correct-answer">正解は「${q.answer}」</div><p>${readableCopy(q.explanation)}</p><button class="primary" data-action="room">エリアに戻って、ほかのナゾへ →</button></div>`;}
 function puzzle(){return `<div class="title-row"><div><p class="eyebrow">ナゾ ${String(current+1).padStart(2,'0')} / 03</p><h1>${QUESTIONS[current].title}</h1></div><button class="secondary" data-action="room">このエリアの3問に戻る</button></div>${state.solved.includes(current)?success():failed(current)?failure():`<div class="puzzle-layout"><div class="puzzle-content"><section class="puzzle-board" aria-label="問題">${visual()}</section>${hintPanel()}</div>${answerPanel()}</div>`}`;}
 function reward(){return renderCollectedReward({title:room.title,chest,letter:room.reward,afterword:room.afterword});}
-function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${view==='welcome'?welcome():view==='room'?roomView():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
+function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${renderFirstRoomGuide(gameStorage,room.number,view)}${view==='welcome'?welcome():view==='room'?roomView():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
 function navigate(next){view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
 function confirmAction(title,message,label,action){lastFocus=document.activeElement;dialog.innerHTML=`<h2 id="dialog-title">${title}</h2><p>${message}</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>${label}</button></div>`;dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();if(!guardExploration())action();};dialog.showModal();}
 dialog.addEventListener('close',()=>{if(lastFocus?.isConnected)lastFocus.focus();});
@@ -65,11 +66,11 @@ function commitAnswer(target,answer){if(guardExploration())return;
 app.addEventListener('click',event=>{
   if(guardExploration())return;const b=event.target.closest('button');if(!b||b.disabled)return;
   if(b.dataset.hint!==undefined){const target=current;requestHint({room:room.number,question:target,index:Number(b.dataset.hint),dialog,confirmAction,commit:level=>{state=restoreState(gameStorage.getItem(ROOM_KEY));state.hints[target]=Math.max(state.hints[target],level);save();},show:index=>showHint(index,target),render,warn,guard:guardExploration});return;}
-  if(b.dataset.question!==undefined){current=Number(b.dataset.question);refreshKeys();navigate('puzzle');return;}
+  if(b.dataset.question!==undefined){advanceFirstGuide(gameStorage,room.number,'done');current=Number(b.dataset.question);refreshKeys();navigate('puzzle');return;}
   if(b.dataset.key!==undefined&&view==='puzzle'&&!state.solved.includes(current)&&!failed(current)){if(state.drafts[current].length>=inputAnswer(QUESTIONS[current]).length)return;state.drafts[current]+=b.dataset.key;feedback='';refreshKeys();save();render();return;}
   if(onAction(b,state)){save();render();return;}
   switch(b.dataset.action){
-    case 'start':state.started=true;save();navigate('room');break;
+    case 'start':advanceFirstGuide(gameStorage,room.number,'question');state.started=true;save();navigate('room');break;
     case 'room':navigate('room');break;
     case 'backspace':state.drafts[current]=state.drafts[current].slice(0,-1);feedback='';refreshKeys();save();render();break;
     case 'clear':state.drafts[current]='';feedback='';refreshKeys();save();render();break;

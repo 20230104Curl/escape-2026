@@ -1,21 +1,21 @@
-import {EMERGENCY_ALARM_KEY,createEmergencyAlarm,preloadEmergencyAlarm,emergencyAlarmPlayed,rememberEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-13';
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-13';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-13';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-13';
-import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-13';
-import {preloadEndingBell} from './ending-bell.js?v=2026-10-16-web-13';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-13';
-import {answerKeys} from './room1-data.js?v=2026-10-16-web-13';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-13';
-import {EMERGENCY} from './story-content.js?v=2026-10-16-web-13';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-13';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-13';
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-13';
-import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-13';
-import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-13';
+import {EMERGENCY_ALARM_KEY,createEmergencyAlarm,preloadEmergencyAlarm,emergencyAlarmPlayed,rememberEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-14';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-14';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-14';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-14';
+import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-14';
+import {preloadEndingBell} from './ending-bell.js?v=2026-10-16-web-14';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-14';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-14';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-14';
+import {EMERGENCY} from './story-content.js?v=2026-10-16-web-14';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-14';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-14';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-14';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-14';
+import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-14';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
-let fragmentsRevealed=false;
+let justPlaced=false;
 const alarm=createEmergencyAlarm({onChange:status=>{const button=dialog.querySelector('[data-alarm-play]');if(button)button.hidden=status!=='blocked';}});
 preloadEmergencyAlarm();
 window.addEventListener('pagehide',()=>alarm.stop(),{once:true});
@@ -53,8 +53,8 @@ function render(){
  }else if(open){
   const rooms=readRoomProgress(gameStorage,warn),letters=finalFragments(rooms),slots=finalInputSlots(state),provided=state.fragmentsPlaced?foundFinalPositions(letters):[],editable=editableFinalPositions(state,letters),needsPlacement=needsFinalPlacement(state,letters);let index=0;
   const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':provided.includes(position)?'is-collected':!needsPlacement&&position===nextFinalPosition(state)?'current':''}">${fixed??toKatakana(slots[position]||'')}</span>`;}).join('');
-  content=`<div class="final-question">${renderFinalFragments(letters,{animate:!fragmentsRevealed&&!state.draft,placed:state.fragmentsPlaced,remaining:slots.filter(letter=>!letter).length})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">あてはめた文字と「・」「ー」は入力しなくてOK。</p></div><aside class="final-controls ${needsPlacement?'is-awaiting-placement':''}"><h2>最後のパスワード</h2><p class="final-input-guide" id="final-input-guide" role="status">${needsPlacement?'まず左の赤いボタンを押そう。<br>そのあと、ここで入力できます。':'残りの空欄を入力しよう。'}</p><p class="final-note">解答チャンスは1回だけ</p><fieldset class="final-input-fields" ${needsPlacement?'disabled':''} aria-label="最後のパスワードの文字入力" aria-describedby="final-input-guide"><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!editable.length?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!editable.length?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${!finalInputComplete(state)?'disabled':''}>これで決定</button></fieldset><p class="final-feedback" role="status"></p></aside>`;
-  fragmentsRevealed=true;
+  content=`<div class="final-question">${renderFinalFragments(letters,{animate:false,placed:state.fragmentsPlaced,remaining:slots.filter(letter=>!letter).length})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask ${needsPlacement?'is-drop-target':justPlaced?'is-filling':''}" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">あてはめた文字と「・」「ー」は入力しなくてOK。</p></div><aside class="final-controls ${needsPlacement?'is-awaiting-placement':''}"><h2>最後のパスワード</h2><p class="final-input-guide" id="final-input-guide" role="status">${needsPlacement?'先に「文字を入れる」<br>ボタンを押そう。':'残りの空欄を入力しよう。'}</p><p class="final-note">解答チャンスは1回だけ</p><fieldset class="final-input-fields" ${needsPlacement?'disabled':''} aria-label="最後のパスワードの文字入力" aria-describedby="final-input-guide"><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!editable.length?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!editable.length?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${!finalInputComplete(state)?'disabled':''}>これで決定</button></fieldset><p class="final-feedback" role="status"></p></aside>`;
+  justPlaced=false;
  }else content=`${renderCollectedLetters(readRoomProgress(gameStorage,warn))}<h1>集めた文字は、最後のパスワードに使います</h1><p>今は、2026年のできごとを巡って文字を集めよう。<br>最後の挑戦が始まると、解答できます。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
  app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'文字を集めよう'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
  updateClock();
@@ -108,7 +108,7 @@ app.addEventListener('click',event=>{
   }return;
  }
  const letters=finalFragments(readRoomProgress(gameStorage,warn));
- if(b.dataset.action==='place-fragments'){if(placeFinalFragments(state,letters)){save();refreshKeys();render();app.querySelector('.final-keypad button:not(:disabled)')?.focus({preventScroll:true});}return;}
+ if(b.dataset.action==='place-fragments'){if(placeFinalFragments(state,letters)){justPlaced=true;save();refreshKeys();render();app.querySelector('.final-keypad button:not(:disabled)')?.focus({preventScroll:true});}return;}
  if(needsFinalPlacement(state,letters))return;
  if(b.dataset.key!==undefined){if(enterFinalLetter(state,b.dataset.key)){save();refreshKeys();render();}return;}
  if(b.dataset.action==='backspace'||b.dataset.action==='clear'){if(eraseFinalLetters(state,finalFragments(readRoomProgress(gameStorage,warn)),{all:b.dataset.action==='clear'})){save();refreshKeys();render();}return;}

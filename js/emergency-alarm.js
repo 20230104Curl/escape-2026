@@ -1,5 +1,5 @@
 export const EMERGENCY_ALARM_KEY='escape2026.emergencyAlarm.v1';
-export const EMERGENCY_ALARM_URL=new URL('../assets/audio/emergency-alarm.wav?v=2026-10-16-web-13',import.meta.url).href;
+export const EMERGENCY_ALARM_URL=new URL('../assets/audio/emergency-alarm.wav?v=2026-10-16-web-14',import.meta.url).href;
 let preloaded=null;
 export function preloadEmergencyAlarm(){
  if(!preloaded){preloaded=new Audio(EMERGENCY_ALARM_URL);preloaded.hidden=true;preloaded.preload='auto';preloaded.dataset.emergencyAlarm='';document.body.append(preloaded);preloaded.load();}
