@@ -1,6 +1,6 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-16-web-17';
-import {withAttempts} from './answer-attempts.js?v=2026-10-16-web-17';
-import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-16-web-17';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-16-web-18';
+import {withAttempts} from './answer-attempts.js?v=2026-10-16-web-18';
+import {emptyState as baseEmpty,parseState as baseParse} from './room1-data.js?v=2026-10-16-web-18';
 
 export const ROOM = {
   number:2,storageKey:'escape2026.room2.v1',title:'ふしぎな図書室',titleHTML:'ふしぎな<br>図書室',
