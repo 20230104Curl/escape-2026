@@ -5,7 +5,7 @@
 .top>.story-link{min-height:48px;min-width:96px;justify-content:center}
 @media(max-width:1000px){.clear-stamp,.failed-stamp{font-size:29px;top:22px;right:9px;padding:4px 7px}}
 
-.hub-fragment.is-missing{background:#f5f1e8;border-style:dashed;color:#a19178}.hub-fragments{white-space:nowrap}.hub-letter-pending{font-size:11px;color:#766d80}.hub-card-status .hub-fragment{min-width:30px;height:30px;font-size:21px}.hub-fragments strong{color:#66518e}.hub-footer .hint-total{margin-left:auto;text-align:right}
-@media(max-width:1000px){.hub-fragments{gap:5px}.hub-fragments .hub-fragment{min-width:25px;height:28px;font-size:18px}.hub-card-status .hub-fragment{min-width:26px;height:27px;font-size:19px}}
+.hub-fragment.is-missing{background:#f5f1e8;border-style:dashed;color:#a19178}.hub-fragments{white-space:nowrap}.hub-fragments strong{color:#66518e}.hub-footer .hint-total{margin-left:auto;text-align:right}
+@media(max-width:1000px){.hub-fragments{gap:5px}.hub-fragments .hub-fragment{min-width:25px;height:28px;font-size:18px}}
 
 .hub-card-status{min-height:30px}@media(max-width:1000px){.hub-card-status{min-height:27px}}
