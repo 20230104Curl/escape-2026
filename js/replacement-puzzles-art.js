@@ -1,4 +1,4 @@
-import {POEM_LINES,MAZE_EXAMPLE,MAZE_QUERY} from './replacement-puzzles-data.js?v=2026-10-16-web-06';
+import {POEM_LINES,MAZE_EXAMPLE,MAZE_QUERY} from './replacement-puzzles-data.js?v=2026-10-16-web-08';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function prefecturePoem(){
  return `<p class="puzzle-instruction">我が国に無いものから、<br>隠された二文字を導き出せ。</p><div class="prefecture-poem">${POEM_LINES.map(line=>`<p>${line.map((part,i)=>i%2?esc(part):`<strong>${esc(part)}</strong>`).join('')}</p>`).join('')}</div>`;

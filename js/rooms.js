@@ -1,10 +1,10 @@
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-16-web-06';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-06';
-import {hintFooter} from './hint-controls.js?v=2026-10-16-web-06';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-06';
-import {watchFinalReveal,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-06';
-import {HUB_ORDER,newsDateBadge} from './news-dates.js?v=2026-10-16-web-06';
-import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-06';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-16-web-08';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-08';
+import {hintFooter} from './hint-controls.js?v=2026-10-16-web-08';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-08';
+import {watchFinalReveal,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-08';
+import {HUB_ORDER,newsDateBadge} from './news-dates.js?v=2026-10-16-web-08';
+import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-08';
 function render(){
   const rooms=readRoomProgress(gameStorage,()=>document.querySelector('#storage-warning').hidden=false);
   const complete=rooms.filter(room=>room.complete).length,solved=rooms.reduce((sum,room)=>sum+room.state.solved.length,0);

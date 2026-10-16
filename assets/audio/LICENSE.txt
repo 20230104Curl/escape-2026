@@ -17,3 +17,8 @@ joya-bell.mp3 は配布音源の冒頭0.095秒の無音を削除して再エン�
 原音 SHA-256: 9ff5124d5f33eacbdc671c1b2ebbdb0d2c87492fbd6fca0fe7f38a39ddcc5e83
 
 編集後 SHA-256: fc1279384b02ade03a39aefad99808d26ae6b33f5117ca5ca9b78e19c2e76435
+
+緊急警報 emergency-alarm.wav
+このゲーム用に合成したオリジナルの電子音です。録音素材は使用していません。
+生成元: scripts/generate-emergency-alarm.mjs
+長さ: 2秒 / 22050 Hz / モノラル PCM WAV

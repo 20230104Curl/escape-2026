@@ -1,4 +1,4 @@
-export const BELL_AUDIO_URL=new URL('../assets/audio/joya-bell.mp3?v=2026-10-16-web-06',import.meta.url).href;
+export const BELL_AUDIO_URL=new URL('../assets/audio/joya-bell.mp3?v=2026-10-16-web-08',import.meta.url).href;
 export function preloadEndingBell(){const audio=new Audio(BELL_AUDIO_URL);audio.hidden=true;audio.preload='auto';document.body.append(audio);audio.load();return audio;}
 export const BELL_SECONDS=5;
 export const BELL_FADE_AT=3.5;
