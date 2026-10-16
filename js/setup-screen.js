@@ -1,5 +1,5 @@
-import {testPlay} from './play-mode.js?v=2026-10-16-web-16';
-import {GRADES,hintLimit,TOTAL_HINTS} from './play-settings.js?v=2026-10-16-web-16';
+import {testPlay} from './play-mode.js?v=2026-10-16-web-17';
+import {GRADES,hintLimit,TOTAL_HINTS} from './play-settings.js?v=2026-10-16-web-17';
 export function setupScreen(grade,players,preview=false){
  const limit=hintLimit(grade,players);
  return `<main class="shell opening-shell setup-shell"><img class="opening-backdrop" src="assets/images/op-01-bell.png" alt="雪の積もる境内と、あたたかな灯りに包まれた除夜の鐘。"><header class="top"><div class="brand">2026年からの脱出</div></header><section class="story-stage"><div class="setup-card"><h1>学年と人数を選ぼう</h1><fieldset><legend>学年</legend><div class="grade-options">${GRADES.map(g=>`<button class="setup-option ${grade===g.value?'selected':''}" data-grade="${g.value}" aria-pressed="${grade===g.value}">${g.label}</button>`).join('')}</div></fieldset><fieldset><legend>プレイ人数</legend><div class="player-options">${[1,2].map(n=>`<button class="setup-option ${players===n?'selected':''}" data-players="${n}" aria-pressed="${players===n}">${n}人</button>`).join('')}</div></fieldset><p class="setup-budget" role="status" aria-live="polite">${limit?`${testPlay?`ヒントは <strong>全${TOTAL_HINTS}個</strong> すべて見られます`:`使えるヒントは <strong>${limit}個</strong> ／ 全${TOTAL_HINTS}個`}`:'学年と人数を選んでください'}</p><button class="primary" data-setup-confirm ${limit?'':'disabled'}>この設定ではじめる</button></div></section><div class="story-footer" aria-hidden="true"></div></main>`;

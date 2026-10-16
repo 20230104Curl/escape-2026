@@ -1,16 +1,16 @@
-import {renderFirstRoomGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-16';
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-16';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-16';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-16';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-16';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-16';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-16';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-16';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-16';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-16';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-16';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-16';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-16';
+import {renderFirstRoomGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-17';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-17';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-17';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-17';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-17';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-17';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-17';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-17';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-17';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-17';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-17';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-17';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-17';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);

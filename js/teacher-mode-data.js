@@ -1,10 +1,10 @@
-import {EMERGENCY_ALARM_KEY} from './emergency-alarm.js?v=2026-10-16-web-16';
-import {FINAL_KEY,EXPLORATION_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-16-web-16';
-import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-16-web-16';
-import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-16-web-16';
-import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-16-web-16';
-import {FIRST_GUIDE_KEY} from './first-area-guide.js?v=2026-10-16-web-16';
-import {FAILURE_NOTICE_KEY} from './ending-notice.js?v=2026-10-16-web-16';
+import {EMERGENCY_ALARM_KEY} from './emergency-alarm.js?v=2026-10-16-web-17';
+import {FINAL_KEY,EXPLORATION_KEY,FINAL_STAGE_START_KEY} from './story-flow.js?v=2026-10-16-web-17';
+import {SETTINGS_KEY,HINTS_KEY} from './play-settings.js?v=2026-10-16-web-17';
+import {TEST_FINAL_KEY} from './play-mode.js?v=2026-10-16-web-17';
+import {YEAR_ORDER_KEY} from './year-order-data.js?v=2026-10-16-web-17';
+import {FIRST_GUIDE_KEY} from './first-area-guide.js?v=2026-10-16-web-17';
+import {FAILURE_NOTICE_KEY} from './ending-notice.js?v=2026-10-16-web-17';
 
 export function teacherTapSequence(maxGap=1500){
  let count=0,last=null;
