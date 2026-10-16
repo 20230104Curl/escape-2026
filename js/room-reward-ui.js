@@ -1,5 +1,5 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-06';
-import {gameUrl} from './play-mode.js?v=2026-10-16-web-06';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-08';
+import {gameUrl} from './play-mode.js?v=2026-10-16-web-08';
 
 export function letterTile(letter){const value=toKatakana(letter);return `<span class="collected-letter" aria-label="集めた文字 ${value}">${value}</span>`;}
 export function renderCollectedLetters(rooms){

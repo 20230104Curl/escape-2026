@@ -1,20 +1,35 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-06';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-06';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-06';
-import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-06';
-import {preloadEndingBell} from './ending-bell.js?v=2026-10-16-web-06';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-06';
-import {answerKeys} from './room1-data.js?v=2026-10-16-web-06';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-06';
-import {EMERGENCY} from './story-content.js?v=2026-10-16-web-06';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-06';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-06';
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-06';
-import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-06';
-import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-06';
+import {EMERGENCY_ALARM_KEY,createEmergencyAlarm,preloadEmergencyAlarm,emergencyAlarmPlayed,rememberEmergencyAlarm} from './emergency-alarm.js?v=2026-10-16-web-08';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-08';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-08';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-08';
+import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-08';
+import {preloadEndingBell} from './ending-bell.js?v=2026-10-16-web-08';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-08';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-08';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-08';
+import {EMERGENCY} from './story-content.js?v=2026-10-16-web-08';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-08';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-08';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-08';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-08';
+import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-08';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
 let fragmentsRevealed=false;
+const alarm=createEmergencyAlarm({onChange:status=>{const button=dialog.querySelector('[data-alarm-play]');if(button)button.hidden=status!=='blocked';}});
+preloadEmergencyAlarm();
+window.addEventListener('pagehide',()=>alarm.stop(),{once:true});
+dialog.addEventListener('close',()=>{if(dialog.classList.contains('emergency-dialog'))alarm.stop();dialog.removeAttribute('role');dialog.removeAttribute('aria-describedby');});
+async function playEmergencyAlarm(retry=false){
+ const finalAt=classTimes().finalAt;
+ const play=async()=>{
+  if(!awaitingStart()||!dialog.open||emergencyAlarmPlayed(gameStorage,finalAt))return;
+  if(await (retry?alarm.retry():alarm.start()))rememberEmergencyAlarm(gameStorage,finalAt);
+ };
+ // A manual retry calls play synchronously to preserve the browser's gesture.
+ if(retry||!navigator.locks)return play();
+ try{await navigator.locks.request(gameStorage.scopeKey(EMERGENCY_ALARM_KEY),play);}catch{}
+}
 // Warm the success scene during the final challenge so image and sound can start together.
 preloadEndingBell();
 const endingImage=new Image();endingImage.src='assets/images/ed-01-bell.png';
@@ -57,16 +72,18 @@ function tick(){
  if(expireYearOrder(order,Date.now(),classTimes()))saveOrder();
  if(expireFinal(state,Date.now()))save();
  if(canRevealFinal(state)){go('ending.html');return true;}
- if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted||wasOrder!==inOrder()){if(dialog.open){dialog.close();dialog.classList.remove('emergency-dialog');}refreshKeys();render();}
+ if(wasOpen!==isFinalOpen()||wasSubmitted!==state.submitted||wasOrder!==inOrder()){if(dialog.open){if(dialog.classList.contains('emergency-dialog'))alarm.stop();dialog.close();dialog.classList.remove('emergency-dialog');}refreshKeys();render();}
  updateClock();
  return state.submitted;
 }
 function transfer(){
  if(!awaitingStart()||dialog.open)return;
- dialog.innerHTML=`<h2 id="dialog-title">${EMERGENCY.title}</h2><p class="emergency-copy">${EMERGENCY.body}</p><p><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter disabled>準備しています…</button>`;dialog.classList.add('emergency-dialog');dialog.showModal();
+ dialog.innerHTML=`<div class="emergency-heading"><div class="emergency-title"><span class="emergency-symbol" aria-hidden="true">!</span><div><p class="emergency-label">探索時間終了</p><h2 id="dialog-title">${EMERGENCY.title}</h2></div></div><button class="emergency-sound" data-alarm-play hidden>警報音を鳴らす</button></div><p class="emergency-copy" id="emergency-body">${EMERGENCY.body}</p><p class="emergency-last"><strong>${EMERGENCY.last}</strong></p><button class="primary" data-enter disabled>準備しています…</button>`;dialog.classList.add('emergency-dialog');dialog.setAttribute('role','alertdialog');dialog.setAttribute('aria-describedby','emergency-body');dialog.showModal();
+ void playEmergencyAlarm();
+ dialog.querySelector('[data-alarm-play]').onclick=()=>void playEmergencyAlarm(true);
  const enter=dialog.querySelector('[data-enter]');illustrationsReady.then(()=>{if(enter.isConnected){enter.disabled=false;enter.textContent='できごとの並べ替えへ';}});
  enter.onclick=async()=>{
-  if(enter.disabled)return;enter.disabled=true;
+  if(enter.disabled)return;enter.disabled=true;alarm.stop();
   const begin=()=>startFinalStage(gameStorage,classTimes().finalAt);
   try{if(navigator.locks)await navigator.locks.request(gameStorage.scopeKey(FINAL_STAGE_START_KEY),begin);else begin();dialog.close();dialog.classList.remove('emergency-dialog');tick();render();}
   catch{warn();enter.disabled=false;}

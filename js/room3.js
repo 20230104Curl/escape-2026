@@ -1,5 +1,5 @@
-import {palindromeVisual,timesVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-06';
-import {prefecturePoem} from './replacement-puzzles-art.js?v=2026-10-16-web-06';
-import {mountRoom} from './room-game.js?v=2026-10-16-web-06';
-import {ROOM,QUESTIONS,makeEmptyState,restoreState} from './room3-data.js?v=2026-10-16-web-06';
+import {palindromeVisual,timesVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-08';
+import {prefecturePoem} from './replacement-puzzles-art.js?v=2026-10-16-web-08';
+import {mountRoom} from './room-game.js?v=2026-10-16-web-08';
+import {ROOM,QUESTIONS,makeEmptyState,restoreState} from './room3-data.js?v=2026-10-16-web-08';
 mountRoom({room:ROOM,questions:QUESTIONS,makeEmptyState,restoreState,renderVisual:index=>[prefecturePoem,palindromeVisual,timesVisual][index](),onAction:()=>false});
