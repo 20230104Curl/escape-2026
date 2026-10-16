@@ -20,3 +20,5 @@
 .final-clues.is-open .fragment-frame,.final-clues.is-open .final-slot{flex:none;width:var(--final-cell-width);height:var(--final-cell-height);font-size:var(--final-letter-size);line-height:1;border-radius:8px}
 .final-clues.is-open .final-mask{gap:var(--final-cell-gap)}
 @media(max-width:1000px),(max-height:650px){.final-clues.is-open{--final-letter-size:30px;--final-cell-width:40px;--final-cell-height:56px;--final-cell-gap:3px}}
+
+.final-clues .hub-fragments{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}.final-clues .hub-fragment{display:grid;place-items:center;width:32px;height:40px;border:2px solid #c5a45b;border-radius:7px;background:#fff1bc;font-size:25px;font-weight:800}.final-clues .hub-fragment.is-missing{background:#f5f1e8;border-style:dashed;color:#a19178}.final-clues .hub-fragments>span:first-child{margin-right:8px;font-size:15px}

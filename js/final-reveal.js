@@ -1,6 +1,6 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-04';
-import {loadSettings} from './play-settings.js?v=2026-10-16-web-04';
-import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-04';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-05';
+import {loadSettings} from './play-settings.js?v=2026-10-16-web-05';
+import {classTimes,timestamp,loadFinal,expireFinal,canRevealFinal,FINAL_KEY,remaining,clockText} from './story-flow.js?v=2026-10-16-web-05';
 let leaving=false;
 function go(path){if(leaving)return;leaving=true;location.replace(gameUrl(path));}
 
@@ -11,8 +11,7 @@ export function isFinalOpen(now=Date.now(),at=classTimes().finalAt){
   const deadline=revealTime(at);
   return Number.isFinite(now)&&Number.isFinite(deadline)&&now>=deadline;
 }
-export function finalFragments(rooms,now=Date.now(),at=classTimes().passwordAt){
-  if(!isFinalOpen(now,at))return [];
+export function finalFragments(rooms){
   return rooms.filter(room=>room.complete).map(room=>room.reward);
 }
 export function refreshExplorationClock(){

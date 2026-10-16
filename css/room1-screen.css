@@ -31,7 +31,6 @@ dialog{max-width:580px;padding:24px}dialog .hint-text{font-size:19px;line-height
 .area-switch{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border:2px solid #6650af;border-radius:12px;background:#eee7ff;color:#4e3889;font-size:15px;font-weight:800;text-decoration:none;white-space:nowrap;box-shadow:0 2px 0 #cdbde8}.area-switch:hover{background:#dfd1fa}.shell:has(.area-switch)>.top{height:52px}.shell:has(.area-switch) .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}
 @media(max-width:1000px){.area-switch{font-size:13px;padding:7px 10px}.top-right{gap:8px}.shell:has(.area-switch) .brand{font-size:14px;gap:8px}.shell:has(.area-switch) .exploration-clock{margin-left:0}}
 .slot.fixed{background:#eee5d5;border-color:#c8b593;color:#705c43}.fixed-letter-help{font-size:12px;line-height:1.4;text-align:center;color:#705c43}
-.sealed-fragment{width:80px;height:88px;margin:3px auto}.sealed-fragment svg{display:block;width:100%;height:100%}.reward-box .sealed-fragment{height:85px;width:78px}.reward-screen .sealed-fragment{width:78px;height:86px;margin:10px auto}
 
 .reward-box [data-action="reward"],.reward-hub-link{width:100%;min-height:56px;padding:8px;font-size:13px;flex:none}.reward-hub-link{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;touch-action:manipulation;margin-top:4px}
 
@@ -50,3 +49,6 @@ dialog .hint-text[data-hint-level]{background:var(--hint-tint);color:var(--hint-
 dialog:has([data-hint-level]) .hint-kana-table{border-color:var(--hint-accent);background:var(--hint-accent)}
 dialog:has([data-hint-level]) .hint-kana-table span{background:var(--hint-tint);color:var(--hint-ink)}
 dialog:has([data-hint-level]) .hint-kana-table span:empty{background:var(--hint-muted-border)}
+
+.collected-letter{display:grid;place-items:center;flex:none;width:72px;height:86px;margin:4px auto;border:2px solid #c5a45b;border-radius:12px;background:#fff1bc;color:#26354b;font-size:48px;font-weight:900;line-height:1;box-shadow:2px 4px 0 #e0cda0}
+.room-clear-reward{display:flex;align-items:center;gap:12px;margin-top:12px;padding:8px 14px;border:2px solid #c5a45b;border-radius:12px;background:#fff8de}.room-clear-reward .collected-letter{width:48px;height:56px;margin:0;font-size:34px}.success .room-clear-reward p{font-size:13px;font-weight:800;line-height:1.55;text-align:left}.welcome-copy p.collection-goal{margin-top:12px;padding:8px 12px;border-left:4px solid #b99a50;background:#fff3cf;border-radius:6px;font-size:14px;line-height:1.65}

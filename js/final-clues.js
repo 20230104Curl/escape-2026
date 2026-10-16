@@ -1,19 +1,23 @@
-import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-04';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-04';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-04';
-import {sealedFragment} from './room-reward-ui.js?v=2026-10-16-web-04';
-import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-04';
-import {answerKeys} from './room1-data.js?v=2026-10-16-web-04';
-import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-04';
-import {EMERGENCY} from './story-content.js?v=2026-10-16-web-04';
-import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-04';
-import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-04';
-import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-04';
-import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-04';
-import {finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-04';
+import {gameStorage,gameSession,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-05';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-05';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-05';
+import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-05';
+import {preloadEndingBell} from './ending-bell.js?v=2026-10-16-web-05';
+import {isFinalOpen,finalFragments} from './final-reveal.js?v=2026-10-16-web-05';
+import {answerKeys} from './room1-data.js?v=2026-10-16-web-05';
+import {classTimes,FINAL_KEY,FINAL_INPUT,FINAL_FIXED,FINAL_STAGE_START_KEY,startFinalStage,loadFinal,decideFinal,expireFinal,canRevealFinal,toKatakana,formatFinalAnswer,remaining,isPasswordOpen} from './story-flow.js?v=2026-10-16-web-05';
+import {EMERGENCY} from './story-content.js?v=2026-10-16-web-05';
+import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-05';
+import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-05';
+import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-05';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-05';
+import {finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-05';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
 let fragmentsRevealed=false;
+// Warm the success scene during the final challenge so image and sound can start together.
+preloadEndingBell();
+const endingImage=new Image();endingImage.src='assets/images/ed-01-bell.png';
 const awaitingStart=()=>isFinalOpen()&&!Number.isFinite(classTimes().orderAt)&&!state.submitted;
 const inOrder=()=>isFinalOpen()&&!awaitingStart()&&!isPasswordOpen()&&!state.submitted;
 // Prepare the illustrations while the warning is being read, before the clock starts.
@@ -26,9 +30,9 @@ function refreshKeys(){keys=nextFinalPosition(state)<0?[]:answerKeys(FINAL_INPUT
 function render(){
  const open=isFinalOpen(),ordering=inOrder();wasOpen=open;wasSubmitted=state.submitted;wasOrder=ordering;let content;
  if(state.submitted){
-  content=`${sealedFragment()}<h1>解答を受け付けました</h1><p>結果は、カウントダウンが終わると<br>発表されます。</p>`;
+  content=`${renderCollectedLetters(readRoomProgress(gameStorage,warn))}<h1>解答を受け付けました</h1><p>結果は、カウントダウンが終わると<br>発表されます。</p>`;
  }else if(awaitingStart()){
-  content=sealedFragment();
+  content=renderCollectedLetters(readRoomProgress(gameStorage,warn));
  }else if(ordering){
   content=renderYearOrder(order);
  }else if(open){
@@ -36,8 +40,8 @@ function render(){
   const mask=Array.from({length:11},(_,i)=>{const fixed=FINAL_FIXED[i],position=fixed===undefined?index++:-1;return `<span class="final-slot ${fixed!==undefined?'fixed':provided.includes(position)?'is-collected':position===nextFinalPosition(state)?'current':''}">${fixed??toKatakana(slots[position]||'')}</span>`;}).join('');
   content=`<div class="final-question">${renderFinalFragments(letters,{animate:!fragmentsRevealed&&!state.draft,placed:state.fragmentsPlaced,remaining:slots.filter(letter=>!letter).length})}<h2>2027年への扉を開く言葉は？</h2><div class="final-mask" role="status" aria-label="入力中のパスワード">${mask}</div><p class="final-note">あてはめた文字と「・」「ー」は入力しなくてOK。</p></div><aside class="final-controls"><h2>最後のパスワード</h2><p class="final-note">解答チャンスは1回だけ</p><div class="final-keypad">${keys.length?keys.map(k=>`<button data-key="${k}" aria-label="${toKatakana(k)}">${toKatakana(k)}</button>`).join(''):'<p class="final-note">入力できました。<br>決定前に確かめよう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!editable.length?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!editable.length?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${!finalInputComplete(state)?'disabled':''}>これで決定</button><p class="final-feedback" role="status"></p></aside>`;
   fragmentsRevealed=true;
- }else content=`${sealedFragment()}<h1>まだ封印は開いていない</h1><p>文字のかけらが読めるのは、最後のナゾが始まってから。<br>今は、2026年のできごとを巡ろう。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
- app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'封印中'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
+ }else content=`${renderCollectedLetters(readRoomProgress(gameStorage,warn))}<h1>集めた文字は、最後のパスワードに使います</h1><p>今は、2026年のできごとを巡って文字を集めよう。<br>最後の挑戦が始まると、解答できます。</p><a class="primary" href="rooms.html">できごと一覧へ</a>`;
+ app.innerHTML=`<main class="shell"><header class="top"><div class="brand">2026年からの脱出</div><span class="badge" id="final-clock" role="timer">${open?'最後の挑戦':'文字を集めよう'}</span></header>${ordering?content:`<section class="final-clues ${state.submitted?'is-waiting':open&&!awaitingStart()?'is-open':'is-locked'}">${content}</section>`}</main>`;
  updateClock();
 }
 function updateClock(){
