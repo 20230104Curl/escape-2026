@@ -45,7 +45,7 @@
  .illustrated-ending .ending-complete strong{font-size:18px}
 }
 
-.ending-sound-credit{padding:8px 12px;background:#fffaf0ed;border-radius:10px;font-size:12px;line-height:1.5;color:#384f59}
+.ending-sound-credit{padding:4px 8px;background:#fffaf0c7;border-radius:6px;font-size:10px;line-height:1.5;color:#66716f}
 .ending-sound-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .illustrated-ending .story-footer .ending-sound-button{font-size:14px}
 .ending-sound-button[hidden]{display:none}

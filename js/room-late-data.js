@@ -1,7 +1,7 @@
-import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-16-web-15';
-import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-16-web-15';
-import {withAttempts} from './answer-attempts.js?v=2026-10-16-web-15';
-import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-16-web-15';
+import {emptyState,parseState,inputAnswer} from './room1-data.js?v=2026-10-16-web-16';
+import {FLOWER_CANDIDATES} from './late-puzzles-data.js?v=2026-10-16-web-16';
+import {withAttempts} from './answer-attempts.js?v=2026-10-16-web-16';
+import {FLOWER_WORDS,flowerMarks} from './flower-search-data.js?v=2026-10-16-web-16';
 
 const roomNames={4:"からくり工房",5:"風の航海室",6:"おやつの温室",7:"星の観測室",8:"明日への展示室"};
 const room=(number,title,titleHTML,image,imageAlt,caption,intro,details,reward)=>({

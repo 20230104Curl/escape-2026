@@ -1,11 +1,11 @@
-import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-16-web-15';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-15';
-import {hintFooter} from './hint-controls.js?v=2026-10-16-web-15';
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-15';
-import {watchFinalReveal,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-15';
-import {HUB_ORDER,newsDateBadge} from './news-dates.js?v=2026-10-16-web-15';
-import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-15';
-import {prepareFirstGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-15';
+import {gameStorage,onPlayStorage} from './play-mode.js?v=2026-10-16-web-16';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-16';
+import {hintFooter} from './hint-controls.js?v=2026-10-16-web-16';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-16';
+import {watchFinalReveal,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-16';
+import {HUB_ORDER,newsDateBadge} from './news-dates.js?v=2026-10-16-web-16';
+import {renderCollectedLetters} from './room-reward-ui.js?v=2026-10-16-web-16';
+import {prepareFirstGuide,advanceFirstGuide} from './first-area-guide.js?v=2026-10-16-web-16';
 function render(){
   const rooms=readRoomProgress(gameStorage,()=>document.querySelector('#storage-warning').hidden=false);
   const guide=prepareFirstGuide(gameStorage,rooms,HUB_ORDER[0]),showGuide=guide.step==='area';
