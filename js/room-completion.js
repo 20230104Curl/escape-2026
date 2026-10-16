@@ -1,5 +1,7 @@
-import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-04';
-import {guardExploration} from './final-reveal.js?v=2026-10-16-web-04';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-05';
+import {letterTile} from './room-reward-ui.js?v=2026-10-16-web-05';
+import {gameStorage,gameUrl} from './play-mode.js?v=2026-10-16-web-05';
+import {guardExploration} from './final-reveal.js?v=2026-10-16-web-05';
 export const ROOM_CLEAR_DELAY=3000;
 
 export function roomCompletion(roomKey,restore,warn){
@@ -16,4 +18,4 @@ export function roomCompletion(roomKey,restore,warn){
  return {cancel,returnNow,get pending(){return timer!==null;},start(){cancel();timer=setTimeout(returnNow,ROOM_CLEAR_DELAY);}};
 }
 
-export function roomClearNotice(pending){return pending?'<p class="room-clear-notice" role="status">このできごとをクリア！<br>かけらを保管しました。一覧に戻ります。</p>':'';}
+export function roomClearNotice(pending,letter,complete=pending){return complete?`<div class="room-clear-reward" role="status">${letterTile(letter)}<p>文字「${toKatakana(letter)}」を手に入れた！<br>最後のパスワードの手がかりです。${pending?'<br>できごと一覧に戻ります。':''}</p></div>`:'';}

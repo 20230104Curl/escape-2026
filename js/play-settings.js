@@ -1,6 +1,6 @@
-import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-04';
-import {loadExploration} from './story-flow.js?v=2026-10-16-web-04';
-import {gameStorage} from './play-mode.js?v=2026-10-16-web-04';
+import {readRoomProgress} from './room-catalog.js?v=2026-10-16-web-05';
+import {loadExploration} from './story-flow.js?v=2026-10-16-web-05';
+import {gameStorage} from './play-mode.js?v=2026-10-16-web-05';
 export const SETTINGS_KEY='escape2026.playSettings.v1',HINTS_KEY='escape2026.hints.v1';
 export const GRADES=[{value:4,label:'小4'},{value:5,label:'小5'},{value:6,label:'小6'},{value:7,label:'中1'},{value:8,label:'中2'},{value:9,label:'中3'}];
 export const HINT_LIMITS={4:36,5:30,6:24,7:18,8:12,9:12},TOTAL_HINTS=48;

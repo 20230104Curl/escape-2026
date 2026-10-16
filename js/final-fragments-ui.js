@@ -1,4 +1,4 @@
-import {toKatakana,FINAL_INPUT} from './story-flow.js?v=2026-10-16-web-04';
+import {toKatakana,FINAL_INPUT} from './story-flow.js?v=2026-10-16-web-05';
 
 export function renderFinalFragments(letters,{animate=false,placed=false,remaining=FINAL_INPUT.length}={}){
  const instruction=remaining===0?'すべての文字が入りました。<br><strong>答えを確かめて「これで決定」を押してください。</strong>':`${letters.length?(placed?'見つけた文字を下の欄にあてはめました。':'ボタンを押すと、見つけた文字が下の欄に入ります。'):'空欄の文字を、自分で考えよう。'}<br><strong>${placed?`残り${remaining}文字を自分で考えて入力し、`:'残りの空欄にすべての文字を入力して、'}<br>ある有名な言葉をつくってください。</strong>`;

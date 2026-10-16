@@ -1,3 +1,5 @@
+export const BELL_AUDIO_URL=new URL('../assets/audio/joya-bell.mp3?v=2026-10-16-web-05',import.meta.url).href;
+export function preloadEndingBell(){const audio=new Audio(BELL_AUDIO_URL);audio.hidden=true;audio.preload='auto';document.body.append(audio);audio.load();return audio;}
 export const BELL_SECONDS=5;
 export const BELL_FADE_AT=3.5;
 export const BELL_VOLUME=0.6;
@@ -5,7 +7,7 @@ export const shouldRingEnding=(state,first,ready)=>ready&&first&&state.submitted
 
 // Keep the short bell independent of story navigation. Only a blocked first
 // attempt can be retried by a gesture; a played bell cannot be repeated.
-export function createEndingBell({makeAudio=()=>{const audio=new Audio(new URL('../assets/audio/joya-bell.mp3',import.meta.url).href);audio.hidden=true;document.body.append(audio);return audio;},onChange=()=>{},schedule=setInterval,cancel=clearInterval}={}){
+export function createEndingBell({makeAudio=preloadEndingBell,onChange=()=>{},schedule=setInterval,cancel=clearInterval}={}){
  let audio=null,timer=null,status='idle';
  const change=value=>{status=value;onChange(value);};
  const clear=()=>{if(timer!==null){cancel(timer);timer=null;}};

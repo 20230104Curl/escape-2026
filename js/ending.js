@@ -1,8 +1,8 @@
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-04';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-04';
-import {ENDINGS} from './story-content.js?v=2026-10-16-web-04';
-import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-16-web-04';
-import {createEndingBell} from './ending-bell.js?v=2026-10-16-web-04';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-05';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-05';
+import {ENDINGS} from './story-content.js?v=2026-10-16-web-05';
+import {loadFinal,expireFinal,canRevealFinal,finalRevealAt,FINAL_KEY} from './story-flow.js?v=2026-10-16-web-05';
+import {createEndingBell} from './ending-bell.js?v=2026-10-16-web-05';
 const scenes=[
  {image:'ed-01-bell',alt:'雪の積もる鐘楼で108回目の鐘が鳴り、金色の光の波紋が広がる。'},
  {image:'ed-02-time-moves',alt:'再び灯りがともった町を、子どもたちと犬が見守る。止まっていた時間が動き出した。'},
@@ -10,7 +10,9 @@ const scenes=[
 ];
 for(const scene of scenes.slice(1)){const image=new Image();image.src=`assets/images/${scene.image}.png`;}
 const previewResult=new URLSearchParams(location.search).get('preview'),preview=['success','rescued'].includes(previewResult);
-const app=document.querySelector('#room-app');let state=preview?{submitted:true,result:previewResult,decidedAt:Date.now(),bellPlayed:true}:loadFinal(gameStorage),manual=0,animateBell=preview&&previewResult==='success',lastRender='';
+const app=document.querySelector('#room-app');let state=preview?{submitted:true,result:previewResult,decidedAt:Date.now(),bellPlayed:true}:loadFinal(gameStorage),manual=0,animateBell=preview&&previewResult==='success',lastRender='',mediaReady=preview;
+const firstIllustration=new Image();firstIllustration.src='assets/images/ed-01-bell.png';
+const firstIllustrationReady=firstIllustration.decode().catch(()=>{});
 const bell=createEndingBell({onChange:()=>{const button=app.querySelector('[data-ring-bell]');if(button)button.hidden=bell.status!=='blocked';}});
 window.addEventListener('pagehide',()=>bell.dispose(),{once:true});
 if(!preview&&expireFinal(state,Date.now()))save();
@@ -20,7 +22,7 @@ guard();
 function save(){try{gameStorage.setItem(FINAL_KEY,JSON.stringify(state));}catch{document.querySelector('#storage-warning').hidden=false;}}
 function currentFrame(){return preview||testPlay?manual:Math.min(2,Math.max(manual,Math.floor((Date.now()-finalRevealAt(state))/20000)));}
 function render(){
- if(!ready())return;
+ if(!ready()||!mediaReady)return;
  const index=currentFrame(),frame=ENDINGS[state.result][index],scene=state.result==='rescued'&&index===0?{image:'ed-02-time-moves',alt:'仲間に助けられ、再び灯りのともる町に戻ってきた。'}:scenes[index],key=`${state.result}/${index}/${state.bellPlayed}`;
  if(key===lastRender)return;lastRender=key;
  const ringing=animateBell&&index===0;animateBell=false;
@@ -29,13 +31,18 @@ function render(){
 async function showEnding(){
  if(!guard())return;
  if(preview){render();return;}
- const show=()=>{
+ const show=async()=>{
   state=loadFinal(gameStorage);if(!guard())return;
   // Claim the first ending under the storage lock, including a blocked audio
   // attempt. Reloads and other tabs must never ring the same ending again.
   const first=!state.bellPlayed;animateBell=first&&state.result==='success';
-  if(first){state.bellPlayed=true;save();}render();
-  void bell.start(state,{first,ready:ready()});
+  if(first){state.bellPlayed=true;save();}
+  if(first&&state.result==='success'){
+   await firstIllustrationReady;
+   // Resolve when playback begins, not when the five-second sound ends.
+   await bell.start(state,{first,ready:ready()});
+  }
+  mediaReady=true;render();
  };
  if(navigator.locks)await navigator.locks.request(gameStorage.scopeKey(FINAL_KEY+'.bell'),show);else show();
 }

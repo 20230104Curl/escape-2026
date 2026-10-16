@@ -9,8 +9,11 @@ https://creativecommons.org/licenses/by/4.0/
 利用条件: https://otologic.jp/free/license.html
 取得日: 2026-10-16
 
-joya-bell.mp3 は配布音源をそのまま収録しています。ゲームでは音量を60%とし、
+joya-bell.mp3 は配布音源の冒頭0.095秒の無音を削除して再エンコードしています。
+ゲームでは音量を60%とし、
 再生開始3.5秒から音量を下げ、5秒で停止する演出を加えています。
-音源ファイル自体の編集はありません。
+成功画面の前に音声とイラストを先読みし、音の再生開始に合わせて表示します。
 
 原音 SHA-256: 9ff5124d5f33eacbdc671c1b2ebbdb0d2c87492fbd6fca0fe7f38a39ddcc5e83
+
+編集後 SHA-256: fc1279384b02ade03a39aefad99808d26ae6b33f5117ca5ca9b78e19c2e76435
