@@ -1,15 +1,15 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-12';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-12';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-12';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-12';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-12';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-12';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-12';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-12';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-12';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-12';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-12';
-import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-12';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-13';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-13';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-13';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-13';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-13';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-13';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-13';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-13';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-13';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-13';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-13';
+import {answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-13';
 
 export function mountRoom({room,questions,makeEmptyState,restoreState,renderVisual,onAction,renderHintExtra=()=>''}){
 room=withNewsTheme(room);
@@ -37,12 +37,12 @@ function hintPanel(){return sharedHintPanel(room.number,current);}
 function answerPanel(){const q=QUESTIONS[current],value=state.drafts[current],target=inputAnswer(q);let inputIndex=0;
   const slots=[...q.answer].map((_,i)=>{const fixed=q.fixedLetters?.[i],mark=q.fixedMarks?.[i],index=fixed===undefined?inputIndex++:-1;return `<span class="slot-group">${q.answerSymbols?`<b class="slot-symbol">${q.answerSymbols[i]}</b>`:''}<span class="slot ${fixed!==undefined?'fixed':value.length===index?'current':''}" ${fixed!==undefined?`aria-label="${esc(fixed)} 入力不要"`:''}>${esc(fixed!==undefined?fixed:value[index]||'')}${mark?`<span class="slot-fixed-mark" aria-label="濁点 入力不要">${esc(mark)}</span>`:''}</span></span>`;}).join('');
   return `<aside class="answer-panel"><h2>${q.inputTitle||'答えを入力'}</h2>${q.maxAttempts?`<p class="attempt-rule"><strong>解答チャンスは${q.maxAttempts}回だけ</strong><br>迷ったらヒントを見てから決めよう。</p>`:''}<div class="slots" role="status" aria-live="polite" aria-label="入力した文字 ${esc(value||'まだありません')}">${slots}</div>${q.inputNote?`<p class="fixed-letter-help">${esc(q.inputNote)}</p>`:''}<p class="answer-help">1文字ずつ選ぼう。入力するたびに文字と並びが変わります。</p><div class="keypad ${/^\d+$/.test(q.answer)?'numeric':''}">${value.length<target.length?keys.map(k=>`<button data-key="${esc(k)}" aria-label="${esc(k)}">${esc(k)}</button>`).join(''):'<p class="smallprint" style="grid-column:1/-1;text-align:center">入力できました！<br>「これで決定」を押そう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!value?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!value?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${value.length!==target.length?'disabled':''}>これで決定</button><p class="feedback" role="status" aria-live="polite">${feedback}</p></aside>`;}
-function success(){const q=QUESTIONS[current];return `<div class="success"><div class="seal" aria-hidden="true">✓</div><h2>正解！</h2><div class="correct-answer">${q.answer}</div><p>${readableCopy(q.explanation)}</p>${roomClearNotice(completion.pending,room.reward,state.solved.length===3)}<button class="primary" data-action="${state.solved.length===3?'hub':'room'}">${state.solved.length===3?'できごと一覧に戻る':'エリアに戻って、次のナゾへ →'}</button></div>`;}
+function success(){const q=QUESTIONS[current];return `<div class="success"><div class="seal" aria-hidden="true">✓</div><h2>正解！</h2><div class="correct-answer">${q.answer}</div><p>${readableCopy(q.explanation)}</p>${roomClearNotice(room.reward,state.solved.length===3)}<button class="primary" data-action="${state.solved.length===3?'hub':'room'}">${state.solved.length===3?'できごと一覧に戻る':'エリアに戻って、次のナゾへ →'}</button></div>`;}
 function failure(){const q=QUESTIONS[current];return `<div class="success failure"><div class="seal" aria-hidden="true">×</div><h2>今回は不正解</h2><p>このナゾの解答チャンスは${q.maxAttempts}回です。<br>このエリアの文字は獲得できません。</p><div class="correct-answer">正解は「${q.answer}」</div><p>${readableCopy(q.explanation)}</p><button class="primary" data-action="room">エリアに戻って、ほかのナゾへ →</button></div>`;}
 function puzzle(){return `<div class="title-row"><div><p class="eyebrow">ナゾ ${String(current+1).padStart(2,'0')} / 03</p><h1>${QUESTIONS[current].title}</h1></div><button class="secondary" data-action="room">このエリアの3問に戻る</button></div>${state.solved.includes(current)?success():failed(current)?failure():`<div class="puzzle-layout"><div class="puzzle-content"><section class="puzzle-board" aria-label="問題">${visual()}</section>${hintPanel()}</div>${answerPanel()}</div>`}`;}
 function reward(){return renderCollectedReward({title:room.title,chest,letter:room.reward,afterword:room.afterword});}
 function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${view==='welcome'?welcome():view==='room'?roomView():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
-function navigate(next,{autoReturn=false}={}){completion.cancel();if(autoReturn)completion.start();view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
+function navigate(next){view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
 function confirmAction(title,message,label,action){lastFocus=document.activeElement;dialog.innerHTML=`<h2 id="dialog-title">${title}</h2><p>${message}</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>${label}</button></div>`;dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();if(!guardExploration())action();};dialog.showModal();}
 dialog.addEventListener('close',()=>{if(lastFocus?.isConnected)lastFocus.focus();});
 function refreshKeys(){const q=QUESTIONS[current];keys=answerKeys(inputAnswer(q),state.drafts[current].length,q.candidateAnswers?.map(answer=>inputAnswer({...q,answer})),Object.values(q.fixedLetters||{}));}
@@ -58,7 +58,7 @@ function commitAnswer(target,answer){if(guardExploration())return;
     state.drafts[target]=answer;
   }
   current=target;
-  if(answer===inputAnswer(q)){const wasComplete=state.solved.length===3;if(!state.solved.includes(target))state.solved.push(target);if(state.solved.length===3)state.claimed=true;const saved=save();navigate('puzzle',{autoReturn:saved&&!wasComplete&&state.solved.length===3});}
+  if(answer===inputAnswer(q)){if(!state.solved.includes(target))state.solved.push(target);if(state.solved.length===3)state.claimed=true;save();navigate('puzzle');}
   else if(q.maxAttempts){save();navigate('puzzle');}
   else{dialog.innerHTML='<h2 id="dialog-title">まだ鍵が開かないようです</h2><p>「1文字消す」で直すか、ヒントを見てみよう。</p><div class="dialog-actions"><button class="primary" data-close>問題に戻る</button></div>';dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.showModal();}
 }
@@ -82,10 +82,10 @@ app.addEventListener('click',event=>{
     }
     case 'hub':completion.returnNow();break;
     case 'reward':if(state.solved.length===3){state.claimed=true;save();navigate('reward');}break;
-    case 'reset':completion.cancel();confirmAction('この部屋を最初から？','このエリアの正解・入力・集めた文字を初期化します。全体のヒント使用数は戻りません。','最初から遊ぶ',()=>{preserveHintUsage(gameStorage);state=makeEmptyState();save();navigate('welcome');});break;
+    case 'reset':confirmAction('この部屋を最初から？','このエリアの正解・入力・集めた文字を初期化します。全体のヒント使用数は戻りません。','最初から遊ぶ',()=>{preserveHintUsage(gameStorage);state=makeEmptyState();save();navigate('welcome');});break;
   }
 });
-onPlayStorage(event=>{if(event.key===SETTINGS_KEY||event.key===HINTS_KEY){if(!guardExploration())render();return;}if(event.key!==ROOM_KEY)return;state=restoreState(event.newValue);if(state.solved.length!==3)completion.cancel();if(dialog.open)dialog.close();if(!state.started)view='welcome';else if(view==='welcome')view='room';else if(view==='reward'&&!state.claimed)view='room';refreshKeys();render();});
+onPlayStorage(event=>{if(event.key===SETTINGS_KEY||event.key===HINTS_KEY){if(!guardExploration())render();return;}if(event.key!==ROOM_KEY)return;state=restoreState(event.newValue);if(dialog.open)dialog.close();if(!state.started)view='welcome';else if(view==='welcome')view='room';else if(view==='reward'&&!state.claimed)view='room';refreshKeys();render();});
 render();watchFinalReveal();
 
 }

@@ -1,16 +1,16 @@
-import {toKatakana} from './story-flow.js?v=2026-10-16-web-12';
-import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-12';
-import {readableCopy} from './readable-copy.js?v=2026-10-16-web-12';
-import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-12';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-12';
-import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-12';
-import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-12';
-import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-12';
-import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-12';
-import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-12';
-import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-12';
-import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-12';
-import {ROOM_KEY,ROOM_REWARD,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-12';
+import {toKatakana} from './story-flow.js?v=2026-10-16-web-13';
+import {roomCompletion,roomClearNotice} from './room-completion.js?v=2026-10-16-web-13';
+import {readableCopy} from './readable-copy.js?v=2026-10-16-web-13';
+import {gameStorage,gameUrl,onPlayStorage} from './play-mode.js?v=2026-10-16-web-13';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-13';
+import {hintFooter,hintPanel as sharedHintPanel,requestHint} from './hint-controls.js?v=2026-10-16-web-13';
+import {SETTINGS_KEY,HINTS_KEY,preserveHintUsage} from './play-settings.js?v=2026-10-16-web-13';
+import {renderRoomReward,renderCollectedReward} from './room-reward-ui.js?v=2026-10-16-web-13';
+import {watchFinalReveal,guardExploration,refreshExplorationClock} from './final-reveal.js?v=2026-10-16-web-13';
+import {withNewsTheme} from './news-areas.js?v=2026-10-16-web-13';
+import {newsDateBadge} from './news-dates.js?v=2026-10-16-web-13';
+import {seasonVisual} from './puzzle-renewal-art.js?v=2026-10-16-web-13';
+import {ROOM_KEY,ROOM_REWARD,QUESTIONS,CARDS,SLOT_MARKS,FIXED_CARDS,cardAtSlot,makeRoom1State as emptyState,restoreRoom1State as parseState,answerKeys,inputAnswer} from './room1-data.js?v=2026-10-16-web-13';
 
 const area=withNewsTheme({number:1,reward:ROOM_REWARD});
 document.title=`${area.title}｜2026年からの脱出`;
@@ -45,11 +45,11 @@ function answerPanel(){
   }).join('');
   return `<aside class="answer-panel"><h2>答えを入力</h2><div class="slots" role="status" aria-live="polite" aria-label="入力した文字 ${esc(value||'まだありません')}">${slots}</div>${q.fixedLetters?'<p class="fixed-letter-help">「ー」は入力しなくてOK</p>':''}<div class="keypad">${value.length<target.length?keys.map(k=>`<button data-key="${esc(k)}" aria-label="${esc(k)}">${esc(k)}</button>`).join(''):'<p class="smallprint" style="grid-column:1/-1;text-align:center">入力できました！<br>「これで決定」を押そう。</p>'}</div><div class="edit-buttons"><button data-action="backspace" ${!value?'disabled':''}>⌫ 1文字消す</button><button data-action="clear" ${!value?'disabled':''}>全部消す</button></div><button class="primary" data-action="submit" ${value.length!==target.length?'disabled':''}>これで決定</button><p class="feedback" role="status" aria-live="polite">${feedback}</p></aside>`;
 }
-function success(){const q=QUESTIONS[current];return `<div class="success"><div class="seal" aria-hidden="true">✓</div><h2>正解！</h2><div class="correct-answer">${q.answer}</div><p>${readableCopy(q.explanation)}</p>${roomClearNotice(completion.pending,area.reward,state.solved.length===3)}<button class="primary" data-action="${state.solved.length===3?'hub':'room'}">${state.solved.length===3?'できごと一覧に戻る':'エリアに戻って、次のナゾへ →'}</button></div>`;}
+function success(){const q=QUESTIONS[current];return `<div class="success"><div class="seal" aria-hidden="true">✓</div><h2>正解！</h2><div class="correct-answer">${q.answer}</div><p>${readableCopy(q.explanation)}</p>${roomClearNotice(area.reward,state.solved.length===3)}<button class="primary" data-action="${state.solved.length===3?'hub':'room'}">${state.solved.length===3?'できごと一覧に戻る':'エリアに戻って、次のナゾへ →'}</button></div>`;}
 function puzzle(){return `<div class="title-row"><div><p class="eyebrow">ナゾ ${String(current+1).padStart(2,'0')} / 03</p><h1>${QUESTIONS[current].title}</h1></div><button class="secondary" data-action="room">このエリアの3問に戻る</button></div>${state.solved.includes(current)?success():`<div class="puzzle-layout"><div class="puzzle-content"><section class="puzzle-board" aria-label="問題">${visual()}</section>${hintPanel()}</div>${answerPanel()}</div>`}`;}
 function reward(){return renderCollectedReward({title:area.title,chest,letter:area.reward,afterword:"下の「できごと一覧」から、行きたい部屋を選ぼう。"});}
 function render(){app.innerHTML=`<main class="shell view-${view}">${header()}${view==='welcome'?welcome():view==='room'?room():view==='reward'?reward():puzzle()}${footer()}</main>`;refreshExplorationClock();}
-function navigate(next,{autoReturn=false}={}){completion.cancel();if(autoReturn)completion.start();view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
+function navigate(next){view=next;feedback='';render();window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
 function confirmAction(title,message,label,action){lastFocus=document.activeElement;dialog.innerHTML=`<h2 id="dialog-title">${title}</h2><p>${message}</p><div class="dialog-actions"><button class="secondary" data-close>戻る</button><button class="primary" data-confirm>${label}</button></div>`;dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();if(!guardExploration())action();};dialog.showModal();}
 dialog.addEventListener('close',()=>{if(lastFocus?.isConnected)lastFocus.focus();});
 function refreshKeys(){const q=QUESTIONS[current];keys=answerKeys(inputAnswer(q),state.drafts[current].length,[],Object.values(q.fixedLetters||{}));}
@@ -65,13 +65,13 @@ app.addEventListener('click',event=>{
     case 'room':navigate('room');break;
     case 'backspace':state.drafts[current]=state.drafts[current].slice(0,-1);feedback='';refreshKeys();save();render();break;
     case 'clear':state.drafts[current]='';feedback='';refreshKeys();save();render();break;
-    case 'submit':if(state.drafts[current]===inputAnswer(QUESTIONS[current])){const wasComplete=state.solved.length===3;if(!state.solved.includes(current))state.solved.push(current);if(state.solved.length===3)state.claimed=true;const saved=save();navigate('puzzle',{autoReturn:saved&&!wasComplete&&state.solved.length===3});}else{dialog.innerHTML='<h2 id="dialog-title">まだ鍵が開かないようです</h2><p>「1文字消す」で直すか、ヒントを見てみよう。</p><div class="dialog-actions"><button class="primary" data-close>問題に戻る</button></div>';dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.showModal();}break;
+    case 'submit':if(state.drafts[current]===inputAnswer(QUESTIONS[current])){if(!state.solved.includes(current))state.solved.push(current);if(state.solved.length===3)state.claimed=true;save();navigate('puzzle');}else{dialog.innerHTML='<h2 id="dialog-title">まだ鍵が開かないようです</h2><p>「1文字消す」で直すか、ヒントを見てみよう。</p><div class="dialog-actions"><button class="primary" data-close>問題に戻る</button></div>';dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.showModal();}break;
     case 'hub':completion.returnNow();break;
     case 'reward':if(state.solved.length===3){state.claimed=true;save();navigate('reward');}break;
-    case 'reset':completion.cancel();confirmAction('この部屋を最初から？','このエリアの正解・入力・集めた文字を初期化します。全体のヒント使用数は戻りません。','最初から遊ぶ',()=>{preserveHintUsage(gameStorage);state=emptyState();save();navigate('welcome');});break;
+    case 'reset':confirmAction('この部屋を最初から？','このエリアの正解・入力・集めた文字を初期化します。全体のヒント使用数は戻りません。','最初から遊ぶ',()=>{preserveHintUsage(gameStorage);state=emptyState();save();navigate('welcome');});break;
   }
 });
-onPlayStorage(event=>{if(event.key===SETTINGS_KEY||event.key===HINTS_KEY){if(!guardExploration())render();return;}if(event.key!==ROOM_KEY)return;state=parseState(event.newValue);if(state.solved.length!==3)completion.cancel();if(dialog.open)dialog.close();if(!state.started)view='welcome';else if(view==='welcome')view='room';else if(view==='reward'&&!state.claimed)view='room';refreshKeys();render();});
+onPlayStorage(event=>{if(event.key===SETTINGS_KEY||event.key===HINTS_KEY){if(!guardExploration())render();return;}if(event.key!==ROOM_KEY)return;state=parseState(event.newValue);if(dialog.open)dialog.close();if(!state.started)view='welcome';else if(view==='welcome')view='room';else if(view==='reward'&&!state.claimed)view='room';refreshKeys();render();});
 render();watchFinalReveal();
 
 installTestTools();

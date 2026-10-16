@@ -21,11 +21,11 @@ for(const entry of ROOM_CATALOG){
  state.solved.push(2);state.claimed=false;records.set(entry.room.storageKey,JSON.stringify(state));
  const room=readRoomProgress(storage).find(room=>room.number===entry.room.number);
  assert.equal(room.complete,true,'Existing completed records reveal their letter without re-solving');
- for(const html of [renderRoomReward({complete:true,chest,letter:room.reward}),renderCollectedReward({title:room.title,chest,letter:room.reward}),roomClearNotice(true,room.reward,true),roomClearNotice(false,room.reward,true)]){
+ for(const html of [renderRoomReward({complete:true,chest,letter:room.reward}),renderCollectedReward({title:room.title,chest,letter:room.reward}),roomClearNotice(room.reward,true)]){
   assert.ok(html.includes('集めた文字 '+letter));assert.equal(tileCount(html),1);
   assert.ok(!html.includes('封印'));assert.ok(!html.includes('最後のナゾが始まってから'));
  }
- assert.equal(roomClearNotice(false,room.reward,false),'');
+ assert.equal(roomClearNotice(room.reward,false),'');
 }
 const all=readRoomProgress(storage);assert.equal(all.filter(room=>room.complete).length,8);
 assert.deepEqual(finalFragments(all),['れ','ぶ','り','ゅ','の','す','じ','お']);
