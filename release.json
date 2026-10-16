@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-16-web-06",
+  "version": "2026-10-16-web-07",
   "entry": "start.html",
   "files": {
     "assets/audio/joya-bell.mp3": "fc1279384b02ade03a39aefad99808d26ae6b33f5117ca5ca9b78e19c2e76435",
@@ -39,7 +39,7 @@
     "css/room2.css": "0a5f61e1d940cf1b646d7e090b1e9c5ee2006e426a39741863c3473bb6111166",
     "css/room3.css": "813b9d807bc758fd1a34c23f081fad0038c5314f065f9c172bf7f0d2e64782bf",
     "css/room4.css": "79518f28d2bc5e87b173650971fd3b905a959ff79afde94631d8bec4a20c7464",
-    "css/rooms.css": "6852a4a55c50cb67de25fc9a3d818b458cceb4cf042113870464c502c42115b5",
+    "css/rooms.css": "5f65b6f44b35fee6947fffbd157812d9e1e2647a8a9a028e59ceb3217ef65d2e",
     "css/setup.css": "64569dfbc37321bee91b82e0fa814c7f083327905a034c935c1d924878e5b56b",
     "css/teacher-mode.css": "5feccf0c50b3e7682eaba9d4a7c5d6a6c39d8d6ab3d341eb02420283fdedccbd",
     "css/test-play.css": "46108c3be24818bf4faed0aceacc770a73e6f1a66690468fc1716ad7d0e86f60",
@@ -82,7 +82,7 @@
     "js/room3.js": "39a71c0a8bd027467f598aebee0484c2da75b04af5645251e9d064525a613902",
     "js/room4-data.js": "c780d565f4991e5e954c9c462b7873f745cefccf7e9c34fe31d2042d993a243e",
     "js/room4.js": "7ed8297a478c3bf46196b1dc0a00bc1f29311089bb0d68fd22ee8996a711efcb",
-    "js/rooms.js": "f01b35f7eaad8f77e3d87b029e7eabdfe4609dfa4c537b6dd570feb43493fd69",
+    "js/rooms.js": "e4109f7a8cb17377227a3001b6249f25a26e3e7634271b641d6ab26d5a0619ac",
     "js/setup-screen.js": "5affd965e0cd00193c1ebc5d8d30b62926a777103aab29c64905038048acfac3",
     "js/story-content.js": "a9e712254cf5eaa70959cb44f3efc7087faf91e59d3fe6efc747bcae70fe0ac7",
     "js/story-flow.js": "b5abd90ec37a8008356eb7715a4bf4faa32e867eac12e519930763b3c2e9a9ab",
@@ -99,7 +99,7 @@
     "room6.html": "c489d4f436d3e9ca1f33d836c4b22b4b8799cc6c7de05e07c7da2eaf16eb0118",
     "room7.html": "9364296419969c5fbccb3b36c6a2eb1a3fb6c7e9b872af83ec10c87500bc44b3",
     "room8.html": "3165d878614dd134bc27b9ecf4c46af073bb90fdc42519868055685772474eae",
-    "rooms.html": "146379449233a9e128204baf16c153ae7cfcf0f32f38f6d741302884cb996355",
+    "rooms.html": "a4efdbd516010210863a75816c2d2305b8c37bcdd6db90b0a0976eaa8c7aae70",
     "scripts/serve.js": "83fa4a5c5454b53304417427a4296ee75e45de4f0c1a893ea3c763e0eb43189b",
     "start.html": "5b4471b1b7354a54ca7ca4e286bebd8d822c07c63a30e4435e01d6a1e6b4f9dd"
   }
