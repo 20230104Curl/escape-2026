@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {BELL_SECONDS,BELL_FADE_AT,BELL_VOLUME,shouldRingEnding,createEndingBell} from '../js/ending-bell.js';
+import {newFinalState,restoreFinal} from '../js/story-flow.js';
+const success={...newFinalState(),submitted:true,result:'success',decidedAt:1000,revealAt:1000};
+for(const result of ['rescued',null])assert.equal(shouldRingEnding({...success,result},true,true),false);
+for(const reason of ['answer','timeout'])assert.equal(shouldRingEnding({...success,result:'rescued',reason},true,true),false);
+assert.equal(shouldRingEnding(success,false,true),false,'Reloads cannot ring again');
+assert.equal(shouldRingEnding(success,true,false),false,'The answer countdown must finish first');
+assert.equal(shouldRingEnding({...success,submitted:false},true,true),false);
+assert.equal(shouldRingEnding(success,true,true),true);
+function fixture(failures=[]){
+ let tick,cleared=0,created=0;
+ const events={},audio={currentTime:0,volume:1,plays:0,pauses:0,addEventListener:(name,callback)=>events[name]=callback,async play(){this.plays++;if(failures.length)throw failures.shift();},pause(){this.pauses++;}};
+ const bell=createEndingBell({makeAudio:()=>{created++;return audio;},schedule:callback=>{tick=callback;return 1;},cancel:()=>cleared++});
+ return {bell,audio,events,tick:()=>tick(),get created(){return created;},get cleared(){return cleared;}};
+}
+const silent=fixture();
+for(const reason of ['answer','timeout'])await silent.bell.start({...success,result:'rescued',reason},{first:true,ready:true});
+assert.equal(silent.created,0,'No audio file or player is created on failed endings');
+const cue=fixture();assert.equal(await cue.bell.start(success,{first:true,ready:true}),true);
+assert.equal(cue.audio.loop,false);assert.equal(cue.audio.volume,BELL_VOLUME);
+assert.equal(cue.bell.status,'playing');
+cue.audio.currentTime=BELL_FADE_AT;cue.tick();assert.equal(cue.audio.volume,BELL_VOLUME);
+cue.audio.currentTime=(BELL_FADE_AT+BELL_SECONDS)/2;cue.events.timeupdate();assert.ok(Math.abs(cue.audio.volume-BELL_VOLUME/2)<1e-10);
+cue.audio.currentTime=BELL_SECONDS;cue.tick();assert.equal(cue.bell.status,'finished');assert.equal(cue.audio.pauses,1);assert.equal(cue.cleared,1);
+await cue.bell.start(success,{first:true,ready:true});await cue.bell.retry();assert.equal(cue.audio.plays,1,'No repeat after playing');
+const blocked=fixture([Object.assign(new Error('gesture required'),{name:'NotAllowedError'})]);
+assert.equal(await blocked.bell.start(success,{first:true,ready:true}),false);assert.equal(blocked.bell.status,'blocked');
+assert.equal(await blocked.bell.start(success,{first:true,ready:true}),false,'Only the explicit gesture can retry');
+assert.equal(await blocked.bell.retry(),true);assert.equal(blocked.audio.plays,2);assert.equal(blocked.bell.status,'playing');
+await blocked.bell.retry();assert.equal(blocked.audio.plays,2);blocked.bell.dispose();assert.equal(blocked.audio.pauses,1);
+const missing=fixture([Object.assign(new Error('missing audio'),{name:'NotSupportedError'})]);
+assert.equal(await missing.bell.start(success,{first:true,ready:true}),false);assert.equal(missing.bell.status,'unavailable');await missing.bell.retry();assert.equal(missing.audio.plays,1);
+const reloaded=restoreFinal(JSON.stringify({...success,bellPlayed:true}));const seen=fixture();await seen.bell.start(reloaded,{first:!reloaded.bellPlayed,ready:true});assert.equal(seen.created,0);
+console.log('PASS: success-only bell after reveal, five-second cap and fade, silent failure/timeout, replay prevention, gesture fallback and missing-audio recovery');
