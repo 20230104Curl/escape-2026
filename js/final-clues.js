@@ -11,7 +11,7 @@ import {EMERGENCY} from './story-content.js?v=2026-10-16-web-08';
 import {YEAR_ORDER_KEY,loadYearOrder,placeYearCard,removeYearCard,decideYearOrder,expireYearOrder,yearOrderComplete} from './year-order-data.js?v=2026-10-16-web-08';
 import {renderYearOrder} from './year-order-ui.js?v=2026-10-16-web-08';
 import {NEWS_AREAS} from './news-areas.js?v=2026-10-16-web-08';
-import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-08';
+import {renderFinalFragments} from './final-fragments-ui.js?v=2026-10-16-web-09';
 import {needsFinalPlacement,finalInputSlots,nextFinalPosition,finalInputComplete,foundFinalPositions,placeFinalFragments,enterFinalLetter,editableFinalPositions,eraseFinalLetters} from './final-password-input.js?v=2026-10-16-web-08';
 const app=document.querySelector('#room-app'),dialog=document.querySelector('#room-dialog');
 let state=loadFinal(gameStorage),order=loadYearOrder(gameStorage),wasOpen=null,wasSubmitted=null,wasOrder=null,keys=[],navigating=false;
