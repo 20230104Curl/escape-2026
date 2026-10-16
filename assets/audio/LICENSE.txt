@@ -1,0 +1,16 @@
+除夜の鐘の効果音
+
+作品名: 梵鐘04-1（低） / Bonsho04-1(Low).mp3
+作者・クレジット: OtoLogic (https://otologic.jp/)
+配布ページ: https://otologic.jp/free/se/temple-bells01.html
+原本: https://otologic.jp/sounds/se/mp3-zip/Bonsho04-mp3.zip
+ライセンス: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+利用条件: https://otologic.jp/free/license.html
+取得日: 2026-10-16
+
+joya-bell.mp3 は配布音源をそのまま収録しています。ゲームでは音量を60%とし、
+再生開始3.5秒から音量を下げ、5秒で停止する演出を加えています。
+音源ファイル自体の編集はありません。
+
+原音 SHA-256: 9ff5124d5f33eacbdc671c1b2ebbdb0d2c87492fbd6fca0fe7f38a39ddcc5e83

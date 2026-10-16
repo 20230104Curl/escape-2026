@@ -1,6 +1,6 @@
-import * as config from './game-flow-config.js?v=2026-10-16-web-03';
-import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-16-web-03';
-import {loadYearOrder,YEAR_CHOICES} from './year-order-data.js?v=2026-10-16-web-03';
+import * as config from './game-flow-config.js?v=2026-10-16-web-04';
+import {testPlay,gameStorage,testFinalAt} from './play-mode.js?v=2026-10-16-web-04';
+import {loadYearOrder,YEAR_CHOICES} from './year-order-data.js?v=2026-10-16-web-04';
 export const OPENING_SECONDS=300,EXPLORATION_SECONDS=1500,YEAR_ORDER_SECONDS=60,FINAL_ANSWER_SECONDS=60,ENDING_SECONDS=60;
 export const FINAL_KEY='escape2026.finale.v1';
 export const EXPLORATION_KEY='escape2026.exploration.v1';
