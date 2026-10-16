@@ -22,4 +22,4 @@ Node.jsを用意して `npm start` を実行し、`http://localhost:4173/` を�
 
 梵鐘04-1（低）：[OtoLogic](https://otologic.jp/free/se/temple-bells01.html)、[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。冒頭0.095秒の無音を削除し、音量と再生時間をゲーム内で調整しています。[出典と利用条件](assets/audio/LICENSE.txt)も同梱しています。
 
-緊急警報：このゲーム用に合成した2秒のオリジナル電子音です。警告の前に先読みし、一度再生した警告では鳴り直しません。次へ進むと音を止めます。自動再生が制限される端末には「警報音を鳴らす」を表示します。
+緊急警報：ユーザー指定の Warning-Siren04-05(High-Mid).mp3（[OtoLogic](https://otologic.jp/)、[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)）の先頭2秒を使用し、末尾0.04秒をフェードアウトしています。警告の前に先読みし、一度再生した警告では鳴り直しません。次へ進むと音を止めます。自動再生が制限される端末には「警報音を鳴らす」を表示します。[出典と加工内容](assets/audio/LICENSE.txt)も同梱しています。

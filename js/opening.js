@@ -1,10 +1,10 @@
-import {ENTRY_PASSWORD_LENGTH,entryPasswordCorrect,entryPasswordKeys,entryPasswordScreen} from './entry-password.js?v=2026-10-16-web-10';
-import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-08';
-import {installTestTools} from './test-tools.js?v=2026-10-16-web-08';
-import {setupScreen} from './setup-screen.js?v=2026-10-16-web-08';
-import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-16-web-08';
-import {OPENING} from './story-content.js?v=2026-10-16-web-08';
-import {classTimes,loadFinal,canRevealFinal,startExploration,EXPLORATION_KEY} from './story-flow.js?v=2026-10-16-web-08';
+import {ENTRY_PASSWORD_LENGTH,entryPasswordCorrect,entryPasswordKeys,entryPasswordScreen} from './entry-password.js?v=2026-10-16-web-11';
+import {gameStorage,gameUrl,onPlayStorage,testPlay} from './play-mode.js?v=2026-10-16-web-11';
+import {installTestTools} from './test-tools.js?v=2026-10-16-web-11';
+import {setupScreen} from './setup-screen.js?v=2026-10-16-web-11';
+import {loadSettings,saveSettings} from './play-settings.js?v=2026-10-16-web-11';
+import {OPENING} from './story-content.js?v=2026-10-16-web-11';
+import {classTimes,loadFinal,canRevealFinal,startExploration,EXPLORATION_KEY} from './story-flow.js?v=2026-10-16-web-11';
 const scenes=[
  {image:'op-01-bell',alt:'雪の積もる大晦日の境内。あたたかな灯りに照らされた除夜の鐘。'},
  {image:'op-02-time',alt:'鐘のまわりで青と金の光が渦を巻き、雪の粒まで止まった世界。'},
