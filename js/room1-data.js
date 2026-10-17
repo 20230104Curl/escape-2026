@@ -1,4 +1,4 @@
-import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-16-web-19';
+import {restoreRevision} from './puzzle-renewal-data.js?v=2026-10-17-web-1';
 export const ROOM_REWARD='れ';
 export const ROOM_KEY = 'escape2026.room1.v1';
 export const QUESTIONS = [

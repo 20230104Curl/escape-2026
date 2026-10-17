@@ -1,4 +1,4 @@
-import {toKatakana,FINAL_INPUT} from './story-flow.js?v=2026-10-16-web-19';
+import {toKatakana,FINAL_INPUT} from './story-flow.js?v=2026-10-17-web-1';
 
 export function renderFinalFragments(letters,{animate=false,placed=false,remaining=FINAL_INPUT.length}={}){
  const needsPlacement=letters.length>0&&!placed;

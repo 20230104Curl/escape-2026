@@ -1,6 +1,6 @@
-import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-16-web-19';
-import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-16-web-19';
-import {FLOWER_GRID,flowerMarks} from './flower-search-data.js?v=2026-10-16-web-19';
+import {MIRROR_TIME,FOLD_LETTERS,FOLD_MARKS,ICE_STACKS,FLOWER_ROWS,CUBE_NET,CUBE_QUERY,WEEK_COLUMNS,ERA_WORDS} from './late-puzzles-data.js?v=2026-10-17-web-1';
+import {kanaMaze} from './replacement-puzzles-art.js?v=2026-10-17-web-1';
+import {FLOWER_GRID,flowerMarks} from './flower-search-data.js?v=2026-10-17-web-1';
 const svg=(body,label,viewBox='0 0 500 340')=>`<div class="late-diagram"><svg viewBox="${viewBox}" role="img" aria-label="${label}">${body}</svg></div>`;
 const text=(value,x,y,size=25,color='#4d4565',extra='')=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="middle" font-weight="700" ${extra}>${value}</text>`;
 const marker=(id,color)=>`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="${color}"/></marker></defs>`;
@@ -31,7 +31,7 @@ export function flowerSearch(state={}){
 const petalColors={rose:'#ed9c9b',blue:'#83b2d0',green:'#9dc49a',gold:'#f0cd75'};
 export function flowers(){
  const body=FLOWER_ROWS.map((row,y)=>row.map((flower,x)=>{const cx=95+x*155,cy=52+y*111;return `<g>${flower.petals.map((color,i)=>{const a=i*Math.PI/2;return `<circle cx="${cx+Math.sin(a)*22}" cy="${cy-Math.cos(a)*22}" r="18" fill="${petalColors[color]}" stroke="#7f7a761f" stroke-width="2"/>`;}).join('')}<circle cx="${cx}" cy="${cy}" r="11" fill="#fff6d6" stroke="#c4ae70"/>${text(flower.label,cx,cy+57,22)}</g>`;}).join('')).join('');
- return `<p class="puzzle-instruction">各段に、回すと同じになる花が2つ。<br><b>仲間はずれの文字を、上から</b>読もう。</p>`+svg(body,'3段に3つずつ並ぶ4枚の花びら。花びらの色の並びを比べる');
+ return `<p class="puzzle-instruction">各段の３つの花のうち、回すと同じ形になるのは２つ。<br><b>残った１つの花の文字を、上から</b>読もう。</p>`+svg(body,'3段に3つずつ並ぶ4枚の花びら。花びらの色の並びを比べる');
 }
 export function skyTrails(){
  const moons=[40,130].map(y=>icon(0,58,y-32,64)).join(''),stars=[130,220].map(y=>icon(1,188,y-32,64)).join(''),meteors=[40,130,220,310].map(y=>icon(2,328,y-32,64)).join('');

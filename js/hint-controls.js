@@ -1,5 +1,5 @@
-import {gameStorage} from './play-mode.js?v=2026-10-16-web-19';
-import {hintStatus,openHint,withHintLock} from './play-settings.js?v=2026-10-16-web-19';
+import {gameStorage} from './play-mode.js?v=2026-10-17-web-1';
+import {hintStatus,openHint,withHintLock} from './play-settings.js?v=2026-10-17-web-1';
 export function hintFooter(){const s=hintStatus(gameStorage);return s.unlimited?'ヒント 制限なし（全48個）':`ヒント あと ${s.left} / ${s.limit} 個`;}
 export function hintPanel(room,question){
  const s=hintStatus(gameStorage,room,question),n=s.level;
